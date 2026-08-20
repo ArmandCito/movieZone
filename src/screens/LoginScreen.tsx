@@ -14,7 +14,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { usersArray } from '../data/mockData';
 
-export default function LoginScreen({ navigation }: any): JSX.Element {
+export default function LoginScreen({ navigation }: any) {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);

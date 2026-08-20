@@ -16,7 +16,7 @@ import { featuredMovies, nowPlaying, comingSoon } from '../data/mockData';
 const { width } = Dimensions.get('window');
 const BANNER_WIDTH = width - 40;
 
-export default function HomeScreen({ navigation }: any): JSX.Element {
+export default function HomeScreen({ navigation }: any) {
   const [activeBanner, setActiveBanner] = useState(0);
   const [selectedYear, setSelectedYear] = useState('2023');
   const [selectedMonth, setSelectedMonth] = useState('January');

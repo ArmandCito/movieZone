@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-export default function IntroScreen({ navigation }: any): JSX.Element {
+export default function IntroScreen({ navigation }: any) {
   return (
     <ImageBackground
       source={{

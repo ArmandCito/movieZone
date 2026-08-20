@@ -14,7 +14,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { usersArray } from '../data/mockData';
 
-export default function RegisterScreen({ navigation }: any): JSX.Element {
+export default function RegisterScreen({ navigation }: any) {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');

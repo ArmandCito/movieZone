@@ -13,7 +13,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { movieDetail } from '../data/mockData';
 
-export default function MovieDetailScreen({ navigation, route }: any): JSX.Element {
+export default function MovieDetailScreen({ navigation, route }: any) {
   const movie = route?.params?.movie
     ? { ...movieDetail, ...route.params.movie }
     : movieDetail;

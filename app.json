@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Moviezone",
+    "slug": "moviezone",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#121212",
+    "splash": {
+      "backgroundColor": "#121212"
+    },
+    "android": {
+      "backgroundColor": "#121212",
+      "package": "com.moviezone.app"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.moviezone.app"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      "expo-status-bar"
+    ]
+  }
+}

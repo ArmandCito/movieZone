@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context'
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -124,6 +124,7 @@ export default function LoginScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: Platform.OS === 'android' ? 25 : 0,
     flex: 1,
     backgroundColor: '#121212',
   },

@@ -24,7 +24,7 @@ export default function IntroScreen({ navigation }: any) {
             Movie<Text style={styles.titleRed}>Zone</Text>
           </Text>
           <Text style={styles.subtitle}>
-            Your number one movie destination.
+            Your number one movie destination...
           </Text>
           <TouchableOpacity
             style={styles.button}

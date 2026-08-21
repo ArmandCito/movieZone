@@ -21,7 +21,7 @@ export default function IntroScreen({ navigation }: any) {
       <View style={styles.overlay}>
         <View style={styles.content}>
           <Text style={styles.title}>
-            Movie<Text style={styles.titleRed}>zone</Text>
+            Movie<Text style={styles.titleRed}>Zone</Text>
           </Text>
           <Text style={styles.subtitle}>
             Your number one movie destination.

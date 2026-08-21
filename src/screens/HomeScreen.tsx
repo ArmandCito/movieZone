@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.logo}>
-          Movie<Text style={styles.logoRed}>zone</Text>
+          Movie<Text style={styles.logoRed}>Zone</Text>
         </Text>
         <TouchableOpacity>
           <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />

@@ -47,7 +47,7 @@ export default function LoginScreen({ navigation }: any) {
       >
         <ScrollView contentContainerStyle={styles.scroll}>
           <Text style={styles.logo}>
-            Movie<Text style={styles.logoRed}>zone</Text>
+            Movie<Text style={styles.logoRed}>Zone</Text>
           </Text>
 
           <Text style={styles.title}>Welcome Back!</Text>

@@ -7,12 +7,24 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
+import {useFonts, Afacad_400Regular, Afacad_700Bold} from '@expo-google-fonts/afacad'
+
 
 export default function IntroScreen({ navigation }: any) {
+
+  let [fontsLoaded] = useFonts({
+    Afacad_400Regular,
+    Afacad_700Bold
+  });
+
+  if (!fontsLoaded) {
+    return null; 
+  }
+
   return (
     <ImageBackground
       source={{
-        uri: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&q=80',
+        uri: 'https://plus.unsplash.com/premium_photo-1684923604860-64e661f2ff72?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       }}
       style={styles.background}
       resizeMode="cover"
@@ -21,7 +33,8 @@ export default function IntroScreen({ navigation }: any) {
       <View style={styles.overlay}>
         <View style={styles.content}>
           <Text style={styles.title}>
-            Movie<Text style={styles.titleRed}>Zone</Text>
+            Movie
+            <Text style={styles.titleRed}>Zone</Text>
           </Text>
           <Text style={styles.subtitle}>
             Your number one movie destination...
@@ -46,25 +59,31 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(18,18,18,0.85)',
+    backgroundColor: 'rgba(12, 12, 12, 0.85)',
     justifyContent: 'center',
     alignItems: 'center',
+
   },
   content: {
     width: '85%',
     alignItems: 'center',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 48,
+    fontFamily: 'Afacad_400Regular',
+    // fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 12,
+    fontStyle: 'normal',
   },
   titleRed: {
     color: '#E50914',
+    fontFamily: 'Afacad_700Bold',
+    // fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 16,
+    fontFamily: 'Afacad_400Regular',
     color: '#CCCCCC',
     textAlign: 'center',
     marginBottom: 32,
@@ -79,5 +98,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 16,
+    fontFamily: 'Afacad_400Regular',
   },
 });

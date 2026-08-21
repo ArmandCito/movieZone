@@ -125,7 +125,7 @@ export const usersArray = [
     name: 'Armand',
     surname: 'Default',
     email: 'armand',
-    phone: '',
+    phone: '+250791449880',
     password: 'armand+2026',
   },
 ];

@@ -13,12 +13,25 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usersArray } from '../data/mockData';
+// import { useFonts, Afacad_400Regular, Afacad_700Bold } from '@expo-google-fonts/afacad';
+
 
 export default function LoginScreen({ navigation }: any) {
+
+  // let [fontsLoaded] = useFonts({
+  //     Afacad_400Regular,
+  //     Afacad_700Bold
+  //   });
+  
+  //   if (!fontsLoaded) {
+  //     return null; 
+  //   }
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+
+  
 
   const handleSignIn = () => {
     setError('');
@@ -137,6 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
+    // fontFamily: 'Afacad_400Regular',
     textAlign: 'center',
     marginBottom: 40,
   },
@@ -146,11 +160,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
+    // fontFamily: 'Afacad_400Regular',
     color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 8,
   },
   subtitle: {
+    // fontFamily: 'Afacad_400Regular',
     fontSize: 13,
     color: '#AAAAAA',
     textAlign: 'center',
@@ -163,6 +179,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#262626',
     borderRadius: 12,
     paddingHorizontal: 18,
+    // fontFamily: 'Afacad_400Regular',
     paddingVertical: 16,
     color: '#FFFFFF',
     marginBottom: 16,
@@ -178,6 +195,7 @@ const styles = StyleSheet.create({
   },
   passwordInput: {
     flex: 1,
+    // fontFamily: 'Afacad_400Regular',
     paddingVertical: 16,
     color: '#FFFFFF',
     fontSize: 14,
@@ -189,6 +207,7 @@ const styles = StyleSheet.create({
     color: '#E50914',
     fontSize: 12,
     marginBottom: 12,
+    // fontFamily: 'Afacad_400Regular',
     marginLeft: 4,
   },
   signInButton: {
@@ -199,6 +218,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   signInButtonText: {
+    // fontFamily: 'Afacad_400Regular',
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 16,
@@ -215,6 +235,7 @@ const styles = StyleSheet.create({
   },
   dividerText: {
     color: '#8A8A8A',
+    // fontFamily: 'Afacad_400Regular',
     marginHorizontal: 12,
     fontSize: 12,
   },
@@ -237,6 +258,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   registerText: {
+    // fontFamily: 'Afacad_400Regular',
     color: '#AAAAAA',
     fontSize: 13,
   },

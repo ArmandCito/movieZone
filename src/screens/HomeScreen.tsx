@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,25 +9,73 @@ import {
   ScrollView,
   FlatList,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { featuredMovies, nowPlaying, comingSoon } from '../data/mockData';
+import {
+  getTrendingMovies,
+  getNowPlayingMovies,
+  getUpcomingMovies,
+  getImageUrl,
+  getBackdropUrl,
+} from '../services/tmdbService';
 
 const { width } = Dimensions.get('window');
 const BANNER_WIDTH = width - 40;
 
 export default function HomeScreen({ navigation }: any) {
   const [activeBanner, setActiveBanner] = useState(0);
-  const [selectedYear, setSelectedYear] = useState('2023');
-  const [selectedMonth, setSelectedMonth] = useState('January');
+  const [selectedYear, setSelectedYear] = useState('All');
+  const [selectedMonth, setSelectedMonth] = useState('All');
+  const [trending, setTrending] = useState<any[]>([]);
+  const [nowPlaying, setNowPlaying] = useState<any[]>([]);
+  const [upcoming, setUpcoming] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadMovies();
+  }, []);
+
+  const loadMovies = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      const trendingData = await getTrendingMovies('week');
+      const nowPlayingData = await getNowPlayingMovies();
+      const upcomingData = await getUpcomingMovies();
+      setTrending(trendingData.results);
+      setNowPlaying(nowPlayingData.results);
+      setUpcoming(upcomingData.results);
+    } catch (err: any) {
+      setError(err.message || 'Failed to load movies');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onBannerScroll = (e: any) => {
     const index = Math.round(e.nativeEvent.contentOffset.x / BANNER_WIDTH);
     setActiveBanner(index);
   };
 
-  const years = ['2023', 'All'];
-  const months = ['January', 'February', 'March'];
+  const years = ['All', '2024', '2023', '2022'];
+  const months = ['All', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const filteredUpcoming = upcoming.filter((movie) => {
+    const releaseDate = new Date(movie.release_date);
+    const yearMatch = selectedYear === 'All' || String(releaseDate.getFullYear()) === selectedYear;
+    const monthMatch = selectedMonth === 'All' || releaseDate.toLocaleString('en-US', { month: 'long' }) === selectedMonth;
+    return yearMatch && monthMatch;
+  });
+
+  const formatRuntime = (date: string) => {
+    if (!date) return 'TBA';
+    const d = new Date(date);
+    return d.getFullYear().toString();
+  };
+
+  const getRating = (vote: number) => (vote / 2).toFixed(1);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,164 +88,187 @@ export default function HomeScreen({ navigation }: any) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Featured banner carousel */}
-        <ScrollView
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={onBannerScroll}
-          scrollEventThrottle={16}
-          style={styles.bannerScroll}
-        >
-          {featuredMovies.map((movie: any) => (
-            <TouchableOpacity
-              key={movie.id}
-              style={styles.bannerCard}
-              activeOpacity={0.9}
-              onPress={() => navigation.navigate('MovieDetail', { movie })}
-            >
-              <Image source={{ uri: movie.banner }} style={styles.bannerImage} />
-              <View style={styles.bannerOverlay}>
-                <Text style={styles.bannerTitle}>{movie.title}</Text>
-                <View style={styles.metaRow}>
-                  <View style={styles.ratingBadge}>
-                    <Ionicons name="star" size={12} color="#FFD700" />
-                    <Text style={styles.ratingText}>{movie.rating}</Text>
-                  </View>
-                  <View style={styles.classificationBadge}>
-                    <Text style={styles.classificationText}>
-                      {movie.classification}
-                    </Text>
-                  </View>
-                  <Text style={styles.metaText}>{movie.year}</Text>
-                  <Text style={styles.metaText}>{movie.duration}</Text>
-                  <Text style={styles.metaText}>{movie.genre}</Text>
-                </View>
-                <TouchableOpacity
-                  style={styles.watchButton}
-                  onPress={() => navigation.navigate('MovieDetail', { movie })}
-                >
-                  <Text style={styles.watchButtonText}>Watch Now</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-
-        <View style={styles.dotsRow}>
-          {featuredMovies.map((_: any, i: number) => (
-            <View
-              key={i}
-              style={[styles.dot, activeBanner === i && styles.dotActive]}
-            />
-          ))}
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#E50914" />
+          <Text style={styles.loadingText}>Loading movies...</Text>
         </View>
-
-        {/* Now Playing */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Now Playing</Text>
-          <Text style={styles.sectionSubtitle}>Playing in theaters now</Text>
+      ) : error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={loadMovies}>
+            <Text style={styles.retryButtonText}>Retry</Text>
+          </TouchableOpacity>
         </View>
-
-        <FlatList
-          data={nowPlaying}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item: any) => item.id}
-          contentContainerStyle={styles.horizontalList}
-          renderItem={({ item }: any) => (
-            <TouchableOpacity
-              style={styles.movieCard}
-              activeOpacity={0.9}
-              onPress={() => navigation.navigate('MovieDetail', { movie: item })}
-            >
-              <View>
-                <Image source={{ uri: item.poster }} style={styles.moviePoster} />
-                <TouchableOpacity style={styles.favoriteIcon}>
-                  <Ionicons name="heart-outline" size={18} color="#FFFFFF" />
-                </TouchableOpacity>
-                <View style={styles.timesRow}>
-                  {item.times.slice(0, 2).map((t: any) => (
-                    <View key={t} style={styles.timeBadge}>
-                      <Text style={styles.timeBadgeText}>{t}</Text>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* Featured banner carousel */}
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={onBannerScroll}
+            scrollEventThrottle={16}
+            style={styles.bannerScroll}
+          >
+            {trending.slice(0, 5).map((movie: any) => (
+              <TouchableOpacity
+                key={movie.id}
+                style={styles.bannerCard}
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate('MovieDetail', { movieId: movie.id })}
+              >
+                <Image
+                  source={{ uri: getBackdropUrl(movie.backdrop_path) }}
+                  style={styles.bannerImage}
+                />
+                <View style={styles.bannerOverlay}>
+                  <Text style={styles.bannerTitle}>{movie.title}</Text>
+                  <View style={styles.metaRow}>
+                    <View style={styles.ratingBadge}>
+                      <Ionicons name="star" size={12} color="#FFD700" />
+                      <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
                     </View>
-                  ))}
+                    <Text style={styles.metaText}>{formatRuntime(movie.release_date)}</Text>
+                    <Text style={styles.metaText}>{movie.original_language.toUpperCase()}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.watchButton}
+                    onPress={() => navigation.navigate('MovieDetail', { movieId: movie.id })}
+                  >
+                    <Text style={styles.watchButtonText}>Book Now</Text>
+                  </TouchableOpacity>
                 </View>
-              </View>
-              <Text style={styles.movieDuration}>
-                {item.duration}   {item.classification}
-              </Text>
-              <Text style={styles.movieTitle}>{item.title}</Text>
-            </TouchableOpacity>
-          )}
-        />
-
-        {/* Coming Soon */}
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Coming Soon This Year</Text>
-          <Text style={styles.sectionSubtitle}>
-            Movies on their way to the big screen
-          </Text>
-        </View>
-
-        <View style={styles.filterRow}>
-          {years.map((y) => (
-            <TouchableOpacity key={y} onPress={() => setSelectedYear(y)}>
-              <Text
-                style={[
-                  styles.filterText,
-                  selectedYear === y && styles.filterTextActive,
-                ]}
-              >
-                {y}
-              </Text>
-            </TouchableOpacity>
-          ))}
-          <View style={styles.filterDivider} />
-          {months.map((m) => (
-            <TouchableOpacity key={m} onPress={() => setSelectedMonth(m)}>
-              <Text
-                style={[
-                  styles.filterText,
-                  selectedMonth === m && styles.filterTextActive,
-                ]}
-              >
-                {m}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <FlatList
-          data={comingSoon}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item: any) => item.id}
-          contentContainerStyle={styles.horizontalList}
-          renderItem={({ item }: any) => (
-            <View style={styles.comingSoonCard}>
-              <Image source={{ uri: item.poster }} style={styles.comingSoonPoster} />
-              <TouchableOpacity style={styles.bookNowButton}>
-                <Text style={styles.bookNowText}>Book Now</Text>
               </TouchableOpacity>
-              <Text style={styles.movieTitle}>{item.title}</Text>
-            </View>
-          )}
-        />
+            ))}
+          </ScrollView>
 
-        <View style={{ height: 100 }} />
-      </ScrollView>
+          <View style={styles.dotsRow}>
+            {trending.slice(0, 5).map((_: any, i: number) => (
+              <View
+                key={i}
+                style={[styles.dot, activeBanner === i && styles.dotActive]}
+              />
+            ))}
+          </View>
+
+          {/* Now Playing */}
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Now Playing</Text>
+            <Text style={styles.sectionSubtitle}>Playing in theaters now</Text>
+          </View>
+
+          <FlatList
+            data={nowPlaying}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item: any) => String(item.id)}
+            contentContainerStyle={styles.horizontalList}
+            renderItem={({ item }: any) => (
+              <TouchableOpacity
+                style={styles.movieCard}
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })}
+              >
+                <View>
+                  <Image
+                    source={{ uri: getImageUrl(item.poster_path) }}
+                    style={styles.moviePoster}
+                  />
+                  <TouchableOpacity style={styles.favoriteIcon}>
+                    <Ionicons name="heart-outline" size={18} color="#FFFFFF" />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.movieDuration}>
+                  {formatRuntime(item.release_date)}  {item.original_language.toUpperCase()}
+                </Text>
+                <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+          />
+
+          {/* Coming Soon */}
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Coming Soon</Text>
+            <Text style={styles.sectionSubtitle}>
+              Movies on their way to the big screen
+            </Text>
+          </View>
+
+          <View style={styles.filterRow}>
+            {years.map((y) => (
+              <TouchableOpacity key={y} onPress={() => setSelectedYear(y)}>
+                <Text
+                  style={[
+                    styles.filterText,
+                    selectedYear === y && styles.filterTextActive,
+                  ]}
+                >
+                  {y}
+                </Text>
+              </TouchableOpacity>
+            ))}
+            <View style={styles.filterDivider} />
+            {months.slice(0, 4).map((m) => (
+              <TouchableOpacity key={m} onPress={() => setSelectedMonth(m)}>
+                <Text
+                  style={[
+                    styles.filterText,
+                    selectedMonth === m && styles.filterTextActive,
+                  ]}
+                >
+                  {m}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <FlatList
+            data={filteredUpcoming}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item: any) => String(item.id)}
+            contentContainerStyle={styles.horizontalList}
+            renderItem={({ item }: any) => (
+              <TouchableOpacity
+                style={styles.comingSoonCard}
+                onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })}
+              >
+                <Image
+                  source={{ uri: getImageUrl(item.poster_path) }}
+                  style={styles.comingSoonPoster}
+                />
+                <TouchableOpacity
+                  style={styles.bookNowButton}
+                  onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })}
+                >
+                  <Text style={styles.bookNowText}>Book Now</Text>
+                </TouchableOpacity>
+                <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
+                <Text style={styles.movieDuration}>{formatRuntime(item.release_date)}</Text>
+              </TouchableOpacity>
+            )}
+          />
+
+          <View style={{ height: 100 }} />
+        </ScrollView>
+      )}
 
       {/* Bottom Navigation */}
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.bottomBarItem}>
           <Ionicons name="home" size={24} color="#E50914" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.bottomBarItem}>
+        <TouchableOpacity
+          style={styles.bottomBarItem}
+          onPress={() => navigation.navigate('Search')}
+        >
           <Ionicons name="search" size={24} color="#8A8A8A" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.bottomBarItem}>
+        <TouchableOpacity
+          style={styles.bottomBarItem}
+          onPress={() => navigation.navigate('Profile')}
+        >
           <Ionicons name="person" size={24} color="#8A8A8A" />
         </TouchableOpacity>
       </View>
@@ -224,6 +295,38 @@ const styles = StyleSheet.create({
   },
   logoRed: {
     color: '#E50914',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#8A8A8A',
+    fontSize: 14,
+    marginTop: 12,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    color: '#E50914',
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  retryButton: {
+    backgroundColor: '#E50914',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+  },
+  retryButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
   },
   bannerScroll: {
     marginTop: 8,
@@ -272,17 +375,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 11,
     marginLeft: 3,
-  },
-  classificationBadge: {
-    borderWidth: 1,
-    borderColor: '#8A8A8A',
-    borderRadius: 10,
-    paddingHorizontal: 6,
-    marginRight: 6,
-  },
-  classificationText: {
-    color: '#FFFFFF',
-    fontSize: 11,
   },
   metaText: {
     color: '#CCCCCC',
@@ -348,24 +440,6 @@ const styles = StyleSheet.create({
     top: 8,
     right: 8,
   },
-  timesRow: {
-    position: 'absolute',
-    bottom: 8,
-    left: 8,
-    flexDirection: 'row',
-  },
-  timeBadge: {
-    backgroundColor: '#E50914',
-    borderRadius: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    marginRight: 4,
-  },
-  timeBadgeText: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontWeight: '600',
-  },
   movieDuration: {
     color: '#8A8A8A',
     fontSize: 11,
@@ -382,11 +456,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 16,
+    flexWrap: 'wrap',
   },
   filterText: {
     color: '#8A8A8A',
     fontSize: 13,
-    marginRight: 16,
+    marginRight: 12,
   },
   filterTextActive: {
     color: '#E50914',
@@ -397,7 +472,7 @@ const styles = StyleSheet.create({
     width: 1,
     height: 14,
     backgroundColor: '#333333',
-    marginRight: 16,
+    marginRight: 12,
   },
   comingSoonCard: {
     width: 150,

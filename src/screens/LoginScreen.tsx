@@ -6,37 +6,119 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { usersArray } from '../data/mockData';
+import { signInWithEmail, signInWithGoogleToken, formatFirebaseError } from '../services/firebaseService';
+import { useAuth } from '../context/AuthContext';
+
+const GOOGLE_CLIENT_ID = '103725081854-uaif6d4nk0de4i9li8r85qqfs2o3f0vh.apps.googleusercontent.com';
 
 export default function LoginScreen({ navigation }: any) {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { setUser } = useAuth();
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setError('');
 
-    const foundUser = usersArray.find(
-      (u: any) =>
-        (u.email === identifier || u.phone === identifier) &&
-        u.password === password
-    );
-
-    if (foundUser) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Home' }],
-      });
-    } else {
-      setError('Identifiants incorrects');
+    if (!identifier || !password) {
+      setError('Please fill in all fields');
+      return;
     }
+
+    setIsLoading(true);
+    try {
+      const authResponse = await signInWithEmail(identifier, password);
+      handleAuthSuccess(authResponse);
+    } catch (err: any) {
+      setError(formatFirebaseError(err.message));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAuthSuccess = (authResponse: any) => {
+    setUser({
+      localId: authResponse.localId,
+      email: authResponse.email,
+      displayName: authResponse.displayName,
+      idToken: authResponse.idToken,
+      refreshToken: authResponse.refreshToken,
+    });
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }],
+    });
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setGoogleLoading(true);
+    try {
+      // Load Google Identity Services script
+      await loadGoogleScript();
+      const google = (window as any).google;
+      if (!google?.accounts?.id) {
+        throw new Error('GOOGLE_LOAD_FAILED');
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: async (response: any) => {
+            try {
+              const credential = response?.credential;
+              if (!credential) throw new Error('No credential received');
+              const authData = await signInWithGoogleToken(credential);
+              handleAuthSuccess(authData);
+              resolve();
+            } catch (err: any) {
+              setError(formatFirebaseError(err.message));
+              reject(err);
+            }
+          },
+          auto_select: false,
+        });
+
+        google.accounts.id.prompt((notification: any) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            setError('Google sign-in cancelled or blocked. Please try again.');
+            reject(new Error('POPUP_BLOCKED'));
+          }
+        });
+      });
+    } catch (err: any) {
+      setError(formatFirebaseError(err.message));
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  const loadGoogleScript = (): Promise<void> => {
+    return new Promise((resolve) => {
+      if (typeof window === 'undefined') {
+        resolve();
+        return;
+      }
+      if ((window as any).google?.accounts?.id) {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.body.appendChild(script);
+    });
   };
 
   return (
@@ -58,11 +140,12 @@ export default function LoginScreen({ navigation }: any) {
           <View style={styles.form}>
             <TextInput
               style={styles.input}
-              placeholder="Email / Phone Number"
+              placeholder="Email"
               placeholderTextColor="#8A8A8A"
               value={identifier}
               onChangeText={setIdentifier}
               autoCapitalize="none"
+              keyboardType="email-address"
             />
 
             <View style={styles.passwordWrapper}>
@@ -88,8 +171,16 @@ export default function LoginScreen({ navigation }: any) {
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-            <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
-              <Text style={styles.signInButtonText}>Sign In</Text>
+            <TouchableOpacity
+              style={[styles.signInButton, isLoading && styles.buttonDisabled]}
+              onPress={handleSignIn}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#FFFFFF" size="small" />
+              ) : (
+                <Text style={styles.signInButtonText}>Sign In</Text>
+              )}
             </TouchableOpacity>
 
             <View style={styles.dividerRow}>
@@ -102,8 +193,16 @@ export default function LoginScreen({ navigation }: any) {
               <TouchableOpacity style={styles.socialButton}>
                 <Ionicons name="logo-facebook" size={22} color="#1877F2" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-google" size={22} color="#DB4437" />
+              <TouchableOpacity
+                style={[styles.socialButton, googleLoading && styles.buttonDisabled]}
+                onPress={handleGoogleSignIn}
+                disabled={googleLoading}
+              >
+                {googleLoading ? (
+                  <ActivityIndicator color="#DB4437" size="small" />
+                ) : (
+                  <Ionicons name="logo-google" size={22} color="#DB4437" />
+                )}
               </TouchableOpacity>
             </View>
 
@@ -196,6 +295,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 16,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   signInButtonText: {
     color: '#FFFFFF',

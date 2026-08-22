@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,34 +9,127 @@ import {
   ScrollView,
   Modal,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { movieDetail } from '../data/mockData';
+import {
+  getMovieDetails,
+  getImageUrl,
+  getBackdropUrl,
+} from '../services/tmdbService';
 
 export default function MovieDetailScreen({ navigation, route }: any) {
-  const movie = route?.params?.movie
-    ? { ...movieDetail, ...route.params.movie }
-    : movieDetail;
+  const movieId = route?.params?.movieId;
+  const [movie, setMovie] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const [selectedDate, setSelectedDate] = useState(movieDetail.dates[0].id);
-  const [selectedTime, setSelectedTime] = useState(movieDetail.times[0].id);
+  const [selectedDate, setSelectedDate] = useState('d1');
+  const [selectedTime, setSelectedTime] = useState('t1');
   const [showMore, setShowMore] = useState(false);
-  const [location, setLocation] = useState(movieDetail.locations[0]);
-  const [glasses, setGlasses] = useState(movieDetail.glassesOptions[0]);
+  const [location, setLocation] = useState('Gables, Ezulwini');
+  const [glasses, setGlasses] = useState('No');
   const [locationModal, setLocationModal] = useState(false);
   const [glassesModal, setGlassesModal] = useState(false);
   const [favorite, setFavorite] = useState(false);
 
-  const synopsis = movie.synopsis || movieDetail.synopsis;
-  const shortSynopsis =
-    synopsis.length > 140 ? synopsis.slice(0, 140) + '...' : synopsis;
+  useEffect(() => {
+    if (movieId) {
+      loadMovieDetails(movieId);
+    }
+  }, [movieId]);
+
+  const loadMovieDetails = async (id: number) => {
+    setIsLoading(true);
+    setError('');
+    try {
+      const data = await getMovieDetails(id);
+      setMovie(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to load movie details');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const dates = [
+    { id: 'd1', day: 'Today', weekday: 'Friday' },
+    { id: 'd2', day: 'Tomorrow', weekday: 'Saturday' },
+    { id: 'd3', day: 'Sun', weekday: 'Sunday' },
+  ];
+
+  const locations = ['Gables, Ezulwini', 'Manzini City Mall', 'Mbabane Cinema'];
+  const glassesOptions = ['No', 'Yes'];
+  const times = [
+    { id: 't1', time: '11:15', seats: 4 },
+    { id: 't2', time: '14:15', seats: 10 },
+    { id: 't3', time: '17:15', seats: 15 },
+    { id: 't4', time: '20:15', seats: 8 },
+  ];
+
+  const formatRuntime = (minutes: number) => {
+    if (!minutes) return 'TBA';
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+  };
+
+  const formatReleaseDate = (date: string) => {
+    if (!date) return 'TBA';
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+  const getRating = (vote: number) => (vote / 2).toFixed(1);
+
+  const getDirector = () => {
+    const director = movie?.credits?.crew.find((c: any) => c.job === 'Director');
+    return director?.name || 'Unknown';
+  };
+
+  const getCast = () => {
+    return movie?.credits?.cast.slice(0, 5).map((c: any) => c.name).join(', ') || 'Unknown';
+  };
+
+  const synopsis = movie?.overview || 'No synopsis available.';
+  const shortSynopsis = synopsis.length > 140 ? synopsis.slice(0, 140) + '...' : synopsis;
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#E50914" />
+          <Text style={styles.loadingText}>Loading movie details...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (error || !movie) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error || 'Movie not found'}</Text>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Image
-            source={{ uri: movie.banner || movie.poster }}
+            source={{ uri: getBackdropUrl(movie.backdrop_path) }}
             style={styles.banner}
           />
           <TouchableOpacity
@@ -63,19 +156,13 @@ export default function MovieDetailScreen({ navigation, route }: any) {
           <View style={styles.metaRow}>
             <View style={styles.ratingBadge}>
               <Ionicons name="star" size={12} color="#FFD700" />
-              <Text style={styles.ratingText}>{movie.rating}</Text>
+              <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
             </View>
-            <View style={styles.classificationBadge}>
-              <Text style={styles.classificationText}>
-                {movie.classification}
-              </Text>
-            </View>
-            <Text style={styles.metaText}>{movie.year}</Text>
-            <Text style={styles.metaText}>{movie.duration}</Text>
-            <Text style={styles.metaText}>{movie.genre}</Text>
-            {movie.genre2 ? (
-              <Text style={styles.metaText}>{movie.genre2}</Text>
-            ) : null}
+            <Text style={styles.metaText}>{formatReleaseDate(movie.release_date)}</Text>
+            <Text style={styles.metaText}>{formatRuntime(movie.runtime)}</Text>
+            {movie.genres?.slice(0, 2).map((g: any) => (
+              <Text key={g.id} style={styles.metaText}>{g.name}</Text>
+            ))}
           </View>
 
           <Text style={styles.synopsis}>
@@ -90,31 +177,31 @@ export default function MovieDetailScreen({ navigation, route }: any) {
 
           <View style={styles.infoRow}>
             <Image
-              source={{ uri: movie.poster }}
+              source={{ uri: getImageUrl(movie.poster_path) }}
               style={styles.infoPoster}
             />
             <View style={styles.infoText}>
               <Text style={styles.infoLine}>
                 <Text style={styles.infoLabel}>Director: </Text>
-                {movieDetail.director}
+                {getDirector()}
               </Text>
               <Text style={styles.infoLine}>
                 <Text style={styles.infoLabel}>Cast: </Text>
-                {movieDetail.cast}
+                {getCast()}
               </Text>
               <Text style={styles.infoLine}>
                 <Text style={styles.infoLabel}>Release Date: </Text>
-                {movieDetail.releaseDate}
+                {formatReleaseDate(movie.release_date)}
               </Text>
               <Text style={[styles.infoLine, styles.priceLine]}>
-                Ticket Price: {movieDetail.ticketPrice}
+                Ticket Price: E50.00
               </Text>
             </View>
           </View>
 
           <Text style={styles.sectionTitle}>Viewing Schedule</Text>
           <View style={styles.dateRow}>
-            {movieDetail.dates.map((d: any) => (
+            {dates.map((d: any) => (
               <TouchableOpacity
                 key={d.id}
                 style={[
@@ -167,7 +254,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
 
           <Text style={styles.sectionTitle}>Viewing Times</Text>
           <View style={styles.timesRow}>
-            {movieDetail.times.map((t: any) => (
+            {times.map((t: any) => (
               <TouchableOpacity
                 key={t.id}
                 style={[
@@ -216,7 +303,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Select Location</Text>
             <FlatList
-              data={movieDetail.locations}
+              data={locations}
               keyExtractor={(item: any) => item}
               renderItem={({ item }: any) => (
                 <TouchableOpacity
@@ -244,7 +331,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>3D Glasses</Text>
             <FlatList
-              data={movieDetail.glassesOptions}
+              data={glassesOptions}
               keyExtractor={(item: any) => item}
               renderItem={({ item }: any) => (
                 <TouchableOpacity
@@ -269,6 +356,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121212',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#8A8A8A',
+    fontSize: 14,
+    marginTop: 12,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    color: '#E50914',
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 16,
   },
   banner: {
     width: '100%',
@@ -319,17 +428,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 11,
     marginLeft: 3,
-  },
-  classificationBadge: {
-    borderWidth: 1,
-    borderColor: '#8A8A8A',
-    borderRadius: 10,
-    paddingHorizontal: 6,
-    marginRight: 8,
-  },
-  classificationText: {
-    color: '#FFFFFF',
-    fontSize: 11,
   },
   metaText: {
     color: '#CCCCCC',

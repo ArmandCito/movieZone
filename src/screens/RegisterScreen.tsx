@@ -10,9 +10,10 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { usersArray } from '../data/mockData';
+import { signUpWithEmail, formatFirebaseError } from '../services/firebaseService';
 
 export default function RegisterScreen({ navigation }: any) {
   const [name, setName] = useState('');
@@ -23,33 +24,41 @@ export default function RegisterScreen({ navigation }: any) {
   const [showPassword, setShowPassword] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     setError('');
 
     if (!name || !surname || !email || !phone || !password) {
-      setError('Veuillez remplir tous les champs');
+      setError('Please fill in all fields');
       return;
     }
 
     if (!agreed) {
-      setError('Vous devez accepter les termes et conditions');
+      setError('You must accept the terms and conditions');
       return;
     }
 
-    const newUser = { name, surname, email, phone, password };
-    usersArray.push(newUser);
+    setIsLoading(true);
+    try {
+      const displayName = `${name} ${surname}`.trim();
+      await signUpWithEmail(email, password, displayName);
 
-    Alert.alert(
-      'Compte créé',
-      'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.',
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('Login'),
-        },
-      ]
-    );
+      Alert.alert(
+        'Account Created',
+        'Your account has been created successfully. You can now sign in.',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Login'),
+          },
+        ]
+      );
+    } catch (err: any) {
+      setError(formatFirebaseError(err.message));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -139,13 +148,21 @@ export default function RegisterScreen({ navigation }: any) {
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-            <TouchableOpacity style={styles.signInButton} onPress={handleSignUp}>
-              <Text style={styles.signInButtonText}>Sign In</Text>
+            <TouchableOpacity
+              style={[styles.signInButton, isLoading && styles.buttonDisabled]}
+              onPress={handleSignUp}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#FFFFFF" size="small" />
+              ) : (
+                <Text style={styles.signInButtonText}>Sign Up</Text>
+              )}
             </TouchableOpacity>
 
             <View style={styles.dividerRow}>
               <View style={styles.divider} />
-              <Text style={styles.dividerText}>Or sign in with</Text>
+              <Text style={styles.dividerText}>Or sign up with</Text>
               <View style={styles.divider} />
             </View>
 
@@ -163,7 +180,7 @@ export default function RegisterScreen({ navigation }: any) {
               style={styles.registerRow}
             >
               <Text style={styles.registerText}>
-                Not registered yet? <Text style={styles.registerLink}>Sign Up</Text>
+                Already have an account? <Text style={styles.registerLink}>Sign In</Text>
               </Text>
             </TouchableOpacity>
           </View>
@@ -276,6 +293,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 8,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   signInButtonText: {
     color: '#FFFFFF',

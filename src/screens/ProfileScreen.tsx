@@ -11,10 +11,12 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
+import { useUserData } from '../context/UserDataContext';
 import { getUserInfo } from '../services/firebaseService';
 
 export default function ProfileScreen({ navigation }: any) {
   const { user, signOut } = useAuth();
+  const { favoriteCount, bookingCount } = useUserData();
   const [userInfo, setUserInfo] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -75,10 +77,10 @@ export default function ProfileScreen({ navigation }: any) {
     return 'Recently';
   };
 
-  const menuItems: { icon: any; label: string; color: string }[] = [
-    { icon: 'heart-outline', label: 'My Favorites', color: '#E50914' },
-    { icon: 'ticket-outline', label: 'My Bookings', color: '#E50914' },
-    { icon: 'settings-outline', label: 'Settings', color: '#E50914' },
+  const menuItems: { icon: any; label: string; color: string; screen?: string }[] = [
+    { icon: 'heart-outline', label: 'My Favorites', color: '#E50914', screen: 'Favorites' },
+    { icon: 'ticket-outline', label: 'My Bookings', color: '#E50914', screen: 'MyBookings' },
+    { icon: 'settings-outline', label: 'Settings', color: '#E50914', screen: 'Settings' },
     { icon: 'help-circle-outline', label: 'Help & Support', color: '#E50914' },
   ];
 
@@ -131,14 +133,20 @@ export default function ProfileScreen({ navigation }: any) {
 
         {/* Stats */}
         <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>0</Text>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={() => navigation.navigate('Favorites')}
+          >
+            <Text style={styles.statValue}>{favoriteCount}</Text>
             <Text style={styles.statLabel}>Favorites</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>0</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={() => navigation.navigate('MyBookings')}
+          >
+            <Text style={styles.statValue}>{bookingCount}</Text>
             <Text style={styles.statLabel}>Bookings</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.statCard}>
             <Text style={styles.statValue}>0</Text>
             <Text style={styles.statLabel}>Rewards</Text>
@@ -148,8 +156,14 @@ export default function ProfileScreen({ navigation }: any) {
         {/* Menu Items */}
         <View style={styles.menuSection}>
           <Text style={styles.menuTitle}>Account</Text>
-          {menuItems.map((item, index) => (
-            <TouchableOpacity key={item.label} style={styles.menuItem}>
+          {menuItems.map((item) => (
+            <TouchableOpacity
+              key={item.label}
+              style={styles.menuItem}
+              onPress={() => {
+                if (item.screen) navigation.navigate(item.screen);
+              }}
+            >
               <View style={styles.menuIconContainer}>
                 <Ionicons name={item.icon} size={20} color={item.color} />
               </View>
@@ -175,6 +189,12 @@ export default function ProfileScreen({ navigation }: any) {
           onPress={() => navigation.navigate('Home')}
         >
           <Ionicons name="home" size={24} color="#8A8A8A" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.bottomBarItem}
+          onPress={() => navigation.navigate('Watch')}
+        >
+          <Ionicons name="play-circle" size={26} color="#8A8A8A" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.bottomBarItem}

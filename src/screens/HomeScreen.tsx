@@ -19,11 +19,13 @@ import {
   getImageUrl,
   getBackdropUrl,
 } from '../services/tmdbService';
+import { useUserData } from '../context/UserDataContext';
 
 const { width } = Dimensions.get('window');
 const BANNER_WIDTH = width - 40;
 
 export default function HomeScreen({ navigation }: any) {
+  const { continueWatching } = useUserData();
   const [activeBanner, setActiveBanner] = useState(0);
   const [selectedYear, setSelectedYear] = useState('All');
   const [selectedMonth, setSelectedMonth] = useState('All');
@@ -83,7 +85,7 @@ export default function HomeScreen({ navigation }: any) {
         <Text style={styles.logo}>
           Movie<Text style={styles.logoRed}>Zone</Text>
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
           <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
@@ -187,6 +189,49 @@ export default function HomeScreen({ navigation }: any) {
             )}
           />
 
+          {/* Watch Online */}
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Watch Online</Text>
+            <Text style={styles.sectionSubtitle}>Stream now on MovieZone</Text>
+          </View>
+
+          <FlatList
+            data={trending}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item: any) => String(item.id)}
+            contentContainerStyle={styles.horizontalList}
+            renderItem={({ item }: any) => (
+              <TouchableOpacity
+                style={styles.movieCard}
+                activeOpacity={0.9}
+                onPress={() =>
+                  navigation.navigate('Player', {
+                    movieId: item.id,
+                    title: item.title,
+                    poster: item.poster_path,
+                    backdrop: item.backdrop_path,
+                    voteAverage: item.vote_average,
+                  })
+                }
+              >
+                <View>
+                  <Image
+                    source={{ uri: getImageUrl(item.poster_path) }}
+                    style={styles.moviePoster}
+                  />
+                  <View style={styles.streamBadge}>
+                    <Ionicons name="play" size={12} color="#FFFFFF" />
+                  </View>
+                </View>
+                <Text style={styles.movieDuration}>
+                  {formatRuntime(item.release_date)}  {item.original_language.toUpperCase()}
+                </Text>
+                <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+          />
+
           {/* Coming Soon */}
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Coming Soon</Text>
@@ -258,6 +303,12 @@ export default function HomeScreen({ navigation }: any) {
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.bottomBarItem}>
           <Ionicons name="home" size={24} color="#E50914" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.bottomBarItem}
+          onPress={() => navigation.navigate('Watch')}
+        >
+          <Ionicons name="play-circle" size={26} color="#8A8A8A" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.bottomBarItem}
@@ -439,6 +490,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
+  },
+  streamBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: 'rgba(229,9,20,0.9)',
+    borderRadius: 12,
+    padding: 4,
   },
   movieDuration: {
     color: '#8A8A8A',

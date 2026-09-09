@@ -127,6 +127,12 @@ export default function SearchScreen({ navigation }: any) {
         >
           <Ionicons name="home" size={24} color="#8A8A8A" />
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.bottomBarItem}
+          onPress={() => navigation.navigate('Watch')}
+        >
+          <Ionicons name="play-circle" size={26} color="#8A8A8A" />
+        </TouchableOpacity>
         <TouchableOpacity style={styles.bottomBarItem}>
           <Ionicons name="search" size={24} color="#E50914" />
         </TouchableOpacity>

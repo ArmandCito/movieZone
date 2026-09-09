@@ -17,9 +17,11 @@ import {
   getImageUrl,
   getBackdropUrl,
 } from '../services/tmdbService';
+import { useUserData } from '../context/UserDataContext';
 
 export default function MovieDetailScreen({ navigation, route }: any) {
   const movieId = route?.params?.movieId;
+  const { isFavorite, toggleFavorite } = useUserData();
   const [movie, setMovie] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -31,7 +33,6 @@ export default function MovieDetailScreen({ navigation, route }: any) {
   const [glasses, setGlasses] = useState('No');
   const [locationModal, setLocationModal] = useState(false);
   const [glassesModal, setGlassesModal] = useState(false);
-  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     if (movieId) {
@@ -138,16 +139,27 @@ export default function MovieDetailScreen({ navigation, route }: any) {
           >
             <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.favoriteButton}
-            onPress={() => setFavorite(!favorite)}
-          >
-            <Ionicons
-              name={favorite ? 'heart' : 'heart-outline'}
-              size={22}
-              color="#FFFFFF"
-            />
-          </TouchableOpacity>
+          {movie && (
+            <TouchableOpacity
+              style={styles.favoriteButton}
+              onPress={() =>
+                toggleFavorite({
+                  id: movie.id,
+                  title: movie.title,
+                  poster_path: movie.poster_path,
+                  backdrop_path: movie.backdrop_path,
+                  vote_average: movie.vote_average,
+                  release_date: movie.release_date,
+                })
+              }
+            >
+              <Ionicons
+                name={isFavorite(movie.id) ? 'heart' : 'heart-outline'}
+                size={22}
+                color="#FFFFFF"
+              />
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={styles.content}>
@@ -174,6 +186,22 @@ export default function MovieDetailScreen({ navigation, route }: any) {
               {showMore ? 'Show Less' : 'Read More'}
             </Text>
           </Text>
+
+          <TouchableOpacity
+            style={styles.watchOnlineButton}
+            onPress={() =>
+              navigation.navigate('Player', {
+                movieId: movie.id,
+                title: movie.title,
+                poster: movie.poster_path,
+                backdrop: movie.backdrop_path,
+                voteAverage: movie.vote_average,
+              })
+            }
+          >
+            <Ionicons name="play-circle" size={20} color="#FFFFFF" />
+            <Text style={styles.watchOnlineText}>Watch Online</Text>
+          </TouchableOpacity>
 
           <View style={styles.infoRow}>
             <Image
@@ -288,7 +316,23 @@ export default function MovieDetailScreen({ navigation, route }: any) {
       </ScrollView>
 
       <View style={styles.bookBar}>
-        <TouchableOpacity style={styles.bookButton}>
+        <TouchableOpacity
+          style={styles.bookButton}
+          onPress={() =>
+            navigation.navigate('SeatPicker', {
+              movie: {
+                id: movie.id,
+                title: movie.title,
+                poster_path: movie.poster_path,
+              },
+              date: dates.find((d: any) => d.id === selectedDate)?.day || 'Today',
+              weekday: dates.find((d: any) => d.id === selectedDate)?.weekday || '',
+              time: times.find((t: any) => t.id === selectedTime)?.time || '',
+              location,
+              glasses,
+            })
+          }
+        >
           <Text style={styles.bookButtonText}>Book A Seat</Text>
         </TouchableOpacity>
       </View>
@@ -443,6 +487,21 @@ const styles = StyleSheet.create({
   readMore: {
     color: '#E50914',
     fontWeight: '600',
+  },
+  watchOnlineButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E50914',
+    borderRadius: 10,
+    paddingVertical: 12,
+    marginBottom: 20,
+  },
+  watchOnlineText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 15,
+    marginLeft: 8,
   },
   infoRow: {
     flexDirection: 'row',

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,6 +22,42 @@ interface VideoEntry {
   type: string;
   official?: boolean;
 }
+
+// Desktop Chrome user-agent: prevents YouTube from detecting a mobile in-app
+// browser and redirecting the player to the YouTube app / m.youtube.com.
+const ANDROID_DESKTOP_UA =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+
+/**
+ * Builds a complete HTML document that embeds the video iframe directly inside
+ * the WebView, so playback happens in-app instead of redirecting to YouTube.
+ */
+const buildEmbedHtml = (video: VideoEntry, startSeconds: number): string => {
+  const start = Math.max(0, Math.floor(Number(startSeconds) || 0));
+  const isVimeo = String(video.site || '').toLowerCase() === 'vimeo';
+  const src = isVimeo
+    ? `https://player.vimeo.com/video/${video.key}?autoplay=1&transparent=0&title=0&byline=0&portrait=0`
+    : `https://www.youtube-nocookie.com/embed/${video.key}?autoplay=1&playsinline=1&rel=0&modestbranding=1&start=${start}`;
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+  #player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+</style>
+</head>
+<body>
+<iframe id="player"
+  src="${src}"
+  frameborder="0"
+  allow="autoplay; encrypted-media; picture-in-picture; accelerometer; clipboard-write; gyroscope; web-share; fullscreen"
+  allowfullscreen="true"></iframe>
+</body>
+</html>`;
+};
 
 export default function PlayerScreen({ navigation, route }: any) {
   const { movieId, title, resumeAt = 0 } = route?.params || {};
@@ -126,12 +163,8 @@ export default function PlayerScreen({ navigation, route }: any) {
     );
   }
 
-  const youtubeEmbed = activeVideo?.site === 'YouTube'
-    ? {
-        uri: `https://www.youtube.com/embed/${activeVideo.key}?autoplay=1&rel=0&playsinline=1&start=${Math.floor(
-          Math.max(0, Number(resumeAt) || 0)
-        )}`,
-      }
+  const playerSource = activeVideo
+    ? { html: buildEmbedHtml(activeVideo, Math.max(0, Number(resumeAt) || 0)) }
     : null;
 
   return (
@@ -151,17 +184,48 @@ export default function PlayerScreen({ navigation, route }: any) {
 
       {/* Player area */}
       <View style={styles.playerArea}>
-        {startTimeRef.current !== null && activeVideo && youtubeEmbed ? (
+        {startTimeRef.current !== null && activeVideo && playerSource ? (
           <WebView
             key={`${activeVideo.key}-${startTimeRef.current}`}
-            source={youtubeEmbed}
+            source={playerSource}
             style={styles.webview}
-            allowsInlineMediaPlayback
-            mediaPlaybackRequiresUserAction={false}
             javaScriptEnabled
             domStorageEnabled
+            setSupportMultipleWindows={false}
+            allowsInlineMediaPlayback
+            mediaPlaybackRequiresUserAction={false}
+            allowsFullscreenVideo
             originWhitelist={['*']}
+            userAgent={Platform.OS === 'android' ? ANDROID_DESKTOP_UA : undefined}
+            startInLoadingState
+            renderLoading={() => (
+              <View style={styles.webviewLoading}>
+                <ActivityIndicator size="large" color="#E50914" />
+              </View>
+            )}
+            onShouldStartLoadWithRequest={(event) => {
+              // Guard: allow only the in-page document and its embedded iframe.
+              const url = event.url || '';
+              if (event.isTopFrame !== false) {
+                return (
+                  url.startsWith('data:') ||
+                  url.startsWith('about:') ||
+                  url.startsWith('file:') ||
+                  url.startsWith('https://www.youtube-nocookie.com') ||
+                  url.startsWith('https://www.youtube.com') ||
+                  url.startsWith('https://player.vimeo.com') ||
+                  !url.startsWith('intent:')
+                );
+              }
+              return true;
+            }}
+            onOpenWindow={() => {
+              /* Popup/new-window requests are ignored: nothing opens outside the app. */
+            }}
             onError={() => setError('Unable to reach the video player.')}
+            onHttpError={(syntheticEvent) =>
+              setError(`Video player error (HTTP ${syntheticEvent.nativeEvent.statusCode}).`)
+            }
           />
         ) : (
           <View style={styles.videoPlaceholder}>
@@ -298,6 +362,12 @@ const styles = StyleSheet.create({
   },
   webview: {
     flex: 1,
+    backgroundColor: '#000',
+  },
+  webviewLoading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#000',
   },
   videoPlaceholder: {

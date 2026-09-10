@@ -26,6 +26,8 @@ import {
   getBackdropUrl,
 } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
+import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { colors, radii } from '../theme/glass';
 
 const { width } = Dimensions.get('window');
 const BANNER_WIDTH = width - 40;
@@ -143,10 +145,10 @@ export default function WatchScreen({ navigation }: any) {
                   source={{ uri: getImageUrl(item.poster_path) }}
                   style={styles.posterImage}
                 />
-                <View style={styles.resumeOverlay}>
-                  <Ionicons name="play" size={16} color="#FFFFFF" />
+                <GlassCard style={styles.resumeOverlay} radius={radii.sm} intensity={20} padded={false}>
+                  <Ionicons name="play" size={16} color={colors.textPrimary} />
                   <Text style={styles.resumeText}>Resume</Text>
-                </View>
+                </GlassCard>
               </View>
               <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
             </TouchableOpacity>
@@ -160,362 +162,398 @@ export default function WatchScreen({ navigation }: any) {
   const bannerMovies = trending.slice(0, 5);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.logo}>
-          Watch<Text style={styles.logoRed}>Zone</Text>
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
-          <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.searchBar}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search movies to watch online..."
-          placeholderTextColor="#8A8A8A"
-          value={query}
-          onChangeText={setQuery}
-          autoCapitalize="none"
-          returnKeyType="search"
-          onSubmitEditing={handleSearch}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <Ionicons name="search" size={20} color="#FFFFFF" />
-        </TouchableOpacity>
-      </View>
-
-      {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#E50914" />
-          <Text style={styles.loadingText}>Loading content...</Text>
-        </View>
-      ) : error && trending.length === 0 ? (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={loadMovies}>
-            <Text style={styles.retryButtonText}>Retry</Text>
+    <View style={styles.root}>
+      <LiquidBackground />
+      <SafeAreaView style={styles.container}>
+        <GlassCard style={styles.header} radius={radii.lg} intensity={25} padded={false}>
+          <Text style={styles.logo}>
+            Watch<Text style={styles.logoRed}>Zone</Text>
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+            <Ionicons name="notifications-outline" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
-        </View>
-      ) : showSearchResults && isSearching ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#E50914" />
-          <Text style={styles.loadingText}>Searching...</Text>
-        </View>
-      ) : showSearchResults && searchResults.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Ionicons name="film-outline" size={48} color="#555" />
-          <Text style={styles.emptyText}>No movies found for "{query}"</Text>
-          <TouchableOpacity onPress={() => { setShowSearchResults(false); setSearchResults([]); }}>
-            <Text style={styles.clearSearchText}>Clear search</Text>
+        </GlassCard>
+
+        <GlassCard style={styles.searchBar} radius={radii.md} intensity={20} padded={false}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search movies to watch online..."
+            placeholderTextColor={colors.textMuted}
+            value={query}
+            onChangeText={setQuery}
+            autoCapitalize="none"
+            returnKeyType="search"
+            onSubmitEditing={handleSearch}
+          />
+          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+            <Ionicons name="search" size={20} color={colors.textPrimary} />
           </TouchableOpacity>
-        </View>
-      ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {showSearchResults ? (
-            <>
-              <FlatList
-                data={searchResults}
-                scrollEnabled={false}
-                keyExtractor={(item: any) => String(item.id)}
-                contentContainerStyle={styles.searchResultsList}
-                renderItem={({ item }: any) => (
-                  <TouchableOpacity
-                    style={styles.searchResultRow}
-                    onPress={() => goToWatch(item)}
-                  >
-                    <Image
-                      source={{ uri: getImageUrl(item.poster_path, 'w200') }}
-                      style={styles.searchPoster}
-                    />
-                    <View style={styles.searchInfo}>
-                      <Text style={styles.searchTitle} numberOfLines={1}>{item.title}</Text>
-                      <Text style={styles.searchMeta}>
-                        {item.release_date ? new Date(item.release_date).getFullYear() : 'TBA'}
-                      </Text>
-                      <View style={styles.ratingSmall}>
-                        <Ionicons name="star" size={11} color="#FFD700" />
-                        <Text style={styles.ratingSmallText}>{getRating(item.vote_average)}</Text>
-                      </View>
-                      <TouchableOpacity style={styles.playButtonInline} onPress={() => goToWatch(item)}>
-                        <Ionicons name="play" size={12} color="#FFFFFF" />
-                        <Text style={styles.playButtonInlineText}>Play</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              />
-              <View style={{ height: 30 }} />
-            </>
-          ) : (
-            <>
-              {/* Featured banner carousel */}
-              <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                style={styles.bannerScroll}
-              >
-                {bannerMovies.map((movie: any) => (
-                  <TouchableOpacity
-                    key={movie.id}
-                    style={styles.bannerCard}
-                    activeOpacity={0.9}
-                    onPress={() => goToWatch(movie)}
-                  >
-                    <Image
-                      source={{ uri: getBackdropUrl(movie.backdrop_path) }}
-                      style={styles.bannerImage}
-                    />
-                    <View style={styles.bannerOverlay}>
-                      <View style={styles.streamBadge}>
-                        <Text style={styles.streamBadgeText}>STREAM NOW</Text>
-                      </View>
-                      <Text style={styles.bannerTitle}>{movie.title}</Text>
-                      <View style={styles.bannerMeta}>
-                        <Text style={styles.bannerMetaText}>
-                          {movie.original_language.toUpperCase()}
-                        </Text>
-                        <View style={styles.ratingBadge}>
-                          <Ionicons name="star" size={12} color="#FFD700" />
-                          <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
-                        </View>
-                        {movie.release_date && (
-                          <Text style={styles.bannerMetaText}>
-                            {new Date(movie.release_date).getFullYear()}
-                          </Text>
-                        )}
-                      </View>
-                      <Text style={styles.bannerOverview} numberOfLines={2}>
-                        {movie.overview}
-                      </Text>
+        </GlassCard>
+
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.accent} />
+            <Text style={styles.loadingText}>Loading content...</Text>
+          </View>
+        ) : error && trending.length === 0 ? (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+            <GlassButton label="Retry" variant="primary" style={styles.retryButton} onPress={loadMovies} />
+          </View>
+        ) : showSearchResults && isSearching ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.accent} />
+            <Text style={styles.loadingText}>Searching...</Text>
+          </View>
+        ) : showSearchResults && searchResults.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="film-outline" size={48} color={colors.textMuted} />
+            <Text style={styles.emptyText}>No movies found for "{query}"</Text>
+            <TouchableOpacity onPress={() => { setShowSearchResults(false); setSearchResults([]); }}>
+              <Text style={styles.clearSearchText}>Clear search</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {showSearchResults ? (
+              <>
+                <FlatList
+                  data={searchResults}
+                  scrollEnabled={false}
+                  keyExtractor={(item: any) => String(item.id)}
+                  contentContainerStyle={styles.searchResultsList}
+                  renderItem={({ item }: any) => (
+                    <GlassCard style={styles.searchResultRow} radius={radii.lg} intensity={25} padded={false}>
                       <TouchableOpacity
-                        style={styles.playButton}
-                        onPress={() => goToWatch(movie)}
-                      >
-                        <Ionicons name="play" size={18} color="#FFFFFF" />
-                        <Text style={styles.playButtonText}>Watch Now</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-
-              {renderContinueRow()}
-
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Trending Now</Text>
-              </View>
-              <FlatList
-                data={trending}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item: any) => String(item.id)}
-                contentContainerStyle={styles.horizontalList}
-                renderItem={({ item }: any) => (
-                  <TouchableOpacity
-                    style={styles.posterCard}
-                    onPress={() => goToWatch(item)}
-                  >
-                    <View>
-                      <Image
-                        source={{ uri: getImageUrl(item.poster_path) }}
-                        style={styles.posterImage}
-                      />
-                      <TouchableOpacity style={styles.playIcon}>
-                        <Ionicons name="play" size={18} color="#FFFFFF" />
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-
-              {/* Genres */}
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Browse by Genre</Text>
-              </View>
-              <FlatList
-                data={genres}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item: any) => String(item.id)}
-                contentContainerStyle={styles.horizontalList}
-                renderItem={({ item }: any) => (
-                  <TouchableOpacity
-                    style={[
-                      styles.genrePill,
-                      activeGenre === item.id && styles.genrePillActive,
-                    ]}
-                    onPress={() => handleGenreSelect(item.id)}
-                  >
-                    <Text
-                      style={[
-                        styles.genrePillText,
-                        activeGenre === item.id && styles.genrePillTextActive,
-                      ]}
-                    >
-                      {item.name}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              />
-
-              {activeGenre && (
-                isLoadingGenre ? (
-                  <View style={styles.miniLoading}>
-                    <ActivityIndicator color="#E50914" size="small" />
-                  </View>
-                ) : (
-                  <FlatList
-                    data={genreMovies}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    keyExtractor={(item: any) => String(item.id)}
-                    contentContainerStyle={styles.horizontalList}
-                    renderItem={({ item }: any) => (
-                      <TouchableOpacity
-                        style={styles.posterCard}
+                        style={styles.searchResultTouch}
                         onPress={() => goToWatch(item)}
                       >
-                        <View>
-                          <Image source={{ uri: getImageUrl(item.poster_path) }} style={styles.posterImage} />
-                          <TouchableOpacity style={styles.playIcon}>
-                            <Ionicons name="play" size={18} color="#FFFFFF" />
-                          </TouchableOpacity>
+                        <Image
+                          source={{ uri: getImageUrl(item.poster_path, 'w200') }}
+                          style={styles.searchPoster}
+                        />
+                        <View style={styles.searchInfo}>
+                          <Text style={styles.searchTitle} numberOfLines={1}>{item.title}</Text>
+                          <Text style={styles.searchMeta}>
+                            {item.release_date ? new Date(item.release_date).getFullYear() : 'TBA'}
+                          </Text>
+                          <View style={styles.ratingSmall}>
+                            <Ionicons name="star" size={11} color="#FFD700" />
+                            <Text style={styles.ratingSmallText}>{getRating(item.vote_average)}</Text>
+                          </View>
+                          <GlassButton
+                            variant="primary"
+                            style={styles.playButtonInline}
+                            onPress={() => goToWatch(item)}
+                          >
+                            <View style={styles.playButtonInlineContent}>
+                              <Ionicons name="play" size={12} color={colors.textPrimary} />
+                              <Text style={styles.playButtonInlineText}>Play</Text>
+                            </View>
+                          </GlassButton>
                         </View>
-                        <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
                       </TouchableOpacity>
-                    )}
-                  />
-                )
-              )}
-
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Popular on MovieZone</Text>
-              </View>
-              <FlatList
-                data={popular}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item: any) => String(item.id)}
-                contentContainerStyle={styles.horizontalList}
-                renderItem={({ item }: any) => (
-                  <TouchableOpacity style={styles.posterCard} onPress={() => goToWatch(item)}>
-                    <View>
-                      <Image source={{ uri: getImageUrl(item.poster_path) }} style={styles.posterImage} />
-                      <TouchableOpacity style={styles.playIcon}>
-                        <Ionicons name="play" size={18} color="#FFFFFF" />
-                      </TouchableOpacity>
-                    </View>
-                    <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Top Rated</Text>
-              </View>
-              <FlatList
-                data={topRated}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item: any) => String(item.id)}
-                contentContainerStyle={styles.horizontalList}
-                renderItem={({ item }: any) => (
-                  <TouchableOpacity style={styles.posterCard} onPress={() => goToWatch(item)}>
-                    <View>
+                    </GlassCard>
+                  )}
+                />
+                <View style={{ height: 30 }} />
+              </>
+            ) : (
+              <>
+                {/* Featured banner carousel */}
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.bannerScroll}
+                >
+                  {bannerMovies.map((movie: any) => (
+                    <TouchableOpacity
+                      key={movie.id}
+                      style={styles.bannerCard}
+                      activeOpacity={0.9}
+                      onPress={() => goToWatch(movie)}
+                    >
                       <Image
-                        source={{ uri: getImageUrl(item.poster_path) }}
-                        style={styles.topRatedImage}
+                        source={{ uri: getBackdropUrl(movie.backdrop_path) }}
+                        style={styles.bannerImage}
                       />
-                      <View style={styles.rankBadge}>
-                        <Text style={styles.rankText}>{topRated.indexOf(item) + 1}</Text>
+                      <GlassCard style={styles.bannerOverlay} radius={radii.lg} intensity={30}>
+                        <GlassCard
+                          style={styles.streamBadge}
+                          radius={radii.sm}
+                          intensity={20}
+                          tintColor="rgba(229,9,20,0.35)"
+                          padded={false}
+                        >
+                          <Text style={styles.streamBadgeText}>STREAM NOW</Text>
+                        </GlassCard>
+                        <Text style={styles.bannerTitle}>{movie.title}</Text>
+                        <View style={styles.bannerMeta}>
+                          <Text style={styles.bannerMetaText}>
+                            {movie.original_language.toUpperCase()}
+                          </Text>
+                          <GlassCard style={styles.ratingBadge} radius={radii.pill} intensity={20} padded={false}>
+                            <Ionicons name="star" size={12} color="#FFD700" />
+                            <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
+                          </GlassCard>
+                          {movie.release_date && (
+                            <Text style={styles.bannerMetaText}>
+                              {new Date(movie.release_date).getFullYear()}
+                            </Text>
+                          )}
+                        </View>
+                        <Text style={styles.bannerOverview} numberOfLines={2}>
+                          {movie.overview}
+                        </Text>
+                        <GlassButton
+                          variant="primary"
+                          style={styles.playButton}
+                          onPress={() => goToWatch(movie)}
+                        >
+                          <View style={styles.playButtonContent}>
+                            <Ionicons name="play" size={18} color={colors.textPrimary} />
+                            <Text style={styles.playButtonText}>Watch Now</Text>
+                          </View>
+                        </GlassButton>
+                      </GlassCard>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+
+                {renderContinueRow()}
+
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>Trending Now</Text>
+                </View>
+                <FlatList
+                  data={trending}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item: any) => String(item.id)}
+                  contentContainerStyle={styles.horizontalList}
+                  renderItem={({ item }: any) => (
+                    <TouchableOpacity
+                      style={styles.posterCard}
+                      onPress={() => goToWatch(item)}
+                    >
+                      <View>
+                        <Image
+                          source={{ uri: getImageUrl(item.poster_path) }}
+                          style={styles.posterImage}
+                        />
+                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                          <TouchableOpacity style={styles.playIconTouch}>
+                            <Ionicons name="play" size={18} color={colors.textPrimary} />
+                          </TouchableOpacity>
+                        </GlassCard>
                       </View>
-                      <TouchableOpacity style={styles.playIcon}>
-                        <Ionicons name="play" size={18} color="#FFFFFF" />
+                      <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+
+                {/* Genres */}
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>Browse by Genre</Text>
+                </View>
+                <FlatList
+                  data={genres}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item: any) => String(item.id)}
+                  contentContainerStyle={styles.horizontalList}
+                  renderItem={({ item }: any) => (
+                    <GlassCard
+                      style={styles.genrePill}
+                      radius={radii.pill}
+                      intensity={25}
+                      tintColor={activeGenre === item.id ? colors.accentSoft : colors.glassFill}
+                      padded={false}
+                    >
+                      <TouchableOpacity
+                        style={styles.genrePillTouch}
+                        onPress={() => handleGenreSelect(item.id)}
+                      >
+                        <Text
+                          style={[
+                            styles.genrePillText,
+                            activeGenre === item.id && styles.genrePillTextActive,
+                          ]}
+                        >
+                          {item.name}
+                        </Text>
                       </TouchableOpacity>
+                    </GlassCard>
+                  )}
+                />
+
+                {activeGenre && (
+                  isLoadingGenre ? (
+                    <View style={styles.miniLoading}>
+                      <ActivityIndicator color={colors.accent} size="small" />
                     </View>
-                    <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
-                  </TouchableOpacity>
+                  ) : (
+                    <FlatList
+                      data={genreMovies}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      keyExtractor={(item: any) => String(item.id)}
+                      contentContainerStyle={styles.horizontalList}
+                      renderItem={({ item }: any) => (
+                        <TouchableOpacity
+                          style={styles.posterCard}
+                          onPress={() => goToWatch(item)}
+                        >
+                          <View>
+                            <Image source={{ uri: getImageUrl(item.poster_path) }} style={styles.posterImage} />
+                            <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                              <TouchableOpacity style={styles.playIconTouch}>
+                                <Ionicons name="play" size={18} color={colors.textPrimary} />
+                              </TouchableOpacity>
+                            </GlassCard>
+                          </View>
+                          <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
+                        </TouchableOpacity>
+                      )}
+                    />
+                  )
                 )}
-              />
 
-              <View style={{ height: 100 }} />
-            </>
-          )}
-        </ScrollView>
-      )}
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>Popular on MovieZone</Text>
+                </View>
+                <FlatList
+                  data={popular}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item: any) => String(item.id)}
+                  contentContainerStyle={styles.horizontalList}
+                  renderItem={({ item }: any) => (
+                    <TouchableOpacity style={styles.posterCard} onPress={() => goToWatch(item)}>
+                      <View>
+                        <Image source={{ uri: getImageUrl(item.poster_path) }} style={styles.posterImage} />
+                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                          <TouchableOpacity style={styles.playIconTouch}>
+                            <Ionicons name="play" size={18} color={colors.textPrimary} />
+                          </TouchableOpacity>
+                        </GlassCard>
+                      </View>
+                      <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomBar}>
-        <TouchableOpacity
-          style={styles.bottomBarItem}
-          onPress={() => navigation.navigate('Home')}
-        >
-          <Ionicons name="home" size={24} color="#8A8A8A" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.bottomBarItem} onPress={() => navigation.navigate('Watch')}>
-          <Ionicons name="play-circle" size={26} color="#E50914" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.bottomBarItem}
-          onPress={() => navigation.navigate('Search')}
-        >
-          <Ionicons name="search" size={24} color="#8A8A8A" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.bottomBarItem}
-          onPress={() => navigation.navigate('Profile')}
-        >
-          <Ionicons name="person" size={24} color="#8A8A8A" />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>Top Rated</Text>
+                </View>
+                <FlatList
+                  data={topRated}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item: any) => String(item.id)}
+                  contentContainerStyle={styles.horizontalList}
+                  renderItem={({ item }: any) => (
+                    <TouchableOpacity style={styles.posterCard} onPress={() => goToWatch(item)}>
+                      <View>
+                        <Image
+                          source={{ uri: getImageUrl(item.poster_path) }}
+                          style={styles.topRatedImage}
+                        />
+                        <GlassCard
+                          style={styles.rankBadge}
+                          radius={radii.pill}
+                          intensity={20}
+                          tintColor="rgba(229,9,20,0.35)"
+                          padded={false}
+                        >
+                          <Text style={styles.rankText}>{topRated.indexOf(item) + 1}</Text>
+                        </GlassCard>
+                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                          <TouchableOpacity style={styles.playIconTouch}>
+                            <Ionicons name="play" size={18} color={colors.textPrimary} />
+                          </TouchableOpacity>
+                        </GlassCard>
+                      </View>
+                      <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+
+                <View style={{ height: 100 }} />
+              </>
+            )}
+          </ScrollView>
+        )}
+
+        {/* Bottom Navigation */}
+        <GlassCard style={styles.bottomBar} radius={0} intensity={30} padded={false}>
+          <TouchableOpacity
+            style={styles.bottomBarItem}
+            onPress={() => navigation.navigate('Home')}
+          >
+            <Ionicons name="home" size={24} color={colors.textMuted} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.bottomBarItem} onPress={() => navigation.navigate('Watch')}>
+            <Ionicons name="play-circle" size={26} color={colors.accent} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.bottomBarItem}
+            onPress={() => navigation.navigate('Search')}
+          >
+            <Ionicons name="search" size={24} color={colors.textMuted} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.bottomBarItem}
+            onPress={() => navigation.navigate('Profile')}
+          >
+            <Ionicons name="person" size={24} color={colors.textMuted} />
+          </TouchableOpacity>
+        </GlassCard>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.bgBottom,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#121212',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 12,
+    marginHorizontal: 12,
+    marginTop: 8,
   },
   logo: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
   },
   logoRed: {
-    color: '#E50914',
+    color: colors.accent,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1A1A1A',
-    borderRadius: 12,
     paddingHorizontal: 16,
     marginHorizontal: 20,
-    marginTop: 4,
-    borderWidth: 1,
-    borderColor: '#262626',
+    marginTop: 12,
   },
   searchInput: {
     flex: 1,
     paddingVertical: 12,
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 14,
   },
   searchButton: {
-    backgroundColor: '#E50914',
-    borderRadius: 8,
     padding: 10,
     marginLeft: 8,
   },
@@ -525,7 +563,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#8A8A8A',
+    color: colors.textSecondary,
     fontSize: 14,
     marginTop: 12,
   },
@@ -536,20 +574,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   errorText: {
-    color: '#E50914',
+    color: colors.danger,
     fontSize: 14,
     textAlign: 'center',
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: '#E50914',
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-  },
-  retryButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
+    minWidth: 120,
   },
   emptyContainer: {
     flex: 1,
@@ -558,13 +589,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   emptyText: {
-    color: '#8A8A8A',
+    color: colors.textSecondary,
     fontSize: 14,
     marginTop: 12,
     textAlign: 'center',
   },
   clearSearchText: {
-    color: '#E50914',
+    color: colors.accent,
     fontSize: 14,
     fontWeight: '600',
     marginTop: 20,
@@ -577,7 +608,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 16,
     overflow: 'hidden',
-    backgroundColor: '#1A1A1A',
   },
   bannerImage: {
     width: '100%',
@@ -588,19 +618,15 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 16,
-    backgroundColor: 'rgba(18,18,18,0.6)',
   },
   streamBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: '#E50914',
-    borderRadius: 4,
     paddingHorizontal: 8,
     paddingVertical: 3,
     marginBottom: 8,
   },
   streamBadgeText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1,
@@ -608,7 +634,7 @@ const styles = StyleSheet.create({
   bannerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     marginBottom: 6,
   },
   bannerMeta: {
@@ -618,39 +644,35 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   bannerMetaText: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 11,
     marginRight: 4,
   },
   ratingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#262626',
-    borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 2,
   },
   ratingText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 11,
     marginLeft: 3,
   },
   bannerOverview: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 12,
     lineHeight: 18,
     marginBottom: 12,
   },
-  playButton: {
-    backgroundColor: '#E50914',
-    borderRadius: 8,
-    paddingVertical: 10,
+  playButton: {},
+  playButtonContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   playButtonText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '700',
     fontSize: 14,
     marginLeft: 6,
@@ -663,7 +685,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
   },
   horizontalList: {
     paddingHorizontal: 20,
@@ -686,50 +708,43 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    borderRadius: 14,
+  },
+  playIconTouch: {
     padding: 6,
   },
   rankBadge: {
     position: 'absolute',
     bottom: 4,
     left: 4,
-    backgroundColor: '#E50914',
-    borderRadius: 10,
     width: 20,
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   rankText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 11,
     fontWeight: '700',
   },
   movieTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 13,
     fontWeight: '600',
     marginTop: 6,
   },
   genrePill: {
-    borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: 18,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
     marginRight: 10,
   },
-  genrePillActive: {
-    borderColor: '#E50914',
-    backgroundColor: 'rgba(229,9,20,0.2)',
+  genrePillTouch: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   genrePillText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 13,
   },
   genrePillTextActive: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '600',
   },
   miniLoading: {
@@ -741,15 +756,13 @@ const styles = StyleSheet.create({
     bottom: 6,
     left: 6,
     right: 6,
-    backgroundColor: 'rgba(0,0,0,0.55)',
-    borderRadius: 6,
     paddingVertical: 4,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   resumeText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 10,
     fontWeight: '700',
     marginLeft: 2,
@@ -759,11 +772,11 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
   searchResultRow: {
-    flexDirection: 'row',
-    backgroundColor: '#1A1A1A',
-    borderRadius: 12,
-    padding: 12,
     marginBottom: 12,
+  },
+  searchResultTouch: {
+    flexDirection: 'row',
+    padding: 12,
   },
   searchPoster: {
     width: 90,
@@ -775,12 +788,12 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   searchTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 15,
     fontWeight: '600',
   },
   searchMeta: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 12,
     marginTop: 4,
   },
@@ -790,22 +803,21 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   ratingSmallText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 12,
     marginLeft: 4,
   },
   playButtonInline: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E50914',
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
     alignSelf: 'flex-start',
     marginTop: 10,
   },
+  playButtonInlineContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+  },
   playButtonInlineText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 13,
     fontWeight: '700',
     marginLeft: 4,
@@ -818,10 +830,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#1A1A1A',
     paddingVertical: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#262626',
   },
   bottomBarItem: {
     padding: 8,

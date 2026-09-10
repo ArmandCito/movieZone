@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { GlassCard, LiquidBackground } from '../components/glass';
+import { colors, radii } from '../theme/glass';
 
 interface NotificationItem {
   id: string;
@@ -70,96 +72,110 @@ export default function NotificationsScreen({ navigation }: any) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-        </TouchableOpacity>
-        <Text style={styles.logo}>Notifications</Text>
-        {unreadCount > 0 ? (
-          <TouchableOpacity onPress={markAllRead}>
-            <Text style={styles.markAll}>Mark all read</Text>
+    <View style={styles.root}>
+      <LiquidBackground />
+      <SafeAreaView style={styles.container}>
+        <GlassCard style={styles.header} radius={radii.lg} intensity={25} padded={false}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+            <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
-        ) : (
-          <View style={{ width: 32 }} />
-        )}
-      </View>
+          <Text style={styles.logo}>Notifications</Text>
+          {unreadCount > 0 ? (
+            <TouchableOpacity onPress={markAllRead}>
+              <Text style={styles.markAll}>Mark all read</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={{ width: 32 }} />
+          )}
+        </GlassCard>
 
-      <FlatList
-        data={notifications}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
-        ListHeaderComponent={
-          unreadCount > 0 ? (
-            <Text style={styles.sectionLabel}>New • {unreadCount}</Text>
-          ) : null
-        }
-        renderItem={({ item }) => (
-          <TouchableOpacity style={[styles.card, item.read && styles.cardRead]} activeOpacity={0.7}>
-            <View style={[styles.iconWrap, item.read && styles.iconWrapRead]}>
-              <Ionicons name={typeIcon[item.type]} size={20} color={item.read ? '#8A8A8A' : '#E50914'} />
+        <FlatList
+          data={notifications}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          ListHeaderComponent={
+            unreadCount > 0 ? (
+              <Text style={styles.sectionLabel}>New • {unreadCount}</Text>
+            ) : null
+          }
+          renderItem={({ item }) => (
+            <GlassCard
+              style={[styles.card, item.read && styles.cardRead]}
+              radius={radii.lg}
+              intensity={25}
+              tintColor={item.read ? colors.glassFillSubtle : colors.glassFill}
+              padded={false}
+            >
+              <TouchableOpacity style={styles.cardTouch} activeOpacity={0.7}>
+                <View style={[styles.iconWrap, item.read && styles.iconWrapRead]}>
+                  <Ionicons name={typeIcon[item.type]} size={20} color={item.read ? colors.textMuted : colors.accent} />
+                </View>
+                <View style={styles.info}>
+                  <View style={styles.titleRow}>
+                    <Text style={[styles.title, item.read && styles.titleRead]}>{item.title}</Text>
+                    {!item.read && <View style={styles.unreadDot} />}
+                  </View>
+                  <Text style={styles.body} numberOfLines={2}>{item.body}</Text>
+                  <Text style={styles.time}>{item.time}</Text>
+                </View>
+              </TouchableOpacity>
+            </GlassCard>
+          )}
+          ListEmptyComponent={
+            <View style={styles.emptyWrap}>
+              <Ionicons name="notifications-off-outline" size={52} color={colors.textMuted} />
+              <Text style={styles.emptyText}>You're all caught up</Text>
             </View>
-            <View style={styles.info}>
-              <View style={styles.titleRow}>
-                <Text style={[styles.title, item.read && styles.titleRead]}>{item.title}</Text>
-                {!item.read && <View style={styles.unreadDot} />}
-              </View>
-              <Text style={styles.body} numberOfLines={2}>{item.body}</Text>
-              <Text style={styles.time}>{item.time}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        ListEmptyComponent={
-          <View style={styles.emptyWrap}>
-            <Ionicons name="notifications-off-outline" size={52} color="#555555" />
-            <Text style={styles.emptyText}>You're all caught up</Text>
-          </View>
-        }
-      />
-    </SafeAreaView>
+          }
+        />
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#121212' },
+  root: { flex: 1, backgroundColor: colors.bgBottom },
+  container: { flex: 1 },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 12,
     paddingVertical: 10,
+    marginHorizontal: 12,
+    marginTop: 8,
   },
   backBtn: { padding: 6 },
-  logo: { color: '#FFFFFF', fontSize: 20, fontWeight: '700' },
-  markAll: { color: '#E50914', fontSize: 13, fontWeight: '600', marginRight: 8 },
+  logo: { color: colors.textPrimary, fontSize: 20, fontWeight: '700' },
+  markAll: { color: colors.accent, fontSize: 13, fontWeight: '600', marginRight: 8 },
   listContent: { paddingHorizontal: 20, paddingBottom: 40 },
-  sectionLabel: { color: '#8A8A8A', fontSize: 13, fontWeight: '700', marginTop: 6, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 },
+  sectionLabel: { color: colors.textMuted, fontSize: 13, fontWeight: '700', marginTop: 16, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 },
   card: {
-    flexDirection: 'row',
-    backgroundColor: '#1A1A1A',
-    borderRadius: 14,
-    padding: 14,
     marginBottom: 10,
-    alignItems: 'center',
   },
-  cardRead: { backgroundColor: '#161616', opacity: 0.72 },
+  cardTouch: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+  },
+  cardRead: { opacity: 0.72 },
   iconWrap: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: 'rgba(229,9,20,0.15)',
+    backgroundColor: colors.accentSoft,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
-  iconWrapRead: { backgroundColor: '#242424' },
+  iconWrapRead: { backgroundColor: colors.glassFillSubtle },
   info: { flex: 1 },
   titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { color: '#FFFFFF', fontSize: 15, fontWeight: '600', flex: 1 },
-  titleRead: { color: '#999999' },
-  unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#E50914', marginLeft: 8 },
-  body: { color: '#AAAAAA', fontSize: 13, lineHeight: 18, marginTop: 3 },
-  time: { color: '#666666', fontSize: 11, marginTop: 5 },
+  title: { color: colors.textPrimary, fontSize: 15, fontWeight: '600', flex: 1 },
+  titleRead: { color: colors.textMuted },
+  unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.accent, marginLeft: 8 },
+  body: { color: colors.textSecondary, fontSize: 13, lineHeight: 18, marginTop: 3 },
+  time: { color: colors.textMuted, fontSize: 11, marginTop: 5 },
   emptyWrap: { alignItems: 'center', paddingTop: 80 },
-  emptyText: { color: '#8A8A8A', fontSize: 15, fontWeight: '600', marginTop: 12 },
+  emptyText: { color: colors.textMuted, fontSize: 15, fontWeight: '600', marginTop: 12 },
 });

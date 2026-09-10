@@ -18,6 +18,8 @@ import {
   getBackdropUrl,
 } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
+import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { colors, radii } from '../theme/glass';
 
 export default function MovieDetailScreen({ navigation, route }: any) {
   const movieId = route?.params?.movieId;
@@ -100,306 +102,302 @@ export default function MovieDetailScreen({ navigation, route }: any) {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#E50914" />
-          <Text style={styles.loadingText}>Loading movie details...</Text>
-        </View>
-      </SafeAreaView>
+      <View style={styles.root}>
+        <LiquidBackground />
+        <SafeAreaView style={styles.container}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.accent} />
+            <Text style={styles.loadingText}>Loading movie details...</Text>
+          </View>
+        </SafeAreaView>
+      </View>
     );
   }
 
   if (error || !movie) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error || 'Movie not found'}</Text>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      <View style={styles.root}>
+        <LiquidBackground />
+        <SafeAreaView style={styles.container}>
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error || 'Movie not found'}</Text>
+            <GlassCard style={styles.backButton} padded={false} radius={radii.pill} intensity={25}>
+              <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={22} color={colors.textPrimary} />
+              </TouchableOpacity>
+            </GlassCard>
+          </View>
+        </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <Image
-            source={{ uri: getBackdropUrl(movie.backdrop_path) }}
-            style={styles.banner}
-          />
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
-          </TouchableOpacity>
-          {movie && (
-            <TouchableOpacity
-              style={styles.favoriteButton}
+    <View style={styles.root}>
+      <LiquidBackground />
+      <SafeAreaView style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
+            <Image
+              source={{ uri: getBackdropUrl(movie.backdrop_path) }}
+              style={styles.banner}
+            />
+            <GlassCard style={styles.backButton} padded={false} radius={radii.pill} intensity={25}>
+              <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={22} color={colors.textPrimary} />
+              </TouchableOpacity>
+            </GlassCard>
+            {movie && (
+              <GlassCard style={styles.favoriteButton} padded={false} radius={radii.pill} intensity={25}>
+                <TouchableOpacity
+                  style={styles.iconButton}
+                  onPress={() =>
+                    toggleFavorite({
+                      id: movie.id,
+                      title: movie.title,
+                      poster_path: movie.poster_path,
+                      backdrop_path: movie.backdrop_path,
+                      vote_average: movie.vote_average,
+                      release_date: movie.release_date,
+                    })
+                  }
+                >
+                  <Ionicons
+                    name={isFavorite(movie.id) ? 'heart' : 'heart-outline'}
+                    size={22}
+                    color={colors.textPrimary}
+                  />
+                </TouchableOpacity>
+              </GlassCard>
+            )}
+          </View>
+
+          <View style={styles.content}>
+            <Text style={styles.title}>{movie.title}</Text>
+
+            <View style={styles.metaRow}>
+              <GlassCard style={styles.ratingBadge} radius={radii.sm} intensity={20} padded={false}>
+                <Ionicons name="star" size={12} color="#FFD700" />
+                <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
+              </GlassCard>
+              <Text style={styles.metaText}>{formatReleaseDate(movie.release_date)}</Text>
+              <Text style={styles.metaText}>{formatRuntime(movie.runtime)}</Text>
+              {movie.genres?.slice(0, 2).map((g: any) => (
+                <Text key={g.id} style={styles.metaText}>{g.name}</Text>
+              ))}
+            </View>
+
+            <Text style={styles.synopsis}>
+              {showMore ? synopsis : shortSynopsis}{' '}
+              <Text
+                style={styles.readMore}
+                onPress={() => setShowMore(!showMore)}
+              >
+                {showMore ? 'Show Less' : 'Read More'}
+              </Text>
+            </Text>
+
+            <GlassButton
+              variant="primary"
+              style={styles.watchOnlineButton}
               onPress={() =>
-                toggleFavorite({
-                  id: movie.id,
+                navigation.navigate('Player', {
+                  movieId: movie.id,
                   title: movie.title,
-                  poster_path: movie.poster_path,
-                  backdrop_path: movie.backdrop_path,
-                  vote_average: movie.vote_average,
-                  release_date: movie.release_date,
+                  poster: movie.poster_path,
+                  backdrop: movie.backdrop_path,
+                  voteAverage: movie.vote_average,
                 })
               }
             >
-              <Ionicons
-                name={isFavorite(movie.id) ? 'heart' : 'heart-outline'}
-                size={22}
-                color="#FFFFFF"
+              <View style={styles.watchOnlineContent}>
+                <Ionicons name="play-circle" size={20} color={colors.textPrimary} />
+                <Text style={styles.watchOnlineText}>Watch Online</Text>
+              </View>
+            </GlassButton>
+
+            <GlassCard style={styles.infoRow} radius={radii.lg} intensity={30}>
+              <Image
+                source={{ uri: getImageUrl(movie.poster_path) }}
+                style={styles.infoPoster}
               />
-            </TouchableOpacity>
-          )}
-        </View>
+              <View style={styles.infoText}>
+                <Text style={styles.infoLine}>
+                  <Text style={styles.infoLabel}>Director: </Text>
+                  {getDirector()}
+                </Text>
+                <Text style={styles.infoLine}>
+                  <Text style={styles.infoLabel}>Cast: </Text>
+                  {getCast()}
+                </Text>
+                <Text style={styles.infoLine}>
+                  <Text style={styles.infoLabel}>Release Date: </Text>
+                  {formatReleaseDate(movie.release_date)}
+                </Text>
+                <Text style={[styles.infoLine, styles.priceLine]}>
+                  Ticket Price: E50.00
+                </Text>
+              </View>
+            </GlassCard>
 
-        <View style={styles.content}>
-          <Text style={styles.title}>{movie.title}</Text>
-
-          <View style={styles.metaRow}>
-            <View style={styles.ratingBadge}>
-              <Ionicons name="star" size={12} color="#FFD700" />
-              <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
+            <Text style={styles.sectionTitle}>Viewing Schedule</Text>
+            <View style={styles.dateRow}>
+              {dates.map((d: any) => (
+                <GlassCard
+                  key={d.id}
+                  style={[styles.dateCard, selectedDate === d.id && styles.dateCardActive]}
+                  radius={radii.md}
+                  intensity={22}
+                  tintColor={selectedDate === d.id ? colors.accentSoft : colors.glassFill}
+                  padded={false}
+                >
+                  <TouchableOpacity
+                    style={styles.dateCardInner}
+                    onPress={() => setSelectedDate(d.id)}
+                  >
+                    <Text style={styles.dateDay}>{d.day}</Text>
+                    <Text style={styles.dateWeekday}>{d.weekday}</Text>
+                  </TouchableOpacity>
+                </GlassCard>
+              ))}
             </View>
-            <Text style={styles.metaText}>{formatReleaseDate(movie.release_date)}</Text>
-            <Text style={styles.metaText}>{formatRuntime(movie.runtime)}</Text>
-            {movie.genres?.slice(0, 2).map((g: any) => (
-              <Text key={g.id} style={styles.metaText}>{g.name}</Text>
-            ))}
-          </View>
 
-          <Text style={styles.synopsis}>
-            {showMore ? synopsis : shortSynopsis}{' '}
-            <Text
-              style={styles.readMore}
-              onPress={() => setShowMore(!showMore)}
+            <TouchableOpacity
+              style={styles.dropdownRow}
+              onPress={() => setLocationModal(true)}
             >
-              {showMore ? 'Show Less' : 'Read More'}
-            </Text>
-          </Text>
+              <Text style={styles.dropdownLabel}>Location:</Text>
+              <View style={styles.dropdownValueRow}>
+                <Text style={styles.dropdownValue}>{location}</Text>
+                <Ionicons name="chevron-down" size={16} color={colors.textSecondary} />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.watchOnlineButton}
+            <TouchableOpacity
+              style={styles.dropdownRow}
+              onPress={() => setGlassesModal(true)}
+            >
+              <Text style={styles.dropdownLabel}>3d Glasses:</Text>
+              <View style={styles.dropdownValueRow}>
+                <Text style={styles.dropdownValue}>{glasses}</Text>
+                <Ionicons name="chevron-down" size={16} color={colors.textSecondary} />
+              </View>
+            </TouchableOpacity>
+
+            <Text style={styles.sectionTitle}>Viewing Times</Text>
+            <View style={styles.timesRow}>
+              {times.map((t: any) => (
+                <GlassCard
+                  key={t.id}
+                  style={[styles.timeCard, selectedTime === t.id && styles.timeCardActive]}
+                  radius={radii.md}
+                  intensity={22}
+                  tintColor={selectedTime === t.id ? colors.accentSoft : colors.glassFill}
+                  padded={false}
+                >
+                  <TouchableOpacity
+                    style={styles.timeCardInner}
+                    onPress={() => setSelectedTime(t.id)}
+                  >
+                    <Text style={styles.timeText}>{t.time}</Text>
+                    <Text style={styles.seatsText}>{t.seats} seats available</Text>
+                  </TouchableOpacity>
+                </GlassCard>
+              ))}
+            </View>
+
+            <View style={{ height: 100 }} />
+          </View>
+        </ScrollView>
+
+        <GlassCard style={styles.bookBar} radius={radii.lg} intensity={40}>
+          <GlassButton
+            label="Book A Seat"
+            variant="primary"
             onPress={() =>
-              navigation.navigate('Player', {
-                movieId: movie.id,
-                title: movie.title,
-                poster: movie.poster_path,
-                backdrop: movie.backdrop_path,
-                voteAverage: movie.vote_average,
+              navigation.navigate('SeatPicker', {
+                movie: {
+                  id: movie.id,
+                  title: movie.title,
+                  poster_path: movie.poster_path,
+                },
+                date: dates.find((d: any) => d.id === selectedDate)?.day || 'Today',
+                weekday: dates.find((d: any) => d.id === selectedDate)?.weekday || '',
+                time: times.find((t: any) => t.id === selectedTime)?.time || '',
+                location,
+                glasses,
               })
             }
-          >
-            <Ionicons name="play-circle" size={20} color="#FFFFFF" />
-            <Text style={styles.watchOnlineText}>Watch Online</Text>
-          </TouchableOpacity>
+          />
+        </GlassCard>
 
-          <View style={styles.infoRow}>
-            <Image
-              source={{ uri: getImageUrl(movie.poster_path) }}
-              style={styles.infoPoster}
-            />
-            <View style={styles.infoText}>
-              <Text style={styles.infoLine}>
-                <Text style={styles.infoLabel}>Director: </Text>
-                {getDirector()}
-              </Text>
-              <Text style={styles.infoLine}>
-                <Text style={styles.infoLabel}>Cast: </Text>
-                {getCast()}
-              </Text>
-              <Text style={styles.infoLine}>
-                <Text style={styles.infoLabel}>Release Date: </Text>
-                {formatReleaseDate(movie.release_date)}
-              </Text>
-              <Text style={[styles.infoLine, styles.priceLine]}>
-                Ticket Price: E50.00
-              </Text>
-            </View>
-          </View>
-
-          <Text style={styles.sectionTitle}>Viewing Schedule</Text>
-          <View style={styles.dateRow}>
-            {dates.map((d: any) => (
-              <TouchableOpacity
-                key={d.id}
-                style={[
-                  styles.dateCard,
-                  selectedDate === d.id && styles.dateCardActive,
-                ]}
-                onPress={() => setSelectedDate(d.id)}
-              >
-                <Text
-                  style={[
-                    styles.dateDay,
-                    selectedDate === d.id && styles.dateTextActive,
-                  ]}
-                >
-                  {d.day}
-                </Text>
-                <Text
-                  style={[
-                    styles.dateWeekday,
-                    selectedDate === d.id && styles.dateTextActive,
-                  ]}
-                >
-                  {d.weekday}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
+        {/* Location Modal */}
+        <Modal visible={locationModal} transparent animationType="fade">
           <TouchableOpacity
-            style={styles.dropdownRow}
-            onPress={() => setLocationModal(true)}
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setLocationModal(false)}
           >
-            <Text style={styles.dropdownLabel}>Location:</Text>
-            <View style={styles.dropdownValueRow}>
-              <Text style={styles.dropdownValue}>{location}</Text>
-              <Ionicons name="chevron-down" size={16} color="#AAAAAA" />
-            </View>
+            <GlassCard style={styles.modalContent} radius={radii.lg} intensity={45} padded={false}>
+              <Text style={styles.modalTitle}>Select Location</Text>
+              <FlatList
+                data={locations}
+                keyExtractor={(item: any) => item}
+                renderItem={({ item }: any) => (
+                  <TouchableOpacity
+                    style={styles.modalItem}
+                    onPress={() => {
+                      setLocation(item);
+                      setLocationModal(false);
+                    }}
+                  >
+                    <Text style={styles.modalItemText}>{item}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </GlassCard>
           </TouchableOpacity>
+        </Modal>
 
+        {/* Glasses Modal */}
+        <Modal visible={glassesModal} transparent animationType="fade">
           <TouchableOpacity
-            style={styles.dropdownRow}
-            onPress={() => setGlassesModal(true)}
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setGlassesModal(false)}
           >
-            <Text style={styles.dropdownLabel}>3d Glasses:</Text>
-            <View style={styles.dropdownValueRow}>
-              <Text style={styles.dropdownValue}>{glasses}</Text>
-              <Ionicons name="chevron-down" size={16} color="#AAAAAA" />
-            </View>
+            <GlassCard style={styles.modalContent} radius={radii.lg} intensity={45} padded={false}>
+              <Text style={styles.modalTitle}>3D Glasses</Text>
+              <FlatList
+                data={glassesOptions}
+                keyExtractor={(item: any) => item}
+                renderItem={({ item }: any) => (
+                  <TouchableOpacity
+                    style={styles.modalItem}
+                    onPress={() => {
+                      setGlasses(item);
+                      setGlassesModal(false);
+                    }}
+                  >
+                    <Text style={styles.modalItemText}>{item}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </GlassCard>
           </TouchableOpacity>
-
-          <Text style={styles.sectionTitle}>Viewing Times</Text>
-          <View style={styles.timesRow}>
-            {times.map((t: any) => (
-              <TouchableOpacity
-                key={t.id}
-                style={[
-                  styles.timeCard,
-                  selectedTime === t.id && styles.timeCardActive,
-                ]}
-                onPress={() => setSelectedTime(t.id)}
-              >
-                <Text
-                  style={[
-                    styles.timeText,
-                    selectedTime === t.id && styles.dateTextActive,
-                  ]}
-                >
-                  {t.time}
-                </Text>
-                <Text
-                  style={[
-                    styles.seatsText,
-                    selectedTime === t.id && styles.dateTextActive,
-                  ]}
-                >
-                  {t.seats} seats available
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          <View style={{ height: 100 }} />
-        </View>
-      </ScrollView>
-
-      <View style={styles.bookBar}>
-        <TouchableOpacity
-          style={styles.bookButton}
-          onPress={() =>
-            navigation.navigate('SeatPicker', {
-              movie: {
-                id: movie.id,
-                title: movie.title,
-                poster_path: movie.poster_path,
-              },
-              date: dates.find((d: any) => d.id === selectedDate)?.day || 'Today',
-              weekday: dates.find((d: any) => d.id === selectedDate)?.weekday || '',
-              time: times.find((t: any) => t.id === selectedTime)?.time || '',
-              location,
-              glasses,
-            })
-          }
-        >
-          <Text style={styles.bookButtonText}>Book A Seat</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Location Modal */}
-      <Modal visible={locationModal} transparent animationType="fade">
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setLocationModal(false)}
-        >
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Location</Text>
-            <FlatList
-              data={locations}
-              keyExtractor={(item: any) => item}
-              renderItem={({ item }: any) => (
-                <TouchableOpacity
-                  style={styles.modalItem}
-                  onPress={() => {
-                    setLocation(item);
-                    setLocationModal(false);
-                  }}
-                >
-                  <Text style={styles.modalItemText}>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </TouchableOpacity>
-      </Modal>
-
-      {/* Glasses Modal */}
-      <Modal visible={glassesModal} transparent animationType="fade">
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setGlassesModal(false)}
-        >
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>3D Glasses</Text>
-            <FlatList
-              data={glassesOptions}
-              keyExtractor={(item: any) => item}
-              renderItem={({ item }: any) => (
-                <TouchableOpacity
-                  style={styles.modalItem}
-                  onPress={() => {
-                    setGlasses(item);
-                    setGlassesModal(false);
-                  }}
-                >
-                  <Text style={styles.modalItemText}>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    </SafeAreaView>
+        </Modal>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.bgBottom,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#121212',
   },
   loadingContainer: {
     flex: 1,
@@ -407,7 +405,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 14,
     marginTop: 12,
   },
@@ -418,7 +416,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   errorText: {
-    color: '#E50914',
+    color: colors.danger,
     fontSize: 14,
     textAlign: 'center',
     marginBottom: 16,
@@ -431,17 +429,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 16,
     left: 16,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    borderRadius: 20,
-    padding: 8,
   },
   favoriteButton: {
     position: 'absolute',
     top: 16,
     right: 16,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    borderRadius: 20,
+  },
+  iconButton: {
     padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
     paddingHorizontal: 20,
@@ -450,7 +447,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     marginBottom: 10,
   },
   metaRow: {
@@ -462,43 +459,39 @@ const styles = StyleSheet.create({
   ratingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#262626',
-    borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 2,
     marginRight: 8,
   },
   ratingText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 11,
     marginLeft: 3,
   },
   metaText: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 12,
     marginRight: 10,
   },
   synopsis: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 13,
     lineHeight: 20,
     marginBottom: 20,
   },
   readMore: {
-    color: '#E50914',
+    color: colors.accent,
     fontWeight: '600',
   },
   watchOnlineButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E50914',
-    borderRadius: 10,
-    paddingVertical: 12,
     marginBottom: 20,
   },
+  watchOnlineContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   watchOnlineText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '700',
     fontSize: 15,
     marginLeft: 8,
@@ -518,24 +511,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   infoLine: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 12,
     marginBottom: 8,
     lineHeight: 17,
   },
   infoLabel: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '600',
   },
   priceLine: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '700',
     fontSize: 13,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     marginBottom: 14,
     marginTop: 8,
   },
@@ -544,30 +537,26 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   dateCard: {
-    borderWidth: 1,
-    borderColor: '#333333',
-    borderRadius: 12,
+    marginRight: 12,
+  },
+  dateCardInner: {
     paddingVertical: 10,
     paddingHorizontal: 16,
-    marginRight: 12,
     alignItems: 'center',
   },
   dateCardActive: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: colors.accent,
   },
   dateDay: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '700',
     fontSize: 14,
   },
   dateWeekday: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 11,
     marginTop: 2,
-  },
-  dateTextActive: {
-    color: '#121212',
   },
   dropdownRow: {
     flexDirection: 'row',
@@ -575,10 +564,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#262626',
+    borderBottomColor: colors.glassBorderSoft,
   },
   dropdownLabel: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 14,
   },
   dropdownValueRow: {
@@ -586,7 +575,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dropdownValue: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 14,
     marginRight: 6,
     textDecorationLine: 'underline',
@@ -596,49 +585,33 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   timeCard: {
-    borderWidth: 1,
-    borderColor: '#333333',
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
     marginRight: 12,
     marginBottom: 12,
+  },
+  timeCardInner: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
     alignItems: 'center',
   },
   timeCardActive: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: colors.accent,
   },
   timeText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '700',
     fontSize: 14,
   },
   seatsText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 10,
     marginTop: 2,
   },
   bookBar: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#121212',
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#262626',
-  },
-  bookButton: {
-    backgroundColor: '#E50914',
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  bookButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '700',
-    fontSize: 16,
+    bottom: 16,
+    left: 16,
+    right: 16,
   },
   modalOverlay: {
     flex: 1,
@@ -647,14 +620,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 16,
     padding: 20,
     width: '80%',
     maxHeight: '60%',
   },
   modalTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: '700',
     marginBottom: 12,
@@ -662,10 +633,10 @@ const styles = StyleSheet.create({
   modalItem: {
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#262626',
+    borderBottomColor: colors.glassBorderSoft,
   },
   modalItemText: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 14,
   },
 });

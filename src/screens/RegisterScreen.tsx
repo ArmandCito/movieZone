@@ -10,10 +10,11 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { signUpWithEmail, formatFirebaseError } from '../services/firebaseService';
+import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { colors, radii } from '../theme/glass';
 
 export default function RegisterScreen({ navigation }: any) {
   const [name, setName] = useState('');
@@ -62,138 +63,152 @@ export default function RegisterScreen({ navigation }: any) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1 }}
-      >
-        <ScrollView contentContainerStyle={styles.scroll}>
-          <Text style={styles.logo}>
-            Movie<Text style={styles.logoRed}>Zone</Text>
-          </Text>
+    <View style={styles.root}>
+      <LiquidBackground />
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={{ flex: 1 }}
+        >
+          <ScrollView contentContainerStyle={styles.scroll}>
+            <Text style={styles.logo}>
+              Movie<Text style={styles.logoRed}>Zone</Text>
+            </Text>
 
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>
-            Lets get you started and create your account
-          </Text>
+            <Text style={styles.title}>Create Account</Text>
+            <Text style={styles.subtitle}>
+              Lets get you started and create your account
+            </Text>
 
-          <View style={styles.form}>
-            <TextInput
-              style={styles.input}
-              placeholder="Name"
-              placeholderTextColor="#8A8A8A"
-              value={name}
-              onChangeText={setName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Surname"
-              placeholderTextColor="#8A8A8A"
-              value={surname}
-              onChangeText={setSurname}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor="#8A8A8A"
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Phone Number"
-              placeholderTextColor="#8A8A8A"
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-            />
-
-            <View style={styles.passwordWrapper}>
-              <TextInput
-                style={styles.passwordInput}
-                placeholder="Password"
-                placeholderTextColor="#8A8A8A"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIcon}
-              >
-                <Ionicons
-                  name={showPassword ? 'eye-off' : 'eye'}
-                  size={20}
-                  color="#8A8A8A"
+            <GlassCard style={styles.form} radius={radii.xl}>
+              <GlassCard style={styles.inputWrapper} radius={radii.md} intensity={20} padded={false}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Name"
+                  placeholderTextColor={colors.textMuted}
+                  value={name}
+                  onChangeText={setName}
                 />
-              </TouchableOpacity>
-            </View>
+              </GlassCard>
+              <GlassCard style={styles.inputWrapper} radius={radii.md} intensity={20} padded={false}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Surname"
+                  placeholderTextColor={colors.textMuted}
+                  value={surname}
+                  onChangeText={setSurname}
+                />
+              </GlassCard>
+              <GlassCard style={styles.inputWrapper} radius={radii.md} intensity={20} padded={false}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  placeholderTextColor={colors.textMuted}
+                  value={email}
+                  onChangeText={setEmail}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                />
+              </GlassCard>
+              <GlassCard style={styles.inputWrapper} radius={radii.md} intensity={20} padded={false}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Phone Number"
+                  placeholderTextColor={colors.textMuted}
+                  value={phone}
+                  onChangeText={setPhone}
+                  keyboardType="phone-pad"
+                />
+              </GlassCard>
 
-            <TouchableOpacity
-              style={styles.checkboxRow}
-              onPress={() => setAgreed(!agreed)}
-              activeOpacity={0.8}
-            >
-              <View style={[styles.checkbox, agreed && styles.checkboxChecked]}>
-                {agreed && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
+              <GlassCard style={styles.passwordWrapper} radius={radii.md} intensity={20} padded={false}>
+                <TextInput
+                  style={styles.passwordInput}
+                  placeholder="Password"
+                  placeholderTextColor={colors.textMuted}
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}
+                >
+                  <Ionicons
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={20}
+                    color={colors.textMuted}
+                  />
+                </TouchableOpacity>
+              </GlassCard>
+
+              <TouchableOpacity
+                style={styles.checkboxRow}
+                onPress={() => setAgreed(!agreed)}
+                activeOpacity={0.8}
+              >
+                <View style={[styles.checkbox, agreed && styles.checkboxChecked]}>
+                  {agreed && <Ionicons name="checkmark" size={14} color={colors.textPrimary} />}
+                </View>
+                <Text style={styles.checkboxText}>
+                  Yes, I understand and agree to the Moviezone{' '}
+                  <Text style={styles.checkboxLink}>Terms of Service</Text>, including
+                  the <Text style={styles.checkboxLink}>User Agreement and Privacy Policy</Text>.
+                </Text>
+              </TouchableOpacity>
+
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+              <GlassButton
+                label="Sign Up"
+                variant="primary"
+                loading={isLoading}
+                style={styles.signInButton}
+                onPress={handleSignUp}
+              />
+
+              <View style={styles.dividerRow}>
+                <View style={styles.divider} />
+                <Text style={styles.dividerText}>Or sign up with</Text>
+                <View style={styles.divider} />
               </View>
-              <Text style={styles.checkboxText}>
-                Yes, I understand and agree to the Moviezone{' '}
-                <Text style={styles.checkboxLink}>Terms of Service</Text>, including
-                the <Text style={styles.checkboxLink}>User Agreement and Privacy Policy</Text>.
-              </Text>
-            </TouchableOpacity>
 
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+              <View style={styles.socialRow}>
+                <GlassCard style={styles.socialButton} radius={radii.md} intensity={25} padded={false}>
+                  <TouchableOpacity style={styles.socialButtonTouch}>
+                    <Ionicons name="logo-facebook" size={22} color="#1877F2" />
+                  </TouchableOpacity>
+                </GlassCard>
+                <GlassCard style={styles.socialButton} radius={radii.md} intensity={25} padded={false}>
+                  <TouchableOpacity style={styles.socialButtonTouch}>
+                    <Ionicons name="logo-google" size={22} color="#DB4437" />
+                  </TouchableOpacity>
+                </GlassCard>
+              </View>
 
-            <TouchableOpacity
-              style={[styles.signInButton, isLoading && styles.buttonDisabled]}
-              onPress={handleSignUp}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="#FFFFFF" size="small" />
-              ) : (
-                <Text style={styles.signInButtonText}>Sign Up</Text>
-              )}
-            </TouchableOpacity>
-
-            <View style={styles.dividerRow}>
-              <View style={styles.divider} />
-              <Text style={styles.dividerText}>Or sign up with</Text>
-              <View style={styles.divider} />
-            </View>
-
-            <View style={styles.socialRow}>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-facebook" size={22} color="#1877F2" />
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Login')}
+                style={styles.registerRow}
+              >
+                <Text style={styles.registerText}>
+                  Already have an account? <Text style={styles.registerLink}>Sign In</Text>
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-google" size={22} color="#DB4437" />
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Login')}
-              style={styles.registerRow}
-            >
-              <Text style={styles.registerText}>
-                Already have an account? <Text style={styles.registerLink}>Sign In</Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+            </GlassCard>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.bgBottom,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#121212',
   },
   scroll: {
     paddingHorizontal: 24,
@@ -203,41 +218,39 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     textAlign: 'center',
     marginBottom: 24,
   },
   logoRed: {
-    color: '#E50914',
+    color: colors.accent,
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     textAlign: 'center',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 13,
-    color: '#AAAAAA',
+    color: colors.textSecondary,
     textAlign: 'center',
     marginBottom: 24,
   },
   form: {
     width: '100%',
   },
+  inputWrapper: {
+    marginBottom: 14,
+  },
   input: {
-    backgroundColor: '#262626',
-    borderRadius: 12,
     paddingHorizontal: 18,
     paddingVertical: 16,
-    color: '#FFFFFF',
-    marginBottom: 14,
+    color: colors.textPrimary,
     fontSize: 14,
   },
   passwordWrapper: {
-    backgroundColor: '#262626',
-    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 18,
@@ -246,7 +259,7 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
     paddingVertical: 16,
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 14,
   },
   eyeIcon: {
@@ -262,45 +275,33 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#8A8A8A',
+    borderColor: colors.textMuted,
     marginRight: 10,
     marginTop: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkboxChecked: {
-    backgroundColor: '#E50914',
-    borderColor: '#E50914',
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
   },
   checkboxText: {
     flex: 1,
-    color: '#AAAAAA',
+    color: colors.textSecondary,
     fontSize: 12,
     lineHeight: 18,
   },
   checkboxLink: {
-    color: '#E50914',
+    color: colors.accent,
   },
   errorText: {
-    color: '#E50914',
+    color: colors.danger,
     fontSize: 12,
     marginBottom: 12,
     marginLeft: 4,
   },
   signInButton: {
-    backgroundColor: '#E50914',
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
     marginTop: 8,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  signInButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-    fontSize: 16,
   },
   dividerRow: {
     flexDirection: 'row',
@@ -310,10 +311,10 @@ const styles = StyleSheet.create({
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#333333',
+    backgroundColor: colors.glassBorderSoft,
   },
   dividerText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     marginHorizontal: 12,
     fontSize: 12,
   },
@@ -323,24 +324,25 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   socialButton: {
-    backgroundColor: '#FFFFFF',
     width: 48,
     height: 48,
-    borderRadius: 12,
+    marginHorizontal: 8,
+  },
+  socialButtonTouch: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 8,
   },
   registerRow: {
     marginTop: 24,
     alignItems: 'center',
   },
   registerText: {
-    color: '#AAAAAA',
+    color: colors.textSecondary,
     fontSize: 13,
   },
   registerLink: {
-    color: '#E50914',
+    color: colors.accent,
     fontWeight: '600',
   },
 });

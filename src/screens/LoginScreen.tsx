@@ -14,6 +14,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { signInWithEmail, signInWithGoogleToken, formatFirebaseError } from '../services/firebaseService';
 import { useAuth } from '../context/AuthContext';
+import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { colors, radii } from '../theme/glass';
 
 const GOOGLE_CLIENT_ID = '103725081854-uaif6d4nk0de4i9li8r85qqfs2o3f0vh.apps.googleusercontent.com';
 
@@ -122,109 +124,122 @@ export default function LoginScreen({ navigation }: any) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1 }}
-      >
-        <ScrollView contentContainerStyle={styles.scroll}>
-          <Text style={styles.logo}>
-            Movie<Text style={styles.logoRed}>Zone</Text>
-          </Text>
+    <View style={styles.root}>
+      <LiquidBackground />
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={{ flex: 1 }}
+        >
+          <ScrollView contentContainerStyle={styles.scroll}>
+            <Text style={styles.logo}>
+              Movie<Text style={styles.logoRed}>Zone</Text>
+            </Text>
 
-          <Text style={styles.title}>Welcome Back!</Text>
-          <Text style={styles.subtitle}>
-            Please sign in to your account to continue
-          </Text>
+            <Text style={styles.title}>Welcome Back!</Text>
+            <Text style={styles.subtitle}>
+              Please sign in to your account to continue
+            </Text>
 
-          <View style={styles.form}>
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor="#8A8A8A"
-              value={identifier}
-              onChangeText={setIdentifier}
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
-
-            <View style={styles.passwordWrapper}>
-              <TextInput
-                style={styles.passwordInput}
-                placeholder="Password"
-                placeholderTextColor="#8A8A8A"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIcon}
-              >
-                <Ionicons
-                  name={showPassword ? 'eye-off' : 'eye'}
-                  size={20}
-                  color="#8A8A8A"
+            <GlassCard style={styles.form} radius={radii.xl}>
+              <GlassCard style={styles.inputWrapper} radius={radii.md} intensity={20} padded={false}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  placeholderTextColor={colors.textMuted}
+                  value={identifier}
+                  onChangeText={setIdentifier}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
                 />
-              </TouchableOpacity>
-            </View>
+              </GlassCard>
 
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+              <GlassCard style={styles.passwordWrapper} radius={radii.md} intensity={20} padded={false}>
+                <TextInput
+                  style={styles.passwordInput}
+                  placeholder="Password"
+                  placeholderTextColor={colors.textMuted}
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}
+                >
+                  <Ionicons
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={20}
+                    color={colors.textMuted}
+                  />
+                </TouchableOpacity>
+              </GlassCard>
 
-            <TouchableOpacity
-              style={[styles.signInButton, isLoading && styles.buttonDisabled]}
-              onPress={handleSignIn}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="#FFFFFF" size="small" />
-              ) : (
-                <Text style={styles.signInButtonText}>Sign In</Text>
-              )}
-            </TouchableOpacity>
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-            <View style={styles.dividerRow}>
-              <View style={styles.divider} />
-              <Text style={styles.dividerText}>Or sign in with</Text>
-              <View style={styles.divider} />
-            </View>
+              <GlassButton
+                label="Sign In"
+                variant="primary"
+                loading={isLoading}
+                style={styles.signInButton}
+                onPress={handleSignIn}
+              />
 
-            <View style={styles.socialRow}>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-facebook" size={22} color="#1877F2" />
-              </TouchableOpacity>
+              <View style={styles.dividerRow}>
+                <View style={styles.divider} />
+                <Text style={styles.dividerText}>Or sign in with</Text>
+                <View style={styles.divider} />
+              </View>
+
+              <View style={styles.socialRow}>
+                <GlassCard style={styles.socialButton} radius={radii.md} intensity={25} padded={false}>
+                  <TouchableOpacity style={styles.socialButtonTouch}>
+                    <Ionicons name="logo-facebook" size={22} color="#1877F2" />
+                  </TouchableOpacity>
+                </GlassCard>
+                <GlassCard
+                  style={[styles.socialButton, googleLoading && styles.buttonDisabled]}
+                  radius={radii.md}
+                  intensity={25}
+                  padded={false}
+                >
+                  <TouchableOpacity
+                    style={styles.socialButtonTouch}
+                    onPress={handleGoogleSignIn}
+                    disabled={googleLoading}
+                  >
+                    {googleLoading ? (
+                      <ActivityIndicator color="#DB4437" size="small" />
+                    ) : (
+                      <Ionicons name="logo-google" size={22} color="#DB4437" />
+                    )}
+                  </TouchableOpacity>
+                </GlassCard>
+              </View>
+
               <TouchableOpacity
-                style={[styles.socialButton, googleLoading && styles.buttonDisabled]}
-                onPress={handleGoogleSignIn}
-                disabled={googleLoading}
+                onPress={() => navigation.navigate('Register')}
+                style={styles.registerRow}
               >
-                {googleLoading ? (
-                  <ActivityIndicator color="#DB4437" size="small" />
-                ) : (
-                  <Ionicons name="logo-google" size={22} color="#DB4437" />
-                )}
+                <Text style={styles.registerText}>
+                  Not registered yet? <Text style={styles.registerLink}>Sign Up</Text>
+                </Text>
               </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Register')}
-              style={styles.registerRow}
-            >
-              <Text style={styles.registerText}>
-                Not registered yet? <Text style={styles.registerLink}>Sign Up</Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+            </GlassCard>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.bgBottom,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#121212',
   },
   scroll: {
     paddingHorizontal: 24,
@@ -234,41 +249,39 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     textAlign: 'center',
     marginBottom: 40,
   },
   logoRed: {
-    color: '#E50914',
+    color: colors.accent,
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     textAlign: 'center',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 13,
-    color: '#AAAAAA',
+    color: colors.textSecondary,
     textAlign: 'center',
     marginBottom: 32,
   },
   form: {
     width: '100%',
   },
+  inputWrapper: {
+    marginBottom: 16,
+  },
   input: {
-    backgroundColor: '#262626',
-    borderRadius: 12,
     paddingHorizontal: 18,
     paddingVertical: 16,
-    color: '#FFFFFF',
-    marginBottom: 16,
+    color: colors.textPrimary,
     fontSize: 14,
   },
   passwordWrapper: {
-    backgroundColor: '#262626',
-    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 18,
@@ -277,32 +290,23 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
     paddingVertical: 16,
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 14,
   },
   eyeIcon: {
     padding: 4,
   },
   errorText: {
-    color: '#E50914',
+    color: colors.danger,
     fontSize: 12,
     marginBottom: 12,
     marginLeft: 4,
   },
   signInButton: {
-    backgroundColor: '#E50914',
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
     marginTop: 16,
   },
   buttonDisabled: {
     opacity: 0.6,
-  },
-  signInButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-    fontSize: 16,
   },
   dividerRow: {
     flexDirection: 'row',
@@ -312,10 +316,10 @@ const styles = StyleSheet.create({
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#333333',
+    backgroundColor: colors.glassBorderSoft,
   },
   dividerText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     marginHorizontal: 12,
     fontSize: 12,
   },
@@ -325,24 +329,25 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   socialButton: {
-    backgroundColor: '#FFFFFF',
     width: 48,
     height: 48,
-    borderRadius: 12,
+    marginHorizontal: 8,
+  },
+  socialButtonTouch: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 8,
   },
   registerRow: {
     marginTop: 24,
     alignItems: 'center',
   },
   registerText: {
-    color: '#AAAAAA',
+    color: colors.textSecondary,
     fontSize: 13,
   },
   registerLink: {
-    color: '#E50914',
+    color: colors.accent,
     fontWeight: '600',
   },
 });

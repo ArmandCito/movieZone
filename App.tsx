@@ -37,7 +37,7 @@ export default function App() {
               initialRouteName="Intro"
               screenOptions={{
                 headerShown: false,
-                contentStyle: { backgroundColor: '#121212' },
+                contentStyle: { backgroundColor: '#08070c' },
               }}
             >
               <Stack.Screen name="Intro" component={IntroScreen} />

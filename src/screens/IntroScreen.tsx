@@ -3,11 +3,13 @@ import {
   View,
   Text,
   ImageBackground,
-  TouchableOpacity,
   StyleSheet,
   StatusBar,
 } from 'react-native';
+import { BlurView } from 'expo-blur';
 import {useFonts, Afacad_400Regular, Afacad_700Bold} from '@expo-google-fonts/afacad'
+import { GlassCard, GlassButton } from '../components/glass';
+import { colors, radii } from '../theme/glass';
 
 
 export default function IntroScreen({ navigation }: any) {
@@ -18,7 +20,7 @@ export default function IntroScreen({ navigation }: any) {
   });
 
   if (!fontsLoaded) {
-    return null; 
+    return null;
   }
 
   return (
@@ -30,8 +32,9 @@ export default function IntroScreen({ navigation }: any) {
       resizeMode="cover"
     >
       <StatusBar barStyle="light-content" />
+      <BlurView intensity={15} tint="dark" style={[StyleSheet.absoluteFill, styles.dim]} />
       <View style={styles.overlay}>
-        <View style={styles.content}>
+        <GlassCard style={styles.content} radius={radii.xl} intensity={45}>
           <Text style={styles.title}>
             Movie
             <Text style={styles.titleRed}>Zone</Text>
@@ -39,13 +42,13 @@ export default function IntroScreen({ navigation }: any) {
           <Text style={styles.subtitle}>
             Your number one movie destination...
           </Text>
-          <TouchableOpacity
+          <GlassButton
+            label="Watch Movies"
+            variant="primary"
             style={styles.button}
             onPress={() => navigation.navigate('Login')}
-          >
-            <Text style={styles.buttonText}>Watch Movies</Text>
-          </TouchableOpacity>
-        </View>
+          />
+        </GlassCard>
       </View>
     </ImageBackground>
   );
@@ -57,47 +60,39 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  dim: {
+    backgroundColor: 'rgba(8, 7, 12, 0.35)',
+  },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(12, 12, 12, 0.85)',
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   content: {
     width: '85%',
     alignItems: 'center',
+    paddingVertical: 32,
   },
   title: {
     fontSize: 48,
     fontFamily: 'Afacad_400Regular',
-    // fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     marginBottom: 12,
     fontStyle: 'normal',
   },
   titleRed: {
-    color: '#E50914',
+    color: colors.accent,
     fontFamily: 'Afacad_700Bold',
-    // fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 16,
     fontFamily: 'Afacad_400Regular',
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     textAlign: 'center',
     marginBottom: 32,
   },
   button: {
-    backgroundColor: '#E50914',
-    paddingVertical: 14,
+    width: '100%',
     paddingHorizontal: 48,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-    fontSize: 16,
-    fontFamily: 'Afacad_400Regular',
   },
 });

@@ -14,6 +14,8 @@ import { WebView } from 'react-native-webview';
 import { getMovieVideos } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
 import { useAuth } from '../context/AuthContext';
+import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { colors, radii } from '../theme/glass';
 
 interface VideoEntry {
   key: string;
@@ -154,12 +156,15 @@ export default function PlayerScreen({ navigation, route }: any) {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.center}>
-          <ActivityIndicator size="large" color="#E50914" />
-          <Text style={styles.loadingText}>Finding sources for this title...</Text>
-        </View>
-      </SafeAreaView>
+      <View style={styles.root}>
+        <LiquidBackground />
+        <SafeAreaView style={styles.container}>
+          <View style={styles.center}>
+            <ActivityIndicator size="large" color={colors.accent} />
+            <Text style={styles.loadingText}>Finding sources for this title...</Text>
+          </View>
+        </SafeAreaView>
+      </View>
     );
   }
 
@@ -168,161 +173,174 @@ export default function PlayerScreen({ navigation, route }: any) {
     : null;
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      {/* Top bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity onPress={back} style={styles.topBtn}>
-          <Ionicons name="chevron-back" size={26} color="#FFFFFF" />
-        </TouchableOpacity>
-        <Text style={styles.topTitle} numberOfLines={1}>
-          Now Watching
-        </Text>
-        <TouchableOpacity style={styles.topBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="tv-outline" size={22} color="#FFFFFF" />
-        </TouchableOpacity>
-      </View>
+    <View style={styles.root}>
+      <LiquidBackground />
+      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        {/* Top bar */}
+        <GlassCard style={styles.topBar} radius={radii.md} intensity={25} padded={false}>
+          <TouchableOpacity onPress={back} style={styles.topBtn}>
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
+          </TouchableOpacity>
+          <Text style={styles.topTitle} numberOfLines={1}>
+            Now Watching
+          </Text>
+          <TouchableOpacity style={styles.topBtn} onPress={() => navigation.goBack()}>
+            <Ionicons name="tv-outline" size={22} color={colors.textPrimary} />
+          </TouchableOpacity>
+        </GlassCard>
 
-      {/* Player area */}
-      <View style={styles.playerArea}>
-        {startTimeRef.current !== null && activeVideo && playerSource ? (
-          <WebView
-            key={`${activeVideo.key}-${startTimeRef.current}`}
-            source={playerSource}
-            style={styles.webview}
-            javaScriptEnabled
-            domStorageEnabled
-            setSupportMultipleWindows={false}
-            allowsInlineMediaPlayback
-            mediaPlaybackRequiresUserAction={false}
-            allowsFullscreenVideo
-            originWhitelist={['*']}
-            userAgent={Platform.OS === 'android' ? ANDROID_DESKTOP_UA : undefined}
-            startInLoadingState
-            renderLoading={() => (
-              <View style={styles.webviewLoading}>
-                <ActivityIndicator size="large" color="#E50914" />
-              </View>
-            )}
-            onShouldStartLoadWithRequest={(event) => {
-              // Guard: allow only the in-page document and its embedded iframe.
-              const url = event.url || '';
-              if (event.isTopFrame !== false) {
-                return (
-                  url.startsWith('data:') ||
-                  url.startsWith('about:') ||
-                  url.startsWith('file:') ||
-                  url.startsWith('https://www.youtube-nocookie.com') ||
-                  url.startsWith('https://www.youtube.com') ||
-                  url.startsWith('https://player.vimeo.com') ||
-                  !url.startsWith('intent:')
-                );
+        {/* Player area */}
+        <View style={styles.playerArea}>
+          {startTimeRef.current !== null && activeVideo && playerSource ? (
+            <WebView
+              key={`${activeVideo.key}-${startTimeRef.current}`}
+              source={playerSource}
+              style={styles.webview}
+              javaScriptEnabled
+              domStorageEnabled
+              setSupportMultipleWindows={false}
+              allowsInlineMediaPlayback
+              mediaPlaybackRequiresUserAction={false}
+              allowsFullscreenVideo
+              originWhitelist={['*']}
+              userAgent={Platform.OS === 'android' ? ANDROID_DESKTOP_UA : undefined}
+              startInLoadingState
+              renderLoading={() => (
+                <View style={styles.webviewLoading}>
+                  <ActivityIndicator size="large" color={colors.accent} />
+                </View>
+              )}
+              onShouldStartLoadWithRequest={(event) => {
+                // Guard: allow only the in-page document and its embedded iframe.
+                const url = event.url || '';
+                if (event.isTopFrame !== false) {
+                  return (
+                    url.startsWith('data:') ||
+                    url.startsWith('about:') ||
+                    url.startsWith('file:') ||
+                    url.startsWith('https://www.youtube-nocookie.com') ||
+                    url.startsWith('https://www.youtube.com') ||
+                    url.startsWith('https://player.vimeo.com') ||
+                    !url.startsWith('intent:')
+                  );
+                }
+                return true;
+              }}
+              onOpenWindow={() => {
+                /* Popup/new-window requests are ignored: nothing opens outside the app. */
+              }}
+              onError={() => setError('Unable to reach the video player.')}
+              onHttpError={(syntheticEvent) =>
+                setError(`Video player error (HTTP ${syntheticEvent.nativeEvent.statusCode}).`)
               }
-              return true;
-            }}
-            onOpenWindow={() => {
-              /* Popup/new-window requests are ignored: nothing opens outside the app. */
-            }}
-            onError={() => setError('Unable to reach the video player.')}
-            onHttpError={(syntheticEvent) =>
-              setError(`Video player error (HTTP ${syntheticEvent.nativeEvent.statusCode}).`)
-            }
-          />
-        ) : (
-          <View style={styles.videoPlaceholder}>
-            {activeVideo ? (
-              <>
-                <Ionicons name="play-circle-outline" size={64} color="#8A8A8A" />
-                <Text style={styles.videoPlaceholderText}>
-                  Tap play to watch "{activeVideo.name || 'Trailer'}"
-                </Text>
-                <TouchableOpacity style={styles.playBig} onPress={handlePlay}>
-                  <Ionicons name="play" size={22} color="#FFFFFF" />
-                  <Text style={styles.playText}>
-                    {Number(resumeAt) > 5 ? 'Resume' : 'Watch'}
+            />
+          ) : (
+            <GlassCard style={styles.videoPlaceholder} radius={0} intensity={20} tintColor={colors.glassFillSubtle} padded={false}>
+              {activeVideo ? (
+                <>
+                  <Ionicons name="play-circle-outline" size={64} color={colors.textMuted} />
+                  <Text style={styles.videoPlaceholderText}>
+                    Tap play to watch "{activeVideo.name || 'Trailer'}"
                   </Text>
-                </TouchableOpacity>
-                {!user?.idToken && (
-                  <Text style={styles.plugSignedInText}>Sign in to track your progress</Text>
-                )}
-              </>
-            ) : (
-              <>
-                <Ionicons name="film-outline" size={48} color="#555" />
-                <Text style={styles.noSourceTitle}>No watchable source yet</Text>
-                <Text style={styles.noSourceBody}>
-                  The studio has not made this title available for online streaming on
-                  MovieZone yet. Check back soon.
-                </Text>
-              </>
-            )}
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-          </View>
-        )}
-      </View>
-
-      {/* Source selector */}
-      {activeVideo && (
-        <View style={styles.panel}>
-          <Text style={styles.panelLabel}>Available sources</Text>
-          <Text style={styles.qualityLabel}>
-            {activeVideo.type === 'Trailer'
-              ? 'Watch official trailer'
-              : activeVideo.type === 'Teaser'
-              ? 'Watch official teaser'
-              : activeVideo.type === 'Clip'
-              ? 'Official clip'
-              : 'Behind the scenes'}
-          </Text>
+                  <GlassButton variant="primary" onPress={handlePlay} style={styles.playBig}>
+                    <View style={styles.playBigInner}>
+                      <Ionicons name="play" size={22} color={colors.textPrimary} />
+                      <Text style={styles.playText}>
+                        {Number(resumeAt) > 5 ? 'Resume' : 'Watch'}
+                      </Text>
+                    </View>
+                  </GlassButton>
+                  {!user?.idToken && (
+                    <Text style={styles.plugSignedInText}>Sign in to track your progress</Text>
+                  )}
+                </>
+              ) : (
+                <>
+                  <Ionicons name="film-outline" size={48} color={colors.textMuted} />
+                  <Text style={styles.noSourceTitle}>No watchable source yet</Text>
+                  <Text style={styles.noSourceBody}>
+                    The studio has not made this title available for online streaming on
+                    MovieZone yet. Check back soon.
+                  </Text>
+                </>
+              )}
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            </GlassCard>
+          )}
         </View>
-      )}
 
-      <View style={styles.scroller}>
-        {videos.map((v, i) => {
-          const isActive = i === activeIndex;
-          return (
-            <TouchableOpacity
-              key={`${v.key}-${i}`}
-              style={[styles.sourceCard, isActive && styles.sourceCardActive]}
-              onPress={() => handleSelectVideo(i)}
-            >
-              <Ionicons
-                name={isActive ? 'radio-button-on' : 'radio-button-off'}
-                size={18}
-                color={isActive ? '#E50914' : '#8A8A8A'}
-              />
-              <View style={styles.sourceInfo}>
-                <Text style={styles.sourceTitle} numberOfLines={1}>
-                  {v.name || v.type || 'Trailer'}
-                </Text>
-                <Text style={styles.sourceMeta}>
-                  {v.type} • {v.site}
-                  {v.official ? ' • Official' : ''}
-                </Text>
-              </View>
-              <Ionicons name="play-circle" size={20} color={isActive ? '#E50914' : '#555'} />
-            </TouchableOpacity>
-          );
-        })}
-        {videos.length === 0 && (
-          <Text style={styles.emptyVideos}>
-            No trailers or clips have been published for this title.
-          </Text>
+        {/* Source selector */}
+        {activeVideo && (
+          <GlassCard style={styles.panel} radius={radii.md} intensity={25}>
+            <Text style={styles.panelLabel}>Available sources</Text>
+            <Text style={styles.qualityLabel}>
+              {activeVideo.type === 'Trailer'
+                ? 'Watch official trailer'
+                : activeVideo.type === 'Teaser'
+                ? 'Watch official teaser'
+                : activeVideo.type === 'Clip'
+                ? 'Official clip'
+                : 'Behind the scenes'}
+            </Text>
+          </GlassCard>
         )}
-        {error && videos.length > 0 ? (
-          <Text style={styles.errorText}>{error}</Text>
-        ) : null}
-      </View>
 
-      {/* Decorative bottom spacing */}
-      <View style={styles.bottomSpacer} />
-    </SafeAreaView>
+        <View style={styles.scroller}>
+          {videos.map((v, i) => {
+            const isActive = i === activeIndex;
+            return (
+              <GlassCard
+                key={`${v.key}-${i}`}
+                style={styles.sourceCard}
+                radius={radii.md}
+                intensity={25}
+                tintColor={isActive ? colors.accentSoft : colors.glassFill}
+                padded={false}
+              >
+                <TouchableOpacity style={styles.sourceCardTouch} onPress={() => handleSelectVideo(i)}>
+                  <Ionicons
+                    name={isActive ? 'radio-button-on' : 'radio-button-off'}
+                    size={18}
+                    color={isActive ? colors.accent : colors.textMuted}
+                  />
+                  <View style={styles.sourceInfo}>
+                    <Text style={styles.sourceTitle} numberOfLines={1}>
+                      {v.name || v.type || 'Trailer'}
+                    </Text>
+                    <Text style={styles.sourceMeta}>
+                      {v.type} • {v.site}
+                      {v.official ? ' • Official' : ''}
+                    </Text>
+                  </View>
+                  <Ionicons name="play-circle" size={20} color={isActive ? colors.accent : colors.textMuted} />
+                </TouchableOpacity>
+              </GlassCard>
+            );
+          })}
+          {videos.length === 0 && (
+            <Text style={styles.emptyVideos}>
+              No trailers or clips have been published for this title.
+            </Text>
+          )}
+          {error && videos.length > 0 ? (
+            <Text style={styles.errorText}>{error}</Text>
+          ) : null}
+        </View>
+
+        {/* Decorative bottom spacing */}
+        <View style={styles.bottomSpacer} />
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.bgBottom,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#121212',
   },
   center: {
     flex: 1,
@@ -330,7 +348,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 14,
     marginTop: 12,
     textAlign: 'center',
@@ -340,14 +358,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
     paddingVertical: 6,
+    marginHorizontal: 12,
+    marginTop: 8,
   },
   topBtn: {
     padding: 8,
   },
   topTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 15,
     fontWeight: '700',
     flex: 1,
@@ -358,7 +378,7 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 16 / 9,
     backgroundColor: '#000000',
-    marginTop: 4,
+    marginTop: 12,
   },
   webview: {
     flex: 1,
@@ -374,39 +394,38 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1A1A1A',
     paddingHorizontal: 30,
   },
   videoPlaceholderText: {
-    color: '#CCCCCC',
+    color: colors.textSecondary,
     fontSize: 13,
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 18,
   },
   playBig: {
+    alignSelf: 'center',
+  },
+  playBigInner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E50914',
-    borderRadius: 24,
     paddingHorizontal: 28,
-    paddingVertical: 10,
   },
   playText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontWeight: '700',
     fontSize: 15,
     marginLeft: 6,
   },
   noSourceTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 17,
     fontWeight: '700',
     marginTop: 14,
     textAlign: 'center',
   },
   noSourceBody: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 13,
     lineHeight: 19,
     textAlign: 'center',
@@ -414,49 +433,43 @@ const styles = StyleSheet.create({
     maxWidth: 300,
   },
   plugSignedInText: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 12,
     marginTop: 12,
   },
   errorText: {
-    color: '#E50914',
+    color: colors.danger,
     fontSize: 13,
     textAlign: 'center',
     marginTop: 12,
     paddingHorizontal: 20,
   },
   panel: {
-    paddingHorizontal: 18,
-    paddingTop: 14,
+    marginHorizontal: 18,
+    marginTop: 14,
   },
   panelLabel: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: '800',
   },
   qualityLabel: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 12,
     marginTop: 3,
-    marginBottom: 8,
   },
   scroller: {
     paddingHorizontal: 18,
+    marginTop: 12,
     flexShrink: 0,
   },
   sourceCard: {
+    marginBottom: 8,
+  },
+  sourceCardTouch: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1A1A1A',
-    borderRadius: 10,
     padding: 12,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: 'transparent',
-  },
-  sourceCardActive: {
-    borderColor: '#E50914',
-    backgroundColor: '#211515',
   },
   sourceInfo: {
     flex: 1,
@@ -464,17 +477,17 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   sourceTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 14,
     fontWeight: '600',
   },
   sourceMeta: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 11,
     marginTop: 2,
   },
   emptyVideos: {
-    color: '#8A8A8A',
+    color: colors.textMuted,
     fontSize: 13,
     textAlign: 'center',
     marginTop: 16,

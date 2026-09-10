@@ -30,7 +30,7 @@ export default function BookingConfirmationScreen({ navigation, route }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <View style={styles.checkRow}>
@@ -43,7 +43,7 @@ export default function BookingConfirmationScreen({ navigation, route }: any) {
             A confirmation has been sent to your account.
           </Text>
 
-          <GlassCard style={styles.ticketCard} radius={radii.xl} intensity={45}>
+          <GlassCard style={styles.ticketCard} radius={radii.xl} intensity={72}>
             <View style={styles.ticketHeader}>
               <View style={styles.posterWrap}>
                 {booking.poster_path ? (
@@ -119,6 +119,7 @@ export default function BookingConfirmationScreen({ navigation, route }: any) {
           />
         </ScrollView>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

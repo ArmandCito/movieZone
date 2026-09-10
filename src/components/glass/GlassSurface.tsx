@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, ViewProps, StyleProp, ViewStyle } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps, StyleProp, ViewStyle } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { colors, radii, glassShadow } from '../../theme/glass';
+import { useBlurTarget } from './BlurTargetContext';
 
 type GlassSurfaceProps = ViewProps & {
   /** Blur strength passed straight to expo-blur. */
@@ -22,7 +23,7 @@ type GlassSurfaceProps = ViewProps & {
  * for any card, header, bottom bar, modal, badge or input container.
  */
 export default function GlassSurface({
-  intensity = 40,
+  intensity = 65,
   tintColor = colors.glassFill,
   radius = radii.md,
   bordered = true,
@@ -31,6 +32,8 @@ export default function GlassSurface({
   children,
   ...rest
 }: GlassSurfaceProps) {
+  const blurTarget = useBlurTarget();
+
   return (
     <View
       style={[
@@ -43,6 +46,8 @@ export default function GlassSurface({
       <BlurView
         intensity={intensity}
         tint="dark"
+        blurMethod={Platform.OS === 'android' && blurTarget ? 'dimezisBlurViewSdk31Plus' : undefined}
+        blurTarget={blurTarget ?? undefined}
         style={StyleSheet.absoluteFill}
       />
       <View

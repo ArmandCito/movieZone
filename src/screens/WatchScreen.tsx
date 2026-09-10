@@ -145,7 +145,7 @@ export default function WatchScreen({ navigation }: any) {
                   source={{ uri: getImageUrl(item.poster_path) }}
                   style={styles.posterImage}
                 />
-                <GlassCard style={styles.resumeOverlay} radius={radii.sm} intensity={20} padded={false}>
+                <GlassCard style={styles.resumeOverlay} radius={radii.sm} intensity={55} padded={false}>
                   <Ionicons name="play" size={16} color={colors.textPrimary} />
                   <Text style={styles.resumeText}>Resume</Text>
                 </GlassCard>
@@ -163,9 +163,9 @@ export default function WatchScreen({ navigation }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
-        <GlassCard style={styles.header} radius={radii.lg} intensity={25} padded={false}>
+        <GlassCard style={styles.header} radius={radii.lg} intensity={58} padded={false}>
           <Text style={styles.logo}>
             Watch<Text style={styles.logoRed}>Zone</Text>
           </Text>
@@ -174,7 +174,7 @@ export default function WatchScreen({ navigation }: any) {
           </TouchableOpacity>
         </GlassCard>
 
-        <GlassCard style={styles.searchBar} radius={radii.md} intensity={20} padded={false}>
+        <GlassCard style={styles.searchBar} radius={radii.md} intensity={55} padded={false}>
           <TextInput
             style={styles.searchInput}
             placeholder="Search movies to watch online..."
@@ -223,7 +223,7 @@ export default function WatchScreen({ navigation }: any) {
                   keyExtractor={(item: any) => String(item.id)}
                   contentContainerStyle={styles.searchResultsList}
                   renderItem={({ item }: any) => (
-                    <GlassCard style={styles.searchResultRow} radius={radii.lg} intensity={25} padded={false}>
+                    <GlassCard style={styles.searchResultRow} radius={radii.lg} intensity={58} padded={false}>
                       <TouchableOpacity
                         style={styles.searchResultTouch}
                         onPress={() => goToWatch(item)}
@@ -278,11 +278,11 @@ export default function WatchScreen({ navigation }: any) {
                         source={{ uri: getBackdropUrl(movie.backdrop_path) }}
                         style={styles.bannerImage}
                       />
-                      <GlassCard style={styles.bannerOverlay} radius={radii.lg} intensity={30}>
+                      <GlassCard style={styles.bannerOverlay} radius={radii.lg} intensity={62}>
                         <GlassCard
                           style={styles.streamBadge}
                           radius={radii.sm}
-                          intensity={20}
+                          intensity={55}
                           tintColor="rgba(229,9,20,0.35)"
                           padded={false}
                         >
@@ -293,7 +293,7 @@ export default function WatchScreen({ navigation }: any) {
                           <Text style={styles.bannerMetaText}>
                             {movie.original_language.toUpperCase()}
                           </Text>
-                          <GlassCard style={styles.ratingBadge} radius={radii.pill} intensity={20} padded={false}>
+                          <GlassCard style={styles.ratingBadge} radius={radii.pill} intensity={55} padded={false}>
                             <Ionicons name="star" size={12} color="#FFD700" />
                             <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
                           </GlassCard>
@@ -342,7 +342,7 @@ export default function WatchScreen({ navigation }: any) {
                           source={{ uri: getImageUrl(item.poster_path) }}
                           style={styles.posterImage}
                         />
-                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={55} padded={false}>
                           <TouchableOpacity style={styles.playIconTouch}>
                             <Ionicons name="play" size={18} color={colors.textPrimary} />
                           </TouchableOpacity>
@@ -367,7 +367,7 @@ export default function WatchScreen({ navigation }: any) {
                     <GlassCard
                       style={styles.genrePill}
                       radius={radii.pill}
-                      intensity={25}
+                      intensity={58}
                       tintColor={activeGenre === item.id ? colors.accentSoft : colors.glassFill}
                       padded={false}
                     >
@@ -407,7 +407,7 @@ export default function WatchScreen({ navigation }: any) {
                         >
                           <View>
                             <Image source={{ uri: getImageUrl(item.poster_path) }} style={styles.posterImage} />
-                            <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                            <GlassCard style={styles.playIcon} radius={radii.pill} intensity={55} padded={false}>
                               <TouchableOpacity style={styles.playIconTouch}>
                                 <Ionicons name="play" size={18} color={colors.textPrimary} />
                               </TouchableOpacity>
@@ -433,7 +433,7 @@ export default function WatchScreen({ navigation }: any) {
                     <TouchableOpacity style={styles.posterCard} onPress={() => goToWatch(item)}>
                       <View>
                         <Image source={{ uri: getImageUrl(item.poster_path) }} style={styles.posterImage} />
-                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={55} padded={false}>
                           <TouchableOpacity style={styles.playIconTouch}>
                             <Ionicons name="play" size={18} color={colors.textPrimary} />
                           </TouchableOpacity>
@@ -463,13 +463,13 @@ export default function WatchScreen({ navigation }: any) {
                         <GlassCard
                           style={styles.rankBadge}
                           radius={radii.pill}
-                          intensity={20}
+                          intensity={55}
                           tintColor="rgba(229,9,20,0.35)"
                           padded={false}
                         >
                           <Text style={styles.rankText}>{topRated.indexOf(item) + 1}</Text>
                         </GlassCard>
-                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={20} padded={false}>
+                        <GlassCard style={styles.playIcon} radius={radii.pill} intensity={55} padded={false}>
                           <TouchableOpacity style={styles.playIconTouch}>
                             <Ionicons name="play" size={18} color={colors.textPrimary} />
                           </TouchableOpacity>
@@ -487,7 +487,7 @@ export default function WatchScreen({ navigation }: any) {
         )}
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={0} intensity={30} padded={false}>
+        <GlassCard style={styles.bottomBar} radius={radii.xl} intensity={62} padded={false}>
           <TouchableOpacity
             style={styles.bottomBarItem}
             onPress={() => navigation.navigate('Home')}
@@ -511,6 +511,7 @@ export default function WatchScreen({ navigation }: any) {
           </TouchableOpacity>
         </GlassCard>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }
@@ -824,13 +825,13 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    left: 20,
+    right: 20,
+    bottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 14,
   },
   bottomBarItem: {
     padding: 8,

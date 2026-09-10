@@ -27,9 +27,9 @@ export default function FavoritesScreen({ navigation }: any) {
   if (favorites.length === 0) {
     return (
       <View style={styles.root}>
-        <LiquidBackground />
+        <LiquidBackground>
         <SafeAreaView style={styles.container}>
-          <GlassCard style={styles.header} radius={radii.lg} intensity={25} padded={false}>
+          <GlassCard style={styles.header} radius={radii.lg} intensity={58} padded={false}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
               <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
             </TouchableOpacity>
@@ -37,7 +37,7 @@ export default function FavoritesScreen({ navigation }: any) {
             <View style={{ width: 32 }} />
           </GlassCard>
           <View style={styles.emptyWrap}>
-            <GlassCard style={styles.emptyCard} radius={radii.lg} intensity={30}>
+            <GlassCard style={styles.emptyCard} radius={radii.lg} intensity={62}>
               <Ionicons name="heart-half" size={52} color={colors.textMuted} />
               <Text style={styles.emptyTitle}>No favorites yet</Text>
               <Text style={styles.emptyBody}>
@@ -52,15 +52,16 @@ export default function FavoritesScreen({ navigation }: any) {
             </GlassCard>
           </View>
         </SafeAreaView>
+        </LiquidBackground>
       </View>
     );
   }
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
-        <GlassCard style={styles.header} radius={radii.lg} intensity={25} padded={false}>
+        <GlassCard style={styles.header} radius={radii.lg} intensity={58} padded={false}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
@@ -73,7 +74,7 @@ export default function FavoritesScreen({ navigation }: any) {
           keyExtractor={(item) => String(item.id)}
           contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
-            <GlassCard style={styles.card} radius={radii.lg} intensity={30} padded={false}>
+            <GlassCard style={styles.card} radius={radii.lg} intensity={62} padded={false}>
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('MovieDetail', { movieId: item.id })}
@@ -93,7 +94,7 @@ export default function FavoritesScreen({ navigation }: any) {
                   <GlassCard
                     style={styles.watchBtn}
                     radius={radii.sm}
-                    intensity={25}
+                    intensity={58}
                     tintColor={colors.accentSoft}
                     padded={false}
                   >
@@ -122,6 +123,7 @@ export default function FavoritesScreen({ navigation }: any) {
           )}
         />
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

@@ -48,7 +48,7 @@ export default function GlassButton({
       <GlassSurface
         radius={radii.md}
         tintColor={TINTS[variant]}
-        intensity={30}
+        intensity={60}
         style={styles.surface}
       >
         {loading ? (

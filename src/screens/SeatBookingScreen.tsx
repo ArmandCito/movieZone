@@ -61,10 +61,10 @@ export default function SeatBookingScreen({ navigation, route }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <GlassCard style={styles.backBtn} padded={false} radius={radii.pill} intensity={25}>
+          <GlassCard style={styles.backBtn} padded={false} radius={radii.pill} intensity={58}>
             <TouchableOpacity style={styles.backBtnTouch} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
             </TouchableOpacity>
@@ -74,7 +74,7 @@ export default function SeatBookingScreen({ navigation, route }: any) {
         </View>
 
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-          <GlassCard style={styles.infoCard} radius={radii.md} intensity={30}>
+          <GlassCard style={styles.infoCard} radius={radii.md} intensity={62}>
             <View style={styles.infoRow}>
               <Ionicons name="calendar" size={14} color={colors.accent} />
               <Text style={styles.infoText}>{date} • {weekday} • {time}</Text>
@@ -121,7 +121,7 @@ export default function SeatBookingScreen({ navigation, route }: any) {
             })}
           </View>
 
-          <GlassCard style={styles.legendRow} radius={radii.md} intensity={22}>
+          <GlassCard style={styles.legendRow} radius={radii.md} intensity={56}>
             <View style={styles.legendItem}>
               <View style={[styles.legendBox, styles.seat]} />
               <Text style={styles.legendText}>Available</Text>
@@ -137,7 +137,7 @@ export default function SeatBookingScreen({ navigation, route }: any) {
           </GlassCard>
         </ScrollView>
 
-        <GlassCard style={styles.bottomBar} radius={radii.lg} intensity={40}>
+        <GlassCard style={styles.bottomBar} radius={radii.lg} intensity={68}>
           <View>
             <Text style={styles.totalLabel}>{selected.length} seat(s) selected</Text>
             <Text style={styles.totalValue}>E{total}</Text>
@@ -155,6 +155,7 @@ export default function SeatBookingScreen({ navigation, route }: any) {
           </GlassButton>
         </GlassCard>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

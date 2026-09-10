@@ -157,13 +157,14 @@ export default function PlayerScreen({ navigation, route }: any) {
   if (isLoading) {
     return (
       <View style={styles.root}>
-        <LiquidBackground />
+        <LiquidBackground>
         <SafeAreaView style={styles.container}>
           <View style={styles.center}>
             <ActivityIndicator size="large" color={colors.accent} />
             <Text style={styles.loadingText}>Finding sources for this title...</Text>
           </View>
         </SafeAreaView>
+        </LiquidBackground>
       </View>
     );
   }
@@ -174,10 +175,10 @@ export default function PlayerScreen({ navigation, route }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
         {/* Top bar */}
-        <GlassCard style={styles.topBar} radius={radii.md} intensity={25} padded={false}>
+        <GlassCard style={styles.topBar} radius={radii.md} intensity={58} padded={false}>
           <TouchableOpacity onPress={back} style={styles.topBtn}>
             <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </TouchableOpacity>
@@ -235,7 +236,7 @@ export default function PlayerScreen({ navigation, route }: any) {
               }
             />
           ) : (
-            <GlassCard style={styles.videoPlaceholder} radius={0} intensity={20} tintColor={colors.glassFillSubtle} padded={false}>
+            <GlassCard style={styles.videoPlaceholder} radius={0} intensity={55} tintColor={colors.glassFillSubtle} padded={false}>
               {activeVideo ? (
                 <>
                   <Ionicons name="play-circle-outline" size={64} color={colors.textMuted} />
@@ -271,7 +272,7 @@ export default function PlayerScreen({ navigation, route }: any) {
 
         {/* Source selector */}
         {activeVideo && (
-          <GlassCard style={styles.panel} radius={radii.md} intensity={25}>
+          <GlassCard style={styles.panel} radius={radii.md} intensity={58}>
             <Text style={styles.panelLabel}>Available sources</Text>
             <Text style={styles.qualityLabel}>
               {activeVideo.type === 'Trailer'
@@ -293,7 +294,7 @@ export default function PlayerScreen({ navigation, route }: any) {
                 key={`${v.key}-${i}`}
                 style={styles.sourceCard}
                 radius={radii.md}
-                intensity={25}
+                intensity={58}
                 tintColor={isActive ? colors.accentSoft : colors.glassFill}
                 padded={false}
               >
@@ -330,6 +331,7 @@ export default function PlayerScreen({ navigation, route }: any) {
         {/* Decorative bottom spacing */}
         <View style={styles.bottomSpacer} />
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

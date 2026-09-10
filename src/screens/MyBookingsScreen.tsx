@@ -42,9 +42,9 @@ export default function MyBookingsScreen({ navigation }: any) {
   if (bookings.length === 0) {
     return (
       <View style={styles.root}>
-        <LiquidBackground />
+        <LiquidBackground>
         <SafeAreaView style={styles.container}>
-          <GlassCard style={styles.header} radius={radii.md} intensity={25} padded={false}>
+          <GlassCard style={styles.header} radius={radii.md} intensity={58} padded={false}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
               <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
             </TouchableOpacity>
@@ -52,7 +52,7 @@ export default function MyBookingsScreen({ navigation }: any) {
             <View style={{ width: 32 }} />
           </GlassCard>
           <View style={styles.emptyWrap}>
-            <GlassCard style={styles.emptyCard} radius={radii.xl} intensity={40}>
+            <GlassCard style={styles.emptyCard} radius={radii.xl} intensity={68}>
               <Ionicons name="ticket-outline" size={52} color={colors.textMuted} />
               <Text style={styles.emptyTitle}>No bookings yet</Text>
               <Text style={styles.emptyBody}>
@@ -67,15 +67,16 @@ export default function MyBookingsScreen({ navigation }: any) {
             </GlassCard>
           </View>
         </SafeAreaView>
+        </LiquidBackground>
       </View>
     );
   }
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
-        <GlassCard style={styles.header} radius={radii.md} intensity={25} padded={false}>
+        <GlassCard style={styles.header} radius={radii.md} intensity={58} padded={false}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
@@ -88,7 +89,7 @@ export default function MyBookingsScreen({ navigation }: any) {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
-            <GlassCard style={styles.card} radius={radii.lg} intensity={30} padded={false}>
+            <GlassCard style={styles.card} radius={radii.lg} intensity={62} padded={false}>
               <TouchableOpacity
                 style={styles.cardTop}
                 activeOpacity={0.7}
@@ -151,6 +152,7 @@ export default function MyBookingsScreen({ navigation }: any) {
           )}
         />
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

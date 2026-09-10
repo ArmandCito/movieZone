@@ -83,7 +83,7 @@ export default function HomeScreen({ navigation }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.logo}>
@@ -135,7 +135,7 @@ export default function HomeScreen({ navigation }: any) {
                   <GlassCard
                     style={styles.bannerOverlay}
                     radius={radii.md}
-                    intensity={30}
+                    intensity={62}
                     tintColor={colors.glassFillStrong}
                     padded={false}
                   >
@@ -144,7 +144,7 @@ export default function HomeScreen({ navigation }: any) {
                       <GlassCard
                         style={styles.ratingBadge}
                         radius={radii.pill}
-                        intensity={20}
+                        intensity={55}
                         padded={false}
                       >
                         <Ionicons name="star" size={12} color="#FFD700" />
@@ -200,7 +200,7 @@ export default function HomeScreen({ navigation }: any) {
                     <GlassCard
                       style={styles.favoriteIcon}
                       radius={radii.pill}
-                      intensity={20}
+                      intensity={55}
                       padded={false}
                     >
                       <TouchableOpacity style={styles.favoriteIconTouch}>
@@ -250,7 +250,7 @@ export default function HomeScreen({ navigation }: any) {
                     <GlassCard
                       style={styles.streamBadge}
                       radius={radii.pill}
-                      intensity={20}
+                      intensity={55}
                       tintColor="rgba(229,9,20,0.35)"
                       padded={false}
                     >
@@ -334,7 +334,7 @@ export default function HomeScreen({ navigation }: any) {
         )}
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={0} padded={false}>
+        <GlassCard style={styles.bottomBar} radius={radii.xl} padded={false}>
           <TouchableOpacity style={styles.bottomBarItem}>
             <Ionicons name="home" size={24} color={colors.accent} />
           </TouchableOpacity>
@@ -358,6 +358,7 @@ export default function HomeScreen({ navigation }: any) {
           </TouchableOpacity>
         </GlassCard>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }
@@ -589,13 +590,13 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    left: 20,
+    right: 20,
+    bottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 14,
   },
   bottomBarItem: {
     padding: 8,

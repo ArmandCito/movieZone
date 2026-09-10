@@ -6,7 +6,6 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
 import {useFonts, Afacad_400Regular, Afacad_700Bold} from '@expo-google-fonts/afacad'
 import { GlassCard, GlassButton } from '../components/glass';
 import { colors, radii } from '../theme/glass';
@@ -32,9 +31,8 @@ export default function IntroScreen({ navigation }: any) {
       resizeMode="cover"
     >
       <StatusBar barStyle="light-content" />
-      <BlurView intensity={15} tint="dark" style={[StyleSheet.absoluteFill, styles.dim]} />
       <View style={styles.overlay}>
-        <GlassCard style={styles.content} radius={radii.xl} intensity={45}>
+        <GlassCard style={styles.content} radius={radii.xl} intensity={72}>
           <Text style={styles.title}>
             Movie
             <Text style={styles.titleRed}>Zone</Text>
@@ -59,9 +57,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-  },
-  dim: {
-    backgroundColor: 'rgba(8, 7, 12, 0.35)',
   },
   overlay: {
     flex: 1,

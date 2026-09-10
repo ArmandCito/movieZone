@@ -103,13 +103,14 @@ export default function MovieDetailScreen({ navigation, route }: any) {
   if (isLoading) {
     return (
       <View style={styles.root}>
-        <LiquidBackground />
+        <LiquidBackground>
         <SafeAreaView style={styles.container}>
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={colors.accent} />
             <Text style={styles.loadingText}>Loading movie details...</Text>
           </View>
         </SafeAreaView>
+        </LiquidBackground>
       </View>
     );
   }
@@ -117,24 +118,25 @@ export default function MovieDetailScreen({ navigation, route }: any) {
   if (error || !movie) {
     return (
       <View style={styles.root}>
-        <LiquidBackground />
+        <LiquidBackground>
         <SafeAreaView style={styles.container}>
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>{error || 'Movie not found'}</Text>
-            <GlassCard style={styles.backButton} padded={false} radius={radii.pill} intensity={25}>
+            <GlassCard style={styles.backButton} padded={false} radius={radii.pill} intensity={58}>
               <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={22} color={colors.textPrimary} />
               </TouchableOpacity>
             </GlassCard>
           </View>
         </SafeAreaView>
+        </LiquidBackground>
       </View>
     );
   }
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
@@ -142,13 +144,13 @@ export default function MovieDetailScreen({ navigation, route }: any) {
               source={{ uri: getBackdropUrl(movie.backdrop_path) }}
               style={styles.banner}
             />
-            <GlassCard style={styles.backButton} padded={false} radius={radii.pill} intensity={25}>
+            <GlassCard style={styles.backButton} padded={false} radius={radii.pill} intensity={58}>
               <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={22} color={colors.textPrimary} />
               </TouchableOpacity>
             </GlassCard>
             {movie && (
-              <GlassCard style={styles.favoriteButton} padded={false} radius={radii.pill} intensity={25}>
+              <GlassCard style={styles.favoriteButton} padded={false} radius={radii.pill} intensity={58}>
                 <TouchableOpacity
                   style={styles.iconButton}
                   onPress={() =>
@@ -176,7 +178,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
             <Text style={styles.title}>{movie.title}</Text>
 
             <View style={styles.metaRow}>
-              <GlassCard style={styles.ratingBadge} radius={radii.sm} intensity={20} padded={false}>
+              <GlassCard style={styles.ratingBadge} radius={radii.sm} intensity={55} padded={false}>
                 <Ionicons name="star" size={12} color="#FFD700" />
                 <Text style={styles.ratingText}>{getRating(movie.vote_average)}</Text>
               </GlassCard>
@@ -216,7 +218,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
               </View>
             </GlassButton>
 
-            <GlassCard style={styles.infoRow} radius={radii.lg} intensity={30}>
+            <GlassCard style={styles.infoRow} radius={radii.lg} intensity={62}>
               <Image
                 source={{ uri: getImageUrl(movie.poster_path) }}
                 style={styles.infoPoster}
@@ -247,7 +249,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
                   key={d.id}
                   style={[styles.dateCard, selectedDate === d.id && styles.dateCardActive]}
                   radius={radii.md}
-                  intensity={22}
+                  intensity={56}
                   tintColor={selectedDate === d.id ? colors.accentSoft : colors.glassFill}
                   padded={false}
                 >
@@ -291,7 +293,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
                   key={t.id}
                   style={[styles.timeCard, selectedTime === t.id && styles.timeCardActive]}
                   radius={radii.md}
-                  intensity={22}
+                  intensity={56}
                   tintColor={selectedTime === t.id ? colors.accentSoft : colors.glassFill}
                   padded={false}
                 >
@@ -310,7 +312,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
           </View>
         </ScrollView>
 
-        <GlassCard style={styles.bookBar} radius={radii.lg} intensity={40}>
+        <GlassCard style={styles.bookBar} radius={radii.lg} intensity={68}>
           <GlassButton
             label="Book A Seat"
             variant="primary"
@@ -338,7 +340,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
             activeOpacity={1}
             onPress={() => setLocationModal(false)}
           >
-            <GlassCard style={styles.modalContent} radius={radii.lg} intensity={45} padded={false}>
+            <GlassCard style={styles.modalContent} radius={radii.lg} intensity={72} padded={false}>
               <Text style={styles.modalTitle}>Select Location</Text>
               <FlatList
                 data={locations}
@@ -366,7 +368,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
             activeOpacity={1}
             onPress={() => setGlassesModal(false)}
           >
-            <GlassCard style={styles.modalContent} radius={radii.lg} intensity={45} padded={false}>
+            <GlassCard style={styles.modalContent} radius={radii.lg} intensity={72} padded={false}>
               <Text style={styles.modalTitle}>3D Glasses</Text>
               <FlatList
                 data={glassesOptions}
@@ -387,6 +389,7 @@ export default function MovieDetailScreen({ navigation, route }: any) {
           </TouchableOpacity>
         </Modal>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

@@ -73,9 +73,9 @@ export default function NotificationsScreen({ navigation }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
-        <GlassCard style={styles.header} radius={radii.lg} intensity={25} padded={false}>
+        <GlassCard style={styles.header} radius={radii.lg} intensity={58} padded={false}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
           </TouchableOpacity>
@@ -102,7 +102,7 @@ export default function NotificationsScreen({ navigation }: any) {
             <GlassCard
               style={[styles.card, item.read && styles.cardRead]}
               radius={radii.lg}
-              intensity={25}
+              intensity={58}
               tintColor={item.read ? colors.glassFillSubtle : colors.glassFill}
               padded={false}
             >
@@ -129,6 +129,7 @@ export default function NotificationsScreen({ navigation }: any) {
           }
         />
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

@@ -46,7 +46,7 @@ export default function SearchScreen({ navigation }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -61,7 +61,7 @@ export default function SearchScreen({ navigation }: any) {
           <View style={{ width: 40 }} />
         </View>
 
-        <GlassCard style={styles.searchBar} radius={radii.md} intensity={20} padded={false}>
+        <GlassCard style={styles.searchBar} radius={radii.md} intensity={55} padded={false}>
           <TextInput
             style={styles.searchInput}
             placeholder="Search movies..."
@@ -127,7 +127,7 @@ export default function SearchScreen({ navigation }: any) {
         )}
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={0} padded={false}>
+        <GlassCard style={styles.bottomBar} radius={radii.xl} padded={false}>
           <TouchableOpacity
             style={styles.bottomBarItem}
             onPress={() => navigation.navigate('Home')}
@@ -151,6 +151,7 @@ export default function SearchScreen({ navigation }: any) {
           </TouchableOpacity>
         </GlassCard>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }
@@ -286,13 +287,13 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    left: 20,
+    right: 20,
+    bottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 14,
   },
   bottomBarItem: {
     padding: 8,

@@ -18,7 +18,7 @@ export default function GlassCard({
   children,
   padded = true,
   radius = radii.lg,
-  intensity = 35,
+  intensity = 60,
   tintColor = colors.glassFill,
 }: GlassCardProps) {
   return (

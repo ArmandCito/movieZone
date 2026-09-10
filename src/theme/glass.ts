@@ -40,9 +40,9 @@ export const radii = {
 } as const;
 
 export const blur = {
-  subtle: 20,
-  regular: 40,
-  strong: 65,
+  subtle: 45,
+  regular: 60,
+  strong: 75,
 } as const;
 
 // Common shadow used to lift glass surfaces off the background (iOS + Android)

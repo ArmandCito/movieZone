@@ -51,7 +51,7 @@ export default function SettingsScreen({ navigation }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
@@ -63,7 +63,7 @@ export default function SettingsScreen({ navigation }: any) {
 
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           {sectionTitle('Playback')}
-          <GlassCard style={styles.group} radius={radii.md} intensity={25} padded={false}>
+          <GlassCard style={styles.group} radius={radii.md} intensity={58} padded={false}>
             {row('notifications', 'Push Notifications', (
               <Switch
                 value={pushEnabled}
@@ -91,7 +91,7 @@ export default function SettingsScreen({ navigation }: any) {
           </GlassCard>
 
           {sectionTitle('Streaming')}
-          <GlassCard style={styles.group} radius={radii.md} intensity={25} padded={false}>
+          <GlassCard style={styles.group} radius={radii.md} intensity={58} padded={false}>
             {row('download', 'Download over Wi-Fi only', (
               <Switch
                 value={downloadsWifi}
@@ -105,7 +105,7 @@ export default function SettingsScreen({ navigation }: any) {
           </GlassCard>
 
           {sectionTitle('Account')}
-          <GlassCard style={styles.group} radius={radii.md} intensity={25} padded={false}>
+          <GlassCard style={styles.group} radius={radii.md} intensity={58} padded={false}>
             {row('person-circle', 'Edit Profile', undefined, () => navigation.navigate('Profile'))}
             {row('ticket', 'My Bookings', undefined, () => navigation.navigate('MyBookings'))}
             {row('heart', 'My Favorites', undefined, () => navigation.navigate('Favorites'))}
@@ -113,7 +113,7 @@ export default function SettingsScreen({ navigation }: any) {
           </GlassCard>
 
           {sectionTitle('Support')}
-          <GlassCard style={styles.group} radius={radii.md} intensity={25} padded={false}>
+          <GlassCard style={styles.group} radius={radii.md} intensity={58} padded={false}>
             {row('help-circle', 'Help Center', undefined, () => showComingSoon('Help Center'))}
             {row('chatbox', 'Contact Us', undefined, () => showComingSoon('Contact Us'))}
             {row('shield-checkmark', 'Privacy Policy', undefined, () => showComingSoon('Privacy Policy'))}
@@ -123,6 +123,7 @@ export default function SettingsScreen({ navigation }: any) {
           <Text style={styles.version}>MovieZone v1.0.0</Text>
         </ScrollView>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

@@ -125,7 +125,7 @@ export default function LoginScreen({ navigation }: any) {
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -142,7 +142,7 @@ export default function LoginScreen({ navigation }: any) {
             </Text>
 
             <GlassCard style={styles.form} radius={radii.xl}>
-              <GlassCard style={styles.inputWrapper} radius={radii.md} intensity={20} padded={false}>
+              <GlassCard style={styles.inputWrapper} radius={radii.md} intensity={55} padded={false}>
                 <TextInput
                   style={styles.input}
                   placeholder="Email"
@@ -154,7 +154,7 @@ export default function LoginScreen({ navigation }: any) {
                 />
               </GlassCard>
 
-              <GlassCard style={styles.passwordWrapper} radius={radii.md} intensity={20} padded={false}>
+              <GlassCard style={styles.passwordWrapper} radius={radii.md} intensity={55} padded={false}>
                 <TextInput
                   style={styles.passwordInput}
                   placeholder="Password"
@@ -192,7 +192,7 @@ export default function LoginScreen({ navigation }: any) {
               </View>
 
               <View style={styles.socialRow}>
-                <GlassCard style={styles.socialButton} radius={radii.md} intensity={25} padded={false}>
+                <GlassCard style={styles.socialButton} radius={radii.md} intensity={58} padded={false}>
                   <TouchableOpacity style={styles.socialButtonTouch}>
                     <Ionicons name="logo-facebook" size={22} color="#1877F2" />
                   </TouchableOpacity>
@@ -200,7 +200,7 @@ export default function LoginScreen({ navigation }: any) {
                 <GlassCard
                   style={[styles.socialButton, googleLoading && styles.buttonDisabled]}
                   radius={radii.md}
-                  intensity={25}
+                  intensity={58}
                   padded={false}
                 >
                   <TouchableOpacity
@@ -229,6 +229,7 @@ export default function LoginScreen({ navigation }: any) {
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }

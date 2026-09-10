@@ -89,20 +89,21 @@ export default function ProfileScreen({ navigation }: any) {
   if (isLoading) {
     return (
       <View style={styles.root}>
-        <LiquidBackground />
+        <LiquidBackground>
         <SafeAreaView style={styles.container}>
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={colors.accent} />
             <Text style={styles.loadingText}>Loading profile...</Text>
           </View>
         </SafeAreaView>
+        </LiquidBackground>
       </View>
     );
   }
 
   return (
     <View style={styles.root}>
-      <LiquidBackground />
+      <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -119,7 +120,7 @@ export default function ProfileScreen({ navigation }: any) {
 
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Profile Header */}
-          <GlassCard style={styles.profileHeader} radius={radii.xl} intensity={45}>
+          <GlassCard style={styles.profileHeader} radius={radii.xl} intensity={72}>
             <View style={styles.avatar}>
               {userInfo?.photoUrl ? (
                 <Image
@@ -144,7 +145,7 @@ export default function ProfileScreen({ navigation }: any) {
               style={styles.statCardTouch}
               onPress={() => navigation.navigate('Favorites')}
             >
-              <GlassCard style={styles.statCard} radius={radii.md} intensity={25}>
+              <GlassCard style={styles.statCard} radius={radii.md} intensity={58}>
                 <Text style={styles.statValue}>{favoriteCount}</Text>
                 <Text style={styles.statLabel}>Favorites</Text>
               </GlassCard>
@@ -153,13 +154,13 @@ export default function ProfileScreen({ navigation }: any) {
               style={styles.statCardTouch}
               onPress={() => navigation.navigate('MyBookings')}
             >
-              <GlassCard style={styles.statCard} radius={radii.md} intensity={25}>
+              <GlassCard style={styles.statCard} radius={radii.md} intensity={58}>
                 <Text style={styles.statValue}>{bookingCount}</Text>
                 <Text style={styles.statLabel}>Bookings</Text>
               </GlassCard>
             </TouchableOpacity>
             <View style={styles.statCardTouch}>
-              <GlassCard style={styles.statCard} radius={radii.md} intensity={25}>
+              <GlassCard style={styles.statCard} radius={radii.md} intensity={58}>
                 <Text style={styles.statValue}>0</Text>
                 <Text style={styles.statLabel}>Rewards</Text>
               </GlassCard>
@@ -176,7 +177,7 @@ export default function ProfileScreen({ navigation }: any) {
                   if (item.screen) navigation.navigate(item.screen);
                 }}
               >
-                <GlassCard style={styles.menuItem} radius={radii.md} intensity={25}>
+                <GlassCard style={styles.menuItem} radius={radii.md} intensity={58}>
                   <View style={styles.menuIconContainer}>
                     <Ionicons name={item.icon} size={20} color={item.color} />
                   </View>
@@ -203,7 +204,7 @@ export default function ProfileScreen({ navigation }: any) {
         </ScrollView>
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={0} intensity={40} padded={false}>
+        <GlassCard style={styles.bottomBar} radius={radii.xl} intensity={68} padded={false}>
           <TouchableOpacity
             style={styles.bottomBarItem}
             onPress={() => navigation.navigate('Home')}
@@ -227,6 +228,7 @@ export default function ProfileScreen({ navigation }: any) {
           </TouchableOpacity>
         </GlassCard>
       </SafeAreaView>
+      </LiquidBackground>
     </View>
   );
 }
@@ -383,13 +385,13 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    left: 20,
+    right: 20,
+    bottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 14,
   },
   bottomBarItem: {
     padding: 8,

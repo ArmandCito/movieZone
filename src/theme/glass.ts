@@ -26,7 +26,7 @@ export const colors = {
   // Text
   textPrimary: '#FFFFFF',
   textSecondary: 'rgba(255,255,255,0.72)',
-  textMuted: 'rgba(255,255,255,0.48)',
+  textMuted: 'rgba(255,255,255,0.68)',
 
   danger: '#FF5D5D',
 } as const;

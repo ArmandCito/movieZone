@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useUserData } from '../context/UserDataContext';
 import { getUserInfo } from '../services/firebaseService';
-import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function ProfileScreen({ navigation }: any) {
@@ -204,29 +204,7 @@ export default function ProfileScreen({ navigation }: any) {
         </ScrollView>
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={radii.xl} intensity={68} padded={false}>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Home')}
-          >
-            <Ionicons name="home" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Watch')}
-          >
-            <Ionicons name="play-circle" size={26} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Search')}
-          >
-            <Ionicons name="search" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.bottomBarItem}>
-            <Ionicons name="person" size={24} color={colors.accent} />
-          </TouchableOpacity>
-        </GlassCard>
+        <GlassTabBar active="Profile" navigation={navigation} />
       </SafeAreaView>
       </LiquidBackground>
     </View>
@@ -382,18 +360,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     marginLeft: 8,
-  },
-  bottomBar: {
-    position: 'absolute',
-    left: 20,
-    right: 20,
-    bottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 14,
-  },
-  bottomBarItem: {
-    padding: 8,
   },
 });

@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { searchMovies, getImageUrl } from '../services/tmdbService';
-import { GlassCard, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function SearchScreen({ navigation }: any) {
@@ -127,29 +127,7 @@ export default function SearchScreen({ navigation }: any) {
         )}
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={radii.xl} padded={false}>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Home')}
-          >
-            <Ionicons name="home" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Watch')}
-          >
-            <Ionicons name="play-circle" size={26} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.bottomBarItem}>
-            <Ionicons name="search" size={24} color={colors.accent} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Profile')}
-          >
-            <Ionicons name="person" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-        </GlassCard>
+        <GlassTabBar active="Search" navigation={navigation} />
       </SafeAreaView>
       </LiquidBackground>
     </View>
@@ -284,18 +262,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 6,
     lineHeight: 17,
-  },
-  bottomBar: {
-    position: 'absolute',
-    left: 20,
-    right: 20,
-    bottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 14,
-  },
-  bottomBarItem: {
-    padding: 8,
   },
 });

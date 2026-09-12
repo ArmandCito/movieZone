@@ -26,7 +26,7 @@ import {
   getBackdropUrl,
 } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
-import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 const { width } = Dimensions.get('window');
@@ -487,29 +487,7 @@ export default function WatchScreen({ navigation }: any) {
         )}
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={radii.xl} intensity={62} padded={false}>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Home')}
-          >
-            <Ionicons name="home" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.bottomBarItem} onPress={() => navigation.navigate('Watch')}>
-            <Ionicons name="play-circle" size={26} color={colors.accent} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Search')}
-          >
-            <Ionicons name="search" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Profile')}
-          >
-            <Ionicons name="person" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-        </GlassCard>
+        <GlassTabBar active="Watch" navigation={navigation} />
       </SafeAreaView>
       </LiquidBackground>
     </View>
@@ -822,18 +800,5 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     marginLeft: 4,
-  },
-  bottomBar: {
-    position: 'absolute',
-    left: 20,
-    right: 20,
-    bottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 14,
-  },
-  bottomBarItem: {
-    padding: 8,
   },
 });

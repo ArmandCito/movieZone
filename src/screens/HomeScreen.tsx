@@ -20,7 +20,7 @@ import {
   getBackdropUrl,
 } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
-import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 const { width } = Dimensions.get('window');
@@ -334,29 +334,7 @@ export default function HomeScreen({ navigation }: any) {
         )}
 
         {/* Bottom Navigation */}
-        <GlassCard style={styles.bottomBar} radius={radii.xl} padded={false}>
-          <TouchableOpacity style={styles.bottomBarItem}>
-            <Ionicons name="home" size={24} color={colors.accent} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Watch')}
-          >
-            <Ionicons name="play-circle" size={26} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Search')}
-          >
-            <Ionicons name="search" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.bottomBarItem}
-            onPress={() => navigation.navigate('Profile')}
-          >
-            <Ionicons name="person" size={24} color={colors.textMuted} />
-          </TouchableOpacity>
-        </GlassCard>
+        <GlassTabBar active="Home" navigation={navigation} />
       </SafeAreaView>
       </LiquidBackground>
     </View>
@@ -587,18 +565,5 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     fontSize: 11,
     fontWeight: '600',
-  },
-  bottomBar: {
-    position: 'absolute',
-    left: 20,
-    right: 20,
-    bottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 14,
-  },
-  bottomBarItem: {
-    padding: 8,
   },
 });

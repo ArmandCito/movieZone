@@ -27,6 +27,9 @@ Thumbs.db
 # Environment
 .env
 
+# Local iOS simulator tooling
+forIoS/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

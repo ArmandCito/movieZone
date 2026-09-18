@@ -26,7 +26,7 @@ import {
   getBackdropUrl,
 } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
-import { GlassCard, GlassButton, GlassTabBar, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassIconButton, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 const { width } = Dimensions.get('window');
@@ -169,9 +169,7 @@ export default function WatchScreen({ navigation }: any) {
           <Text style={styles.logo}>
             Watch<Text style={styles.logoRed}>Zone</Text>
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
-            <Ionicons name="notifications-outline" size={24} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="notifications-outline" onPress={() => navigation.navigate('Notifications')} />
         </GlassCard>
 
         <GlassCard style={styles.searchBar} radius={radii.md} intensity={55} padded={false}>
@@ -185,9 +183,7 @@ export default function WatchScreen({ navigation }: any) {
             returnKeyType="search"
             onSubmitEditing={handleSearch}
           />
-          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Ionicons name="search" size={20} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="search" size={20} onPress={handleSearch} style={styles.searchButton} />
         </GlassCard>
 
         {isLoading ? (

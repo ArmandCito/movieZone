@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { GlassCard, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassIconButton, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function SettingsScreen({ navigation }: any) {
@@ -54,9 +54,7 @@ export default function SettingsScreen({ navigation }: any) {
       <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="chevron-back" onPress={() => navigation.goBack()} style={styles.backBtn} />
           <Text style={styles.headerTitle}>Settings</Text>
           <View style={{ width: 32 }} />
         </View>
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
-  backBtn: { padding: 6 },
+  backBtn: { minWidth: 38, minHeight: 38 },
   headerTitle: { color: colors.textPrimary, fontSize: 20, fontWeight: '700' },
   content: { paddingHorizontal: 20, paddingBottom: 40 },
   sectionTitle: {

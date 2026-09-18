@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { getImageUrl } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
-import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassIconButton, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function MyBookingsScreen({ navigation }: any) {
@@ -45,9 +45,7 @@ export default function MyBookingsScreen({ navigation }: any) {
         <LiquidBackground>
         <SafeAreaView style={styles.container}>
           <GlassCard style={styles.header} radius={radii.md} intensity={58} padded={false}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-              <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-            </TouchableOpacity>
+            <GlassIconButton icon="chevron-back" onPress={() => navigation.goBack()} style={styles.backBtn} />
             <Text style={styles.logo}>My Bookings</Text>
             <View style={{ width: 32 }} />
           </GlassCard>
@@ -77,9 +75,7 @@ export default function MyBookingsScreen({ navigation }: any) {
       <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <GlassCard style={styles.header} radius={radii.md} intensity={58} padded={false}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="chevron-back" onPress={() => navigation.goBack()} style={styles.backBtn} />
           <Text style={styles.logo}>My Bookings</Text>
           <Text style={styles.count}>{bookings.length}</Text>
         </GlassCard>

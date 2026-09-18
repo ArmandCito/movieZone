@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserData } from '../context/UserDataContext';
-import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassIconButton, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function SeatBookingScreen({ navigation, route }: any) {
@@ -64,11 +64,7 @@ export default function SeatBookingScreen({ navigation, route }: any) {
       <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <GlassCard style={styles.backBtn} padded={false} radius={radii.pill} intensity={58}>
-            <TouchableOpacity style={styles.backBtnTouch} onPress={() => navigation.goBack()}>
-              <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-            </TouchableOpacity>
-          </GlassCard>
+          <GlassIconButton icon="chevron-back" onPress={() => navigation.goBack()} style={styles.backBtn} />
           <Text style={styles.headerTitle} numberOfLines={1}>{movie.title || ''}</Text>
           <View style={{ width: 32 }} />
         </View>

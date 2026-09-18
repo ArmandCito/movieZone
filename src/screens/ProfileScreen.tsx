@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useUserData } from '../context/UserDataContext';
 import { getUserInfo } from '../services/firebaseService';
-import { GlassCard, GlassButton, GlassTabBar, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassIconButton, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function ProfileScreen({ navigation }: any) {
@@ -106,12 +106,7 @@ export default function ProfileScreen({ navigation }: any) {
       <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="arrow-back" size={22} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="arrow-back" size={22} onPress={() => navigation.goBack()} style={styles.backButton} />
           <Text style={styles.logo}>
             Movie<Text style={styles.logoRed}>Zone</Text>
           </Text>
@@ -226,9 +221,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  backButton: {
-    padding: 4,
-  },
+  backButton: { minWidth: 40, minHeight: 40 },
   logo: {
     fontSize: 20,
     fontWeight: 'bold',

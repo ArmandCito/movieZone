@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { GlassCard, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassIconButton, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 interface NotificationItem {
@@ -76,14 +76,10 @@ export default function NotificationsScreen({ navigation }: any) {
       <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <GlassCard style={styles.header} radius={radii.lg} intensity={58} padded={false}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="chevron-back" onPress={() => navigation.goBack()} style={styles.backBtn} />
           <Text style={styles.logo}>Notifications</Text>
           {unreadCount > 0 ? (
-            <TouchableOpacity onPress={markAllRead}>
-              <Text style={styles.markAll}>Mark all read</Text>
-            </TouchableOpacity>
+            <GlassIconButton icon="checkmark-done" size={19} onPress={markAllRead} style={styles.markAllButton} />
           ) : (
             <View style={{ width: 32 }} />
           )}
@@ -146,9 +142,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginTop: 8,
   },
-  backBtn: { padding: 6 },
+  backBtn: { minWidth: 38, minHeight: 38 },
   logo: { color: colors.textPrimary, fontSize: 20, fontWeight: '700' },
   markAll: { color: colors.accent, fontSize: 13, fontWeight: '600', marginRight: 8 },
+  markAllButton: { minWidth: 38, minHeight: 38, marginRight: 4 },
   listContent: { paddingHorizontal: 20, paddingBottom: 40 },
   sectionLabel: { color: colors.textMuted, fontSize: 13, fontWeight: '700', marginTop: 16, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 },
   card: {

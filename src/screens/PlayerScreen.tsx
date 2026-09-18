@@ -14,7 +14,7 @@ import { WebView } from 'react-native-webview';
 import { getMovieVideos } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
 import { useAuth } from '../context/AuthContext';
-import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassIconButton, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 interface VideoEntry {
@@ -179,15 +179,11 @@ export default function PlayerScreen({ navigation, route }: any) {
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
         {/* Top bar */}
         <GlassCard style={styles.topBar} radius={radii.md} intensity={58} padded={false}>
-          <TouchableOpacity onPress={back} style={styles.topBtn}>
-            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="chevron-back" size={26} onPress={back} style={styles.topBtn} />
           <Text style={styles.topTitle} numberOfLines={1}>
             Now Watching
           </Text>
-          <TouchableOpacity style={styles.topBtn} onPress={() => navigation.goBack()}>
-            <Ionicons name="tv-outline" size={22} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="tv-outline" size={22} onPress={() => navigation.goBack()} style={styles.topBtn} />
         </GlassCard>
 
         {/* Player area */}

@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { getImageUrl } from '../services/tmdbService';
 import { useUserData } from '../context/UserDataContext';
-import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassButton, GlassIconButton, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function FavoritesScreen({ navigation }: any) {
@@ -30,9 +30,7 @@ export default function FavoritesScreen({ navigation }: any) {
         <LiquidBackground>
         <SafeAreaView style={styles.container}>
           <GlassCard style={styles.header} radius={radii.lg} intensity={58} padded={false}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-              <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-            </TouchableOpacity>
+            <GlassIconButton icon="chevron-back" onPress={() => navigation.goBack()} style={styles.backBtn} />
             <Text style={styles.logo}>My Favorites</Text>
             <View style={{ width: 32 }} />
           </GlassCard>
@@ -62,9 +60,7 @@ export default function FavoritesScreen({ navigation }: any) {
       <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <GlassCard style={styles.header} radius={radii.lg} intensity={58} padded={false}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Ionicons name="chevron-back" size={24} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="chevron-back" onPress={() => navigation.goBack()} style={styles.backBtn} />
           <Text style={styles.logo}>My Favorites</Text>
           <Text style={styles.count}>{favorites.length}</Text>
         </GlassCard>
@@ -116,9 +112,14 @@ export default function FavoritesScreen({ navigation }: any) {
                   </GlassCard>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.unfavBtn} onPress={() => toggleFavorite(item)}>
-                <Ionicons name="heart" size={20} color={colors.accent} />
-              </TouchableOpacity>
+              <GlassIconButton
+                icon="heart"
+                size={20}
+                iconColor={colors.accent}
+                tintColor={colors.accentSoft}
+                onPress={() => toggleFavorite(item)}
+                style={styles.unfavBtn}
+              />
             </GlassCard>
           )}
         />
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginTop: 8,
   },
-  backBtn: { padding: 6 },
+  backBtn: { minWidth: 38, minHeight: 38 },
   logo: { color: colors.textPrimary, fontSize: 20, fontWeight: '700' },
   count: { color: colors.accent, fontSize: 15, fontWeight: '700', width: 32, textAlign: 'right', marginRight: 8 },
   listContent: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 120 },
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   watchText: { color: colors.textPrimary, fontSize: 11, fontWeight: '700' },
-  unfavBtn: { justifyContent: 'center', paddingHorizontal: 6 },
+  unfavBtn: { minWidth: 40, minHeight: 40, marginLeft: 4 },
   emptyWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 36 },
   emptyCard: { alignItems: 'center', width: '100%' },
   emptyTitle: { color: colors.textPrimary, fontSize: 18, fontWeight: '700', marginTop: 14 },

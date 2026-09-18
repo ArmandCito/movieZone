@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { searchMovies, getImageUrl } from '../services/tmdbService';
-import { GlassCard, GlassTabBar, LiquidBackground } from '../components/glass';
+import { GlassCard, GlassIconButton, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function SearchScreen({ navigation }: any) {
@@ -49,12 +49,7 @@ export default function SearchScreen({ navigation }: any) {
       <LiquidBackground>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="arrow-back" size={22} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="arrow-back" size={22} onPress={() => navigation.goBack()} style={styles.backButton} />
           <Text style={styles.logo}>
             Movie<Text style={styles.logoRed}>Zone</Text>
           </Text>
@@ -72,9 +67,7 @@ export default function SearchScreen({ navigation }: any) {
             onSubmitEditing={handleSearch}
             returnKeyType="search"
           />
-          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Ionicons name="search" size={20} color={colors.textPrimary} />
-          </TouchableOpacity>
+          <GlassIconButton icon="search" size={20} onPress={handleSearch} style={styles.searchButton} />
         </GlassCard>
 
         {isLoading ? (
@@ -149,9 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  backButton: {
-    padding: 4,
-  },
+  backButton: { minWidth: 40, minHeight: 40 },
   logo: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -173,10 +164,7 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     fontSize: 14,
   },
-  searchButton: {
-    padding: 10,
-    marginLeft: 8,
-  },
+  searchButton: { marginLeft: 8 },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

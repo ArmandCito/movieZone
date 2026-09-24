@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-fixed": "#001e2d", "tertiary": "#00658b", "on-primary-container": "#613c00", "outline": "#867461", "secondary-fixed-dim": "#c8c6c3", "primary-fixed-dim": "#ffb95d", "error": "#ba1a1a", "on-error": "#ffffff", "primary": "#855400", "secondary-fixed": "#e4e2de", "surface-container-low": "#faf2ee", "surface-variant": "#e9e1dd", "surface-dim": "#e0d8d5", "on-primary-fixed-variant": "#653e00", "on-tertiary-fixed-variant": "#004c6a", "on-secondary-container": "#636360", "secondary-container": "#e1dfdb", "primary-fixed": "#ffddb7", "on-surface": "#1e1b19", "primary-container": "#f59f0a", "inverse-on-surface": "#f7efeb", "on-secondary": "#ffffff", "on-primary-fixed": "#2a1700", "surface-container": "#f4ece8", "on-tertiary-container": "#004a66", "on-primary": "#ffffff", "error-container": "#ffdad6", "secondary": "#5f5e5c", "surface": "#fff8f5", "on-secondary-fixed": "#1b1c1a", "tertiary-fixed": "#c5e7ff", "tertiary-fixed-dim": "#7ed0ff", "surface-container-highest": "#e9e1dd", "surface-container-high": "#eee7e3", "on-tertiary": "#ffffff", "on-background": "#1e1b19", "inverse-primary": "#ffb95d", "tertiary-container": "#20beff", "on-secondary-fixed-variant": "#474744", "outline-variant": "#d8c3ad", "surface-tint": "#855400", "surface-bright": "#fff8f5", "on-error-container": "#93000a", "on-surface-variant": "#534434", "background": "#fff8f5", "surface-container-lowest": "#ffffff", "inverse-surface": "#33302d" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "space-lg": "1.5rem", "space-md": "1rem", "space-sm": "0.5rem", "margin-mobile": "1.25rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "margin": "3rem", "gutter": "1.5rem", "space-xl": "2.5rem" }, "fontFamily": { "body-sm": ["Afacad"], "label-md": ["Afacad"], "headline-sm": ["Afacad"], "headline-md": ["Afacad"], "display": ["Afacad"], "body-md": ["Afacad"], "body-lg": ["Afacad"], "display-mobile": ["Afacad"], "headline-lg-mobile": ["Afacad"], "label-lg": ["Afacad"], "headline-lg": ["Afacad"], "title": ["Afacad"], "label-sm": ["Afacad"] }, "fontSize": { "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-md": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display": ["56px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }], "display-mobile": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "title": ["19px", { "lineHeight": "26px", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 inset-x-0 z-50 pointer-events-none"><div class="max-w-7xl mx-auto px-6 lg:px-12 pt-6"><div class="pointer-events-auto h-20 px-6 rounded-full bg-surface/65 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_0_rgba(28,25,23,0.08),inset_0_1px_0_0_rgba(255,255,255,0.8)] flex items-center justify-between transition-all duration-300"><div class="flex items-center gap-space-sm"><img alt="Bridge Collective Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VAnk9xsxj-vyYJ-1G4wu_TAXAOapJxdZj6CU8ZoCFyGUEAUX-dbPZqdKHFDBfHQoFzdAGkBfX0MHl9c0A_VknqG_Po-2yuX3qtMvL0imn1ariCUhTV0snHJGyB5IJ6MVJdd2s_CxF4jPPghbNnWyhvvt_GsXFOiV_0xpKReJw-PjlRxRG6kAaYL37gTA1vPQfzYtaNXyS5xzSrQxf3w7hXiPIhPpTK3WsXilzMyoj6RyVOTQ9uozW4tZg"/><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight hidden sm:inline">Bridge Collective</span></div><nav class="hidden lg:flex items-center gap-2" data-active-classes="bg-surface-container text-on-surface font-label-lg text-label-lg rounded-full px-space-md py-1.5 shadow-sm"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="about" href="#">About</a><a aria-current="page" class="transition-colors bg-surface-container text-on-surface font-label-lg text-label-lg rounded-full px-space-md py-1.5 shadow-sm" data-path="events" href="#">Events</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="menu" href="#">Menu</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="partnerships" href="#">Partnerships</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="contact" href="#">Contact us</a></nav><div class="flex items-center gap-space-md"><a class="inline-flex items-center justify-center rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg px-6 py-3 transition-all duration-200 hover:brightness-105 active:scale-95 shadow-[0_4px_16px_rgba(245,159,10,0.25)]" data-path="events" href="#">See upcoming event</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="w-full pt-20 bg-background flex-grow"><div class="flex flex-col w-full">
+<!-- Top Atmospheric Gradient Scrim -->
+<div class="relative w-full">
+<div class="absolute inset-0 -top-24 h-96 bg-gradient-to-b from-primary-container/10 via-surface to-transparent pointer-events-none -z-10"></div>
+<div class="absolute -right-24 -top-12 w-96 h-96 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute -left-20 top-40 w-80 h-80 rounded-full bg-tertiary-fixed/20 blur-3xl pointer-events-none -z-10"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 pb-16">
+<!-- Breadcrumb & Tagline Capsule -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-low shadow-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">Civic Culture • Kigali Community</span>
+</div>
+<!-- Impact Live Counter Capsule -->
+<div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-surface shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">1 Order = 1 Child = 1 Semester</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">420+ Sponsored in 2026</span>
+</div>
+</div>
+<!-- Header Section -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+<div class="max-w-3xl">
+<h1 class="font-display text-display text-on-surface tracking-tight text-balance">
+            All events
+          </h1>
+<p class="mt-4 font-body-lg text-body-lg text-on-surface-variant max-w-2xl text-balance">
+            Join us across Kigali for music, food, and purpose. Every ticket and order sends a child to school.
+          </p>
+</div>
+<!-- Quick Stats Pill Strip -->
+<div class="flex items-center gap-3 p-1.5 rounded-full bg-surface-container-low shadow-sm">
+<div class="px-5 py-2.5 rounded-full bg-surface-container-lowest shadow-sm flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-primary">3</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Upcoming</span>
+</div>
+<div class="px-5 py-2.5 rounded-full flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-secondary">24</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Past Feasts</span>
+</div>
+</div>
+</div>
+<!-- Liquid Glass Filter Navigation Bar -->
+<div class="sticky top-28 z-30 mb-12 py-2">
+<div class="p-2 rounded-full bg-surface/70 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.9)] flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
+<div class="flex items-center gap-1.5" id="event-filters">
+<button class="filter-btn px-5 py-2 rounded-full bg-on-surface text-surface font-label-lg text-label-lg transition-all duration-200 shadow-sm" data-filter="all" type="button">
+              All Events
+            </button>
+<button class="filter-btn px-5 py-2 rounded-full bg-transparent hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg transition-all duration-200" data-filter="upcoming" type="button">
+              Upcoming
+            </button>
+<button class="filter-btn px-5 py-2 rounded-full bg-transparent hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg transition-all duration-200" data-filter="past" type="button">
+              Past Gatherings
+            </button>
+<button class="filter-btn px-5 py-2 rounded-full bg-transparent hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg transition-all duration-200" data-filter="popups" type="button">
+              Pop-ups &amp; Dinners
+            </button>
+<button class="filter-btn px-5 py-2 rounded-full bg-transparent hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-lg text-label-lg transition-all duration-200" data-filter="acoustic" type="button">
+              Acoustic &amp; Music
+            </button>
+</div>
+<!-- Calendar View / Search Trigger -->
+<div class="hidden sm:flex items-center gap-2 pr-2">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant absolute left-3 pointer-events-none">search</span>
+<input class="h-9 pl-9 pr-4 rounded-full bg-surface-container-low text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:bg-surface-container transition-all w-52 focus:w-64" id="event-search" placeholder="Search events or venue..." type="text"/>
+</div>
+<button class="w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors shadow-sm" title="Calendar Feed RSS" type="button">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 6-Card Comprehensive Events Grid (3-Column Desktop) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter items-stretch" id="events-grid">
+<!-- CARD 1: Upcoming / Open -->
+<article class="event-card group flex flex-col rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(28,25,23,0.05),0_2px_6px_-1px_rgba(28,25,23,0.03)] hover:shadow-[0_20px_40px_-10px_rgba(28,25,23,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden" data-category="upcoming acoustic popups">
+<div class="p-3 pb-0">
+<div class="relative w-full aspect-[16/9] rounded-DEFAULT overflow-hidden bg-surface-container">
+<img alt="Kigali Rooftop Sunset Social &amp; Live DJ" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCly0dqqq0qRjOv6C9hlmwz-2vO-XrzT_VIMRRnDQLyHCOBr3gICHYil7Rl1OhkqsI2BqPiDUaZCXdflOjD_qaku-l5HQjujVsjWl7vSjy1L9E0KpkGYMQZKYnP0LNQPPfVIOw-eSebNdZQRFSY8dp3XNOhvie7qIerVFqxzXZqz7yLVKngTPt3gPAwSIKecanOnMZBUF65EZs0mLuXQWFpbn3F2zYROSj-23WTTelcYYQvTz1YiPl2"/>
+<!-- Floating Pill: Upcoming -->
+<div class="absolute top-3.5 left-3.5 z-10">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold shadow-md">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary-container"></span>
+                  Upcoming
+                </span>
+</div>
+<!-- Top Right Glass Arrow Pill -->
+<a aria-label="View Kigali Rooftop Sunset Social details" class="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-surface/75 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md transition-all duration-200 group-hover:bg-primary-container group-hover:text-on-primary-container group-hover:scale-110" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">arrow_outward</span>
+</a>
+<!-- Bottom Vignette with Child Impact Tag -->
+<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-on-surface/80 via-on-surface/30 to-transparent flex items-end justify-between">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface/20 backdrop-blur-md text-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px] text-primary-container" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                  1 ticket = 1 term books
+                </span>
+<span class="font-label-sm text-label-sm text-surface/90 font-medium">85 spots left</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between">
+<div>
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md font-semibold mb-2">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>March 28, 2026 • 5:00 PM CAT</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+                Kigali Rooftop Sunset Social &amp; Live DJ
+              </h2>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Panoramic hilltop vistas, live hybrid electronic percussion, artisanal cocktail pairings, and direct educational funding for Gasabo primary learners.
+              </p>
+</div>
+<div class="pt-5 mt-5 flex items-center justify-between border-t border-surface-container">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm truncate">
+<span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+<span class="truncate">Inzora Rooftop Terrace, Kigali</span>
+</div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface whitespace-nowrap pl-2">RWF 18,000</span>
+</div>
+</div>
+</article>
+<!-- CARD 2: Upcoming / Open -->
+<article class="event-card group flex flex-col rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(28,25,23,0.05),0_2px_6px_-1px_rgba(28,25,23,0.03)] hover:shadow-[0_20px_40px_-10px_rgba(28,25,23,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden" data-category="upcoming acoustic popups">
+<div class="p-3 pb-0">
+<div class="relative w-full aspect-[16/9] rounded-DEFAULT overflow-hidden bg-surface-container">
+<img alt="East African Jazz &amp; Wine Evening" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmkbmbGDGsyqxfNvyYiz3eChHPSSKWjZnoME5Lg4WtH2rKyvCKOYrmI9dxqflDI-EKp5a3Fw5YKrquyi8y-1jmMlraaStiX8eJU8UHQ6sg1bNEVMlZyWheIk106V_ac6VTHIAhkXBy3Kyblcw34WcxeWzrZiUoLfDZEaneANVWCOjP-oF56R6bbeOC5AqDfixXRwIDGdIDABADKzuLMaewcfvcCYutIrUGOSB9Vk0Aup-Em0XE9aA4"/>
+<!-- Floating Pill: Upcoming -->
+<div class="absolute top-3.5 left-3.5 z-10">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold shadow-md">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary-container"></span>
+                  Upcoming
+                </span>
+</div>
+<!-- Top Right Glass Arrow Pill -->
+<a aria-label="View East African Jazz &amp; Wine Evening details" class="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-surface/75 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md transition-all duration-200 group-hover:bg-primary-container group-hover:text-on-primary-container group-hover:scale-110" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">arrow_outward</span>
+</a>
+<!-- Bottom Vignette -->
+<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-on-surface/80 via-on-surface/30 to-transparent flex items-end justify-between">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface/20 backdrop-blur-md text-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px] text-primary-container" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                  1 ticket = 1 full term tuition
+                </span>
+<span class="font-label-sm text-label-sm text-surface/90 font-medium">42 spots left</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between">
+<div>
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md font-semibold mb-2">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>April 18, 2026 • 6:30 PM CAT</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+                East African Jazz &amp; Wine Evening
+              </h2>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Curated organic vintages, five-course family-style dining by Kigali culinary stars, and improvisational live jazz under illuminated garden trees.
+              </p>
+</div>
+<div class="pt-5 mt-5 flex items-center justify-between border-t border-surface-container">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm truncate">
+<span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+<span class="truncate">Kimihurura Garden, Kigali</span>
+</div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface whitespace-nowrap pl-2">RWF 32,000</span>
+</div>
+</div>
+</article>
+<!-- CARD 3: Upcoming / Open -->
+<article class="event-card group flex flex-col rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(28,25,23,0.05),0_2px_6px_-1px_rgba(28,25,23,0.03)] hover:shadow-[0_20px_40px_-10px_rgba(28,25,23,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden" data-category="upcoming popups">
+<div class="p-3 pb-0">
+<div class="relative w-full aspect-[16/9] rounded-DEFAULT overflow-hidden bg-surface-container">
+<img alt="Artisans &amp; Community Brunch" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBitQrt8td425i1_u-Y7p_j78UGOlfpNIzglWndHdDQG8nqghXzcyTqRVUYAZv8Medq1wygg9pufWRwezEMjmRods8ol_2MyZyGqfLDcvycKRiDGTdy5vFeeyNx7SIyADoGyf3nSEIajn-LTC2igvVVGgBezVGWYRg_bPZkRHudlKe1cNsWiUCbqCPNBMF5SEKstKaTTiD7VzaN_y2id2pgCrzNuKfzDREIKWHGn3uSntOwTEqMySW4"/>
+<!-- Floating Pill: Upcoming -->
+<div class="absolute top-3.5 left-3.5 z-10">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold shadow-md">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary-container"></span>
+                  Upcoming
+                </span>
+</div>
+<!-- Top Right Glass Arrow Pill -->
+<a aria-label="View Artisans &amp; Community Brunch details" class="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-surface/75 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md transition-all duration-200 group-hover:bg-primary-container group-hover:text-on-primary-container group-hover:scale-110" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">arrow_outward</span>
+</a>
+<!-- Bottom Vignette -->
+<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-on-surface/80 via-on-surface/30 to-transparent flex items-end justify-between">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface/20 backdrop-blur-md text-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px] text-primary-container" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+                  1 brunch = classroom kits for 2
+                </span>
+<span class="font-label-sm text-label-sm text-surface/90 font-medium">110 spots left</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between">
+<div>
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md font-semibold mb-2">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>May 2, 2026 • 11:00 AM CAT</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+                Artisans &amp; Community Brunch
+              </h2>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Daytime courtyard festival featuring local ceramists, specialty coffee tastings from Huye roasters, and a communal buffet with fresh seasonal harvest.
+              </p>
+</div>
+<div class="pt-5 mt-5 flex items-center justify-between border-t border-surface-container">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm truncate">
+<span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+<span class="truncate">Kiyovu Creative Hub, Kigali</span>
+</div>
+<span class="font-label-lg text-label-lg font-bold text-on-surface whitespace-nowrap pl-2">RWF 15,000</span>
+</div>
+</div>
+</article>
+<!-- CARD 4: Past / Recap -->
+<article class="event-card group flex flex-col rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(28,25,23,0.05),0_2px_6px_-1px_rgba(28,25,23,0.03)] hover:shadow-[0_20px_40px_-10px_rgba(28,25,23,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden opacity-95 hover:opacity-100" data-category="past popups">
+<div class="p-3 pb-0">
+<div class="relative w-full aspect-[16/9] rounded-DEFAULT overflow-hidden bg-surface-container">
+<img alt="Valentine Twilight Dinner" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1vF9TXYY6iiC-4kewyUCH5KcjcG4qJAxFGGdUBApvaJJDltbCfrzgcrLTvIUirwAg-Vt_B5twcLPbuxH6TXEy-RFBH1ZoWQGrq_0ldPd7TYgQM0OAIaLXEV5w_rwn0Rcxm-EwPyuVd87T_gFmen9d0VSpRBokmiOCmEJG5sWQnmkwChArdaHVZ4ZVXVlb8hSSJysQhIDkEufp2bNYUOjnTzbuMlZaTSVHsG4lGfPSRNSG7zWI9jt-"/>
+<!-- Floating Pill: Recap Available (Liquid Glass) -->
+<div class="absolute top-3.5 left-3.5 z-10">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface/75 backdrop-blur-md text-on-surface font-label-md text-label-md font-semibold shadow-md border border-white/40">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Recap available
+                </span>
+</div>
+<!-- Top Right Glass Arrow Pill -->
+<a aria-label="View Valentine Twilight Dinner recap" class="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-surface/75 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md transition-all duration-200 group-hover:bg-on-surface group-hover:text-surface group-hover:scale-110" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">photo_library</span>
+</a>
+<!-- Bottom Vignette with Actual Impact Metric -->
+<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-on-surface/80 via-on-surface/30 to-transparent flex items-end justify-between">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface/20 backdrop-blur-md text-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px] text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  68 Children Funded
+                </span>
+<span class="font-label-sm text-label-sm text-surface/90 font-medium">Photo Album (48)</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between">
+<div>
+<div class="flex items-center gap-2 text-secondary font-label-md text-label-md font-semibold mb-2">
+<span class="material-symbols-outlined text-[18px]">event_available</span>
+<span>Feb 14, 2026 • Concluded</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+                Valentine Twilight Dinner
+              </h2>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                An intimate open-air feast set under hanging lanterns. Guests shared heirloom recipes and raised funds ensuring school materials for an entire Nyarugenge classroom.
+              </p>
+</div>
+<div class="pt-5 mt-5 flex items-center justify-between border-t border-surface-container">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm truncate">
+<span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+<span class="truncate">Kacyiru Garden, Kigali</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-semibold hover:underline">View Gallery →</span>
+</div>
+</div>
+</article>
+<!-- CARD 5: Past / Recap -->
+<article class="event-card group flex flex-col rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(28,25,23,0.05),0_2px_6px_-1px_rgba(28,25,23,0.03)] hover:shadow-[0_20px_40px_-10px_rgba(28,25,23,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden opacity-95 hover:opacity-100" data-category="past popups">
+<div class="p-3 pb-0">
+<div class="relative w-full aspect-[16/9] rounded-DEFAULT overflow-hidden bg-surface-container">
+<img alt="New Year Pop-up &amp; Artisan Market" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKYwnMkSK5SM5XD59O4pw9joe81xRk_fmPh8X1z-7lC9O1LOaKBeTPHl-qOsGp5xgjszHJqUcxLZmrzWbp1-v-apnFUFqAYg2vYk2UwtL1xfvjlbwpRJYTxiErte81fByqSsuqLZKUICxzn090XFYWn_yhyXUDnPmFxgOyjoVVB2aciEHBDLNJXQ9oyuRVQ63kRr56pxRLp6btGBr_YSTqf1PJLBqwkgnbOXSaWpSchcAKHUFuddld"/>
+<!-- Floating Pill: Recap Available -->
+<div class="absolute top-3.5 left-3.5 z-10">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface/75 backdrop-blur-md text-on-surface font-label-md text-label-md font-semibold shadow-md border border-white/40">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Recap available
+                </span>
+</div>
+<!-- Top Right Glass Arrow Pill -->
+<a aria-label="View New Year Pop-up recap" class="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-surface/75 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md transition-all duration-200 group-hover:bg-on-surface group-hover:text-surface group-hover:scale-110" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">photo_library</span>
+</a>
+<!-- Bottom Vignette with Actual Impact Metric -->
+<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-on-surface/80 via-on-surface/30 to-transparent flex items-end justify-between">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface/20 backdrop-blur-md text-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px] text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  112 Children Funded
+                </span>
+<span class="font-label-sm text-label-sm text-surface/90 font-medium">Story &amp; Audio</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between">
+<div>
+<div class="flex items-center gap-2 text-secondary font-label-md text-label-md font-semibold mb-2">
+<span class="material-symbols-outlined text-[18px]">event_available</span>
+<span>Jan 24, 2026 • Concluded</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+                New Year Pop-up &amp; Artisan Market
+              </h2>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Over twenty homegrown Rwandan makers, craft brewing stalls, and pop-up food stations inaugurating the 2026 civic season with vibrant energy.
+              </p>
+</div>
+<div class="pt-5 mt-5 flex items-center justify-between border-t border-surface-container">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm truncate">
+<span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+<span class="truncate">Kimihurura Arts Center, Kigali</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-semibold hover:underline">Read Recap →</span>
+</div>
+</div>
+</article>
+<!-- CARD 6: Past / Recap -->
+<article class="event-card group flex flex-col rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(28,25,23,0.05),0_2px_6px_-1px_rgba(28,25,23,0.03)] hover:shadow-[0_20px_40px_-10px_rgba(28,25,23,0.12)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden opacity-95 hover:opacity-100" data-category="past acoustic popups">
+<div class="p-3 pb-0">
+<div class="relative w-full aspect-[16/9] rounded-DEFAULT overflow-hidden bg-surface-container">
+<img alt="Solstice Community Feast &amp; Acoustic Night" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA08xlGFB-bOGKVmY-8tALmhIA6-oeNPkWK99wqdRbAs4eKvtGPdZCvlFS4NZ9Vi6kfhlP0NsF0ucwUeupV0cMUTv4fg7RpD47XtZIF7PiRSJ0B1OXs4YnkdCafO7T_ricWNHcSqBIub6ookcQjFZSiYuPUsviID0xToPM55JjcwRnWcJgQ9l6z_J0zPv8SQM4ymMFy-muf8uFulFT28Cwx61Hn6F6-hZImAVERjBFQnx4chGRvjfKK"/>
+<!-- Floating Pill: Recap Available -->
+<div class="absolute top-3.5 left-3.5 z-10">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface/75 backdrop-blur-md text-on-surface font-label-md text-label-md font-semibold shadow-md border border-white/40">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Recap available
+                </span>
+</div>
+<!-- Top Right Glass Arrow Pill -->
+<a aria-label="View Solstice Feast recap" class="absolute top-3.5 right-3.5 z-10 w-9 h-9 rounded-full bg-surface/75 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md transition-all duration-200 group-hover:bg-on-surface group-hover:text-surface group-hover:scale-110" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">photo_library</span>
+</a>
+<!-- Bottom Vignette with Actual Impact Metric -->
+<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-on-surface/80 via-on-surface/30 to-transparent flex items-end justify-between">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface/20 backdrop-blur-md text-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px] text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  140 Children Funded
+                </span>
+<span class="font-label-sm text-label-sm text-surface/90 font-medium">Full Video Set</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow justify-between">
+<div>
+<div class="flex items-center gap-2 text-secondary font-label-md text-label-md font-semibold mb-2">
+<span class="material-symbols-outlined text-[18px]">event_available</span>
+<span>Dec 20, 2025 • Concluded</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+                Solstice Community Feast &amp; Acoustic Night
+              </h2>
+<p class="mt-2 font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                An unforgettable year-end banquet on the Nyarutarama waterfront with bonfire storytelling, traditional Inanga players, and record community contributions.
+              </p>
+</div>
+<div class="pt-5 mt-5 flex items-center justify-between border-t border-surface-container">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-body-sm truncate">
+<span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+<span class="truncate">Nyarutarama Lakeside, Kigali</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-semibold hover:underline">Watch Recap →</span>
+</div>
+</div>
+</article>
+</div>
+<!-- Impact Transparency Infographic Section (Asymmetric Bento Block) -->
+<section class="mt-20 pt-12 border-t border-surface-container">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Impact Callout Left -->
+<div class="lg:col-span-5 flex flex-col gap-4">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-semibold w-fit">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+              Direct Educational Dividend
+            </div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none">
+              How your weekend ticket works.
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Every table ticket, pop-up dinner admission, and menu order automatically pools into our transparent school sponsorship treasury. We disburse directly to verified public schools in Kigali every term start.
+            </p>
+<div class="pt-2 flex items-center gap-4">
+<a class="inline-flex items-center gap-2 font-label-lg text-label-lg text-on-surface font-semibold hover:text-primary transition-colors" data-path="about" href="#">
+<span>Read our impact audit report</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Impact Metrics Grid Right -->
+<div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Metric 1 -->
+<div class="p-6 rounded-DEFAULT bg-surface-container-low flex flex-col justify-between shadow-sm">
+<span class="material-symbols-outlined text-primary text-[28px]">school</span>
+<div class="mt-6">
+<span class="font-display text-display text-on-surface block leading-none font-bold">420</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-2 block font-medium">Students enrolled across 12 partner schools</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="p-6 rounded-DEFAULT bg-surface-container-low flex flex-col justify-between shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[28px]">savings</span>
+<div class="mt-6">
+<span class="font-display text-display text-on-surface block leading-none font-bold">100%</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-2 block font-medium">Direct school fees &amp; learning supplies covered</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="p-6 rounded-DEFAULT bg-primary-container text-on-primary-container flex flex-col justify-between shadow-sm">
+<span class="material-symbols-outlined text-on-primary-container text-[28px]">handshake</span>
+<div class="mt-6">
+<span class="font-display text-display text-on-primary-container block leading-none font-bold">24</span>
+<span class="font-label-md text-label-md text-on-primary-container mt-2 block font-medium">Weekend gatherings powered by the collective</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Host a Pop-up CTA Banner (Liquid Glass Over Surface) -->
+<section class="mt-16 p-8 lg:p-12 rounded-xl bg-surface-container-low shadow-sm relative overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-primary-container/15 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+<div class="max-w-xl">
+<span class="font-label-md text-label-md text-primary font-semibold uppercase tracking-wider block mb-2">Collaborate with Bridge</span>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight">Have a venue or culinary concept in Kigali?</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+              We partner with local restaurants, private gardens, and creators to stage unforgettable weekend gatherings with guaranteed educational impact.
+            </p>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<a class="inline-flex items-center justify-center rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg px-8 py-3.5 font-semibold transition-all hover:brightness-105 active:scale-95 shadow-[0_4px_16px_rgba(245,159,10,0.25)]" data-path="partnerships" href="#">
+              Partner with us
+            </a>
+<a class="inline-flex items-center justify-center rounded-full bg-surface text-on-surface font-label-lg text-label-lg px-6 py-3.5 font-semibold hover:bg-surface-container transition-colors shadow-sm" data-path="contact" href="#">
+              Suggest a location
+            </a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<script>
+  (function () {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.event-card');
+    const searchInput = document.getElementById('event-search');
+
+    function applyFilters() {
+      const activeBtn = document.querySelector('.filter-btn.bg-on-surface');
+      const filterValue = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+      const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+      cards.forEach(card => {
+        const categories = card.getAttribute('data-category') || '';
+        const cardText = card.textContent.toLowerCase();
+
+        const matchesCategory = (filterValue === 'all') || categories.includes(filterValue);
+        const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-on-surface', 'text-surface', 'shadow-sm');
+          b.classList.add('bg-transparent', 'text-on-surface-variant');
+        });
+        btn.classList.add('bg-on-surface', 'text-surface', 'shadow-sm');
+        btn.classList.remove('bg-transparent', 'text-on-surface-variant');
+        applyFilters();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', applyFilters);
+    }
+  })();
+</script></main><footer class="w-full bg-surface-container-low border-t border-outline-variant/30 mt-auto"><div class="max-w-7xl mx-auto px-6 lg:px-12 py-space-xl"><div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start pb-space-xl border-b border-outline-variant/20"><div class="md:col-span-5 flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm"><img alt="Bridge Collective Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VAnk9xsxj-vyYJ-1G4wu_TAXAOapJxdZj6CU8ZoCFyGUEAUX-dbPZqdKHFDBfHQoFzdAGkBfX0MHl9c0A_VknqG_Po-2yuX3qtMvL0imn1ariCUhTV0snHJGyB5IJ6MVJdd2s_CxF4jPPghbNnWyhvvt_GsXFOiV_0xpKReJw-PjlRxRG6kAaYL37gTA1vPQfzYtaNXyS5xzSrQxf3w7hXiPIhPpTK3WsXilzMyoj6RyVOTQ9uozW4tZg"/><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Bridge Collective</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Fostering Kigali community gatherings through shared tables, live arts, and direct educational empowerment.</p><div class="inline-flex items-center gap-2 mt-2 px-space-md py-1.5 rounded-full bg-surface/80 border border-white/60 shadow-[0_2px_8px_rgba(28,25,23,0.04)] w-fit"><span class="w-2 h-2 rounded-full bg-primary-container"></span><span class="font-label-md text-label-md text-on-surface font-semibold">One order. One child. One semester.</span></div></div><div class="md:col-span-4 flex flex-col gap-space-xs"><span class="font-label-md text-label-md text-on-surface uppercase tracking-wider font-semibold mb-2">Navigation</span><div class="flex flex-col gap-space-xs"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="about" href="#">About</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="events" href="#">Events</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="menu" href="#">Menu</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="partnerships" href="#">Partnerships</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#">Contact us</a></div></div><div class="md:col-span-3 flex flex-col gap-space-xs"><span class="font-label-md text-label-md text-on-surface uppercase tracking-wider font-semibold mb-2">Civic Gathering</span><p class="font-body-sm text-body-sm text-on-surface-variant">Kigali, Rwanda<br/>KG 9 Ave, Nyarutarama<br/>Saturdays &amp; Sundays from 11:00 AM</p></div></div><div class="pt-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm"><p class="font-body-sm text-body-sm text-on-surface-variant">© Bridge Collective 2026. All rights reserved.</p><p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">One order. One child. One semester.</p></div></div></footer></body></html>

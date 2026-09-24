@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-fixed": "#001e2d", "tertiary": "#00658b", "on-primary-container": "#613c00", "outline": "#867461", "secondary-fixed-dim": "#c8c6c3", "primary-fixed-dim": "#ffb95d", "error": "#ba1a1a", "on-error": "#ffffff", "primary": "#855400", "secondary-fixed": "#e4e2de", "surface-container-low": "#faf2ee", "surface-variant": "#e9e1dd", "surface-dim": "#e0d8d5", "on-primary-fixed-variant": "#653e00", "on-tertiary-fixed-variant": "#004c6a", "on-secondary-container": "#636360", "secondary-container": "#e1dfdb", "primary-fixed": "#ffddb7", "on-surface": "#1e1b19", "primary-container": "#f59f0a", "inverse-on-surface": "#f7efeb", "on-secondary": "#ffffff", "on-primary-fixed": "#2a1700", "surface-container": "#f4ece8", "on-tertiary-container": "#004a66", "on-primary": "#ffffff", "error-container": "#ffdad6", "secondary": "#5f5e5c", "surface": "#fff8f5", "on-secondary-fixed": "#1b1c1a", "tertiary-fixed": "#c5e7ff", "tertiary-fixed-dim": "#7ed0ff", "surface-container-highest": "#e9e1dd", "surface-container-high": "#eee7e3", "on-tertiary": "#ffffff", "on-background": "#1e1b19", "inverse-primary": "#ffb95d", "tertiary-container": "#20beff", "on-secondary-fixed-variant": "#474744", "outline-variant": "#d8c3ad", "surface-tint": "#855400", "surface-bright": "#fff8f5", "on-error-container": "#93000a", "on-surface-variant": "#534434", "background": "#fff8f5", "surface-container-lowest": "#ffffff", "inverse-surface": "#33302d" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "space-lg": "1.5rem", "space-md": "1rem", "space-sm": "0.5rem", "margin-mobile": "1.25rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "margin": "3rem", "gutter": "1.5rem", "space-xl": "2.5rem" }, "fontFamily": { "body-sm": ["Afacad"], "label-md": ["Afacad"], "headline-sm": ["Afacad"], "headline-md": ["Afacad"], "display": ["Afacad"], "body-md": ["Afacad"], "body-lg": ["Afacad"], "display-mobile": ["Afacad"], "headline-lg-mobile": ["Afacad"], "label-lg": ["Afacad"], "headline-lg": ["Afacad"], "title": ["Afacad"], "label-sm": ["Afacad"] }, "fontSize": { "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-md": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display": ["56px", { "lineHeight": "60px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }], "display-mobile": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "title": ["19px", { "lineHeight": "26px", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 inset-x-0 z-50 pointer-events-none"><div class="max-w-7xl mx-auto px-6 lg:px-12 pt-6"><div class="pointer-events-auto h-20 px-6 rounded-full bg-surface/65 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_0_rgba(28,25,23,0.08),inset_0_1px_0_0_rgba(255,255,255,0.8)] flex items-center justify-between transition-all duration-300"><div class="flex items-center gap-space-sm"><img alt="Bridge Collective Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VAnk9xsxj-vyYJ-1G4wu_TAXAOapJxdZj6CU8ZoCFyGUEAUX-dbPZqdKHFDBfHQoFzdAGkBfX0MHl9c0A_VknqG_Po-2yuX3qtMvL0imn1ariCUhTV0snHJGyB5IJ6MVJdd2s_CxF4jPPghbNnWyhvvt_GsXFOiV_0xpKReJw-PjlRxRG6kAaYL37gTA1vPQfzYtaNXyS5xzSrQxf3w7hXiPIhPpTK3WsXilzMyoj6RyVOTQ9uozW4tZg"/><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight hidden sm:inline">Bridge Collective</span></div><nav class="hidden lg:flex items-center gap-2" data-active-classes="bg-surface-container text-on-surface font-label-lg text-label-lg rounded-full px-space-md py-1.5 shadow-sm"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="about" href="#">About</a><a aria-current="page" class="transition-colors bg-surface-container text-on-surface font-label-lg text-label-lg rounded-full px-space-md py-1.5 shadow-sm" data-path="events" href="#">Events</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="menu" href="#">Menu</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="partnerships" href="#">Partnerships</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface px-space-md py-1.5 rounded-full transition-colors" data-path="contact" href="#">Contact us</a></nav><div class="flex items-center gap-space-md"><a class="inline-flex items-center justify-center rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg px-6 py-3 transition-all duration-200 hover:brightness-105 active:scale-95 shadow-[0_4px_16px_rgba(245,159,10,0.25)]" data-path="events" href="#">See upcoming event</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="w-full pt-20 bg-background flex-grow"><div class="flex flex-col w-full relative overflow-x-hidden">
+<!-- Subtle Ambient Glow Orbs -->
+<div class="absolute top-12 left-1/2 -translate-x-1/2 w-[900px] h-[480px] bg-primary-container/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+<div class="absolute top-[1600px] -left-48 w-[600px] h-[600px] bg-primary-container/5 rounded-full blur-[160px] pointer-events-none -z-10"></div>
+<div class="absolute top-[3200px] -right-48 w-[700px] h-[700px] bg-tertiary-container/10 rounded-full blur-[180px] pointer-events-none -z-10"></div>
+<!-- 1. HERO SECTION -->
+<section class="relative w-full max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-24 flex flex-col items-center text-center">
+<!-- Small Glass Pill Badge -->
+<div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-surface/70 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.9)] mb-8">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface font-semibold">GROOVE WITH PURPOSE</span>
+</div>
+<!-- Massive Headline -->
+<h1 class="font-display text-[54px] sm:text-[68px] lg:text-[78px] leading-[1.05] tracking-[-0.03em] font-bold text-on-surface max-w-4xl mx-auto">
+      Connecting communities,<br/>
+<span class="text-primary-container">empowering lives.</span>
+</h1>
+<!-- Subtext -->
+<p class="font-body-lg text-[20px] leading-[30px] text-on-surface-variant max-w-3xl mx-auto mt-6">
+      Same weekend, different purpose. Every order at a Bridge Collective event directly funds the education of out-of-school and underprivileged children in Rwanda. One order. One child. One semester.
+    </p>
+<!-- Solid Amber Pill CTA Button -->
+<div class="mt-8 flex items-center justify-center">
+<a class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg transition-all duration-300 hover:brightness-105 hover:-translate-y-0.5 active:scale-95 shadow-[0_8px_24px_rgba(245,159,10,0.35)]" href="#next-event">
+<span>See upcoming event</span>
+<span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+</a>
+</div>
+<!-- Centerpiece Photo Collage / Fanned Arc of 4 Photos -->
+<div class="relative w-full max-w-5xl h-[340px] sm:h-[420px] lg:h-[460px] mt-16 flex items-center justify-center select-none">
+<!-- Card 1: -6deg -->
+<div class="absolute w-[240px] sm:w-[310px] lg:w-[340px] h-[280px] sm:h-[350px] lg:h-[380px] rounded-[24px] overflow-hidden shadow-[0_16px_36px_rgba(28,25,23,0.12)] border-[3px] border-white/80 transition-all duration-500 hover:z-30 hover:scale-105 -translate-x-44 sm:-translate-x-56 lg:-translate-x-64 translate-y-6 -rotate-6">
+<img alt="Kigali Pop-Up live event rooftop" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqAbfus5b8lOb5QTuam4vJxcc2ImEff0pVHkWBlD28-tOdiUMNTk0NqhzAdfRJ6YLQdnfosQjSBwuvcvyw2d_NdW3sE-pj_Z5kYB1u_wP7ozk1E3fRXCL41IhDGtXFh1F0I68VzUvSeVzQIcAzfVYK_MY-n87_5WgNMlCUMCg_2gq9OkuS-OD9Qq1QSMAGu4hQ8rfFy90o6KKB-7P2tOoOcNyY34fAoE0Xce6R7qhFUGgUoMxiaPHP"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+</div>
+<!-- Card 2: -3deg -->
+<div class="absolute w-[240px] sm:w-[310px] lg:w-[340px] h-[280px] sm:h-[350px] lg:h-[380px] rounded-[24px] overflow-hidden shadow-[0_18px_40px_rgba(28,25,23,0.14)] border-[3px] border-white/80 transition-all duration-500 hover:z-30 hover:scale-105 -translate-x-20 sm:-translate-x-28 lg:-translate-x-32 translate-y-2 -rotate-3">
+<img alt="Intimate community night dinner in Kigali" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFi4544ULQ16QxDpxKGOk6ZxNCOl6KVglRkgoHvdy_5kMEtiUVrFj1zFNVqpl3mly9KZ0FordNWtRBaQZYWKDWRi8XQCSForjqEc531upHt08qt4PwAeK0V40G9rGBLzX98o7D5hj98APdj0_mQSrEGnXpQgMcNQj6hjQlXDJKMCc-0relpwHqv6e8zd2pfcbltOm4g2Ua3BDdUUIkGtt_ig9Slrz03JgFKkuCXR3PNDnZzIJWuFaa"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+</div>
+<!-- Card 3: 0deg (Centerpiece - Sits highest) -->
+<div class="absolute w-[250px] sm:w-[330px] lg:w-[360px] h-[300px] sm:h-[370px] lg:h-[400px] rounded-[24px] overflow-hidden shadow-[0_24px_50px_rgba(28,25,23,0.18)] border-[3px] border-white z-20 transition-all duration-500 hover:scale-105 -translate-y-4">
+<img alt="Schoolchildren in Kigali smiling with books" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtYSD2_Z0vkgj54ahxw8_YO6Z5f_BB2LhJ-gEK0EzcF81lZR4t4mTZqPsw_GC5F7UulFc4qWdJ5ENanJZqJPUok-heYx9WO6vP2oVns950tgVrmEpok4ze79q9gpYgxBldEuXVAk2fv09gqRqu-O5b3isJil_3yrH7r_b8uk3LmB4uxT4QHDuOuOwJjcTVVKmBWIhiLk5UmOfDcycUPQA014PfgliYlGs-umetTeYTuhOjyfY6G_oo"/>
+<div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm">
+<span class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider">Direct Impact</span>
+</div>
+</div>
+<!-- Card 4: +4deg -->
+<div class="absolute w-[240px] sm:w-[310px] lg:w-[340px] h-[280px] sm:h-[350px] lg:h-[380px] rounded-[24px] overflow-hidden shadow-[0_18px_40px_rgba(28,25,23,0.14)] border-[3px] border-white/80 transition-all duration-500 hover:z-30 hover:scale-105 translate-x-20 sm:translate-x-28 lg:translate-x-32 translate-y-2 rotate-[4deg]">
+<img alt="Daytime festival crowd with food and music" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwguINdNDzAl8_1rTVOInE_rAuXu6ZFuzER7-PPe5hxuxq50K3GF3k8-kxAzvrKN9DBpC8U4rYrwHWsqd3B6diY7n40jNKEsi7K3iRy64Gq1bRFqMbjMniITBLdNEIfcbQr_BuVMcBocovNOSRKFslabyY8U8d1lln6VfL7U4IrUvyx67eDocUApeJBmDuhTatYW9yja-BKiHvNvcPyl96iB1Wjydd43CRdtdkAieA7x448Y_NlYHO"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+</div>
+<!-- Card 5: +7deg -->
+<div class="absolute w-[240px] sm:w-[310px] lg:w-[340px] h-[280px] sm:h-[350px] lg:h-[380px] rounded-[24px] overflow-hidden shadow-[0_16px_36px_rgba(28,25,23,0.12)] border-[3px] border-white/80 transition-all duration-500 hover:z-30 hover:scale-105 translate-x-44 sm:translate-x-56 lg:translate-x-64 translate-y-6 rotate-[7deg]">
+<img alt="Rooftop celebration under Kigali string lights" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqAbfus5b8lOb5QTuam4vJxcc2ImEff0pVHkWBlD28-tOdiUMNTk0NqhzAdfRJ6YLQdnfosQjSBwuvcvyw2d_NdW3sE-pj_Z5kYB1u_wP7ozk1E3fRXCL41IhDGtXFh1F0I68VzUvSeVzQIcAzfVYK_MY-n87_5WgNMlCUMCg_2gq9OkuS-OD9Qq1QSMAGu4hQ8rfFy90o6KKB-7P2tOoOcNyY34fAoE0Xce6R7qhFUGgUoMxiaPHP"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+</div>
+</div>
+<!-- Below Photo Fan: 3 Liquid Glass Stat Chips -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-5xl mt-12 z-20">
+<!-- Chip 1 -->
+<div class="flex items-center gap-3.5 px-5 py-3.5 rounded-full bg-surface/75 backdrop-blur-md border border-white/70 shadow-[0_6px_24px_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.85)] text-left transition-all duration-200 hover:bg-surface/90">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary-container shadow-sm">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface font-semibold tracking-tight">
+<span class="text-primary-container font-bold">MISSION</span> — Fund education for out-of-school children
+        </p>
+</div>
+<!-- Chip 2 -->
+<div class="flex items-center gap-3.5 px-5 py-3.5 rounded-full bg-surface/75 backdrop-blur-md border border-white/70 shadow-[0_6px_24px_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.85)] text-left transition-all duration-200 hover:bg-surface/90">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary-container shadow-sm">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface font-semibold tracking-tight">
+<span class="text-primary-container font-bold">MODEL</span> — Weekend social events, community-driven
+        </p>
+</div>
+<!-- Chip 3 -->
+<div class="flex items-center gap-3.5 px-5 py-3.5 rounded-full bg-surface/75 backdrop-blur-md border border-white/70 shadow-[0_6px_24px_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.85)] text-left transition-all duration-200 hover:bg-surface/90">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 text-on-primary-container shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface font-semibold tracking-tight">
+<span class="text-primary-container font-bold">IMPACT</span> — One order funds one child, one semester
+        </p>
+</div>
+</div>
+</section>
+<!-- 2. ABOUT US SECTION -->
+<section class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-20">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+<!-- Left Column: Large Square Photo -->
+<div class="lg:col-span-6">
+<div class="relative w-full aspect-square max-w-[540px] mx-auto rounded-[32px] overflow-hidden shadow-[0_20px_48px_rgba(28,25,23,0.1)] border border-white/80 group">
+<img alt="Kigali dinner table sharing food and stories" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFi4544ULQ16QxDpxKGOk6ZxNCOl6KVglRkgoHvdy_5kMEtiUVrFj1zFNVqpl3mly9KZ0FordNWtRBaQZYWKDWRi8XQCSForjqEc531upHt08qt4PwAeK0V40G9rGBLzX98o7D5hj98APdj0_mQSrEGnXpQgMcNQj6hjQlXDJKMCc-0relpwHqv6e8zd2pfcbltOm4g2Ua3BDdUUIkGtt_ig9Slrz03JgFKkuCXR3PNDnZzIJWuFaa"/>
+<div class="absolute inset-0 bg-gradient-to-tr from-black/50 via-transparent to-transparent"></div>
+<!-- Corner Floating Metric -->
+<div class="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-surface/85 backdrop-blur-md border border-white/70 shadow-[0_8px_24px_rgba(28,25,23,0.1)] flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block font-semibold">Community Turnout</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">1,400+ Guests Hosted</span>
+</div>
+<div class="h-10 w-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">celebration</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Narrative & 3 Numbered Rows -->
+<div class="lg:col-span-6 flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/70 backdrop-blur-md border border-white/80 shadow-sm w-fit">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface font-semibold">ABOUT US</span>
+</div>
+<h2 class="font-headline-lg text-[38px] sm:text-[42px] leading-[46px] font-bold text-on-surface tracking-tight">
+          Community events, powered and driven by a real cause.
+        </h2>
+<div class="flex flex-col gap-6 mt-4">
+<!-- Row 1 -->
+<div class="flex items-start gap-5 pb-6 border-b border-outline-variant/30">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 shadow-sm">
+              1
+            </div>
+<div class="flex flex-col">
+<h3 class="font-title text-title text-on-surface font-bold">Who we are</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+                Bridge Collective is a community of young Rwandans turning weekend gatherings into a force for good — social events people genuinely want to attend.
+              </p>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="flex items-start gap-5 pb-6 border-b border-outline-variant/30">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 shadow-sm">
+              2
+            </div>
+<div class="flex flex-col">
+<h3 class="font-title text-title text-on-surface font-bold">What we do</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+                Every event we host — socials, dinners, pop-ups — channels its proceeds directly into school fees for out-of-school and underprivileged children.
+              </p>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="flex items-start gap-5">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container font-headline-sm text-headline-sm flex items-center justify-center flex-shrink-0 shadow-sm">
+              3
+            </div>
+<div class="flex flex-col">
+<h3 class="font-title text-title text-on-surface font-bold">Our impact</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+                One order. One child. One semester. That simple equation sits behind every event we run, and every guest who shows up.
+              </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. NEXT EVENT TEASER -->
+<section class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-16" id="next-event">
+<div class="relative rounded-[32px] p-6 lg:p-8 bg-surface/75 backdrop-blur-xl border border-white/80 shadow-[0_12px_36px_rgba(28,25,23,0.08),inset_0_1px_0_0_rgba(255,255,255,0.9)] flex flex-col lg:flex-row items-center justify-between gap-8 transition-all duration-300 hover:shadow-[0_16px_44px_rgba(28,25,23,0.12)]">
+<!-- Event Cover Left -->
+<div class="w-full lg:w-[420px] aspect-[16/9] rounded-2xl overflow-hidden flex-shrink-0 relative shadow-sm">
+<img alt="Kigali Rooftop Sunset Social &amp; Live DJ cover" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqAbfus5b8lOb5QTuam4vJxcc2ImEff0pVHkWBlD28-tOdiUMNTk0NqhzAdfRJ6YLQdnfosQjSBwuvcvyw2d_NdW3sE-pj_Z5kYB1u_wP7ozk1E3fRXCL41IhDGtXFh1F0I68VzUvSeVzQIcAzfVYK_MY-n87_5WgNMlCUMCg_2gq9OkuS-OD9Qq1QSMAGu4hQ8rfFy90o6KKB-7P2tOoOcNyY34fAoE0Xce6R7qhFUGgUoMxiaPHP"/>
+<div class="absolute top-3 left-3 px-3 py-1 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+<span class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider">Next Up</span>
+</div>
+</div>
+<!-- Center Event Meta -->
+<div class="flex-grow flex flex-col justify-center text-left">
+<div class="inline-flex items-center gap-2 mb-2 text-primary font-semibold font-label-md text-label-md uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+          Featured Weekend Gathering
+        </div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">
+          Kigali Rooftop Sunset Social &amp; Live DJ
+        </h3>
+<div class="flex flex-wrap items-center gap-6 mt-4 text-on-surface-variant font-body-md text-body-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
+<span>Saturday, 28 March 2026</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">location_on</span>
+<span>Inzora Rooftop Terrace, Kigali</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">schedule</span>
+<span>4:00 PM – Late</span>
+</div>
+</div>
+</div>
+<!-- Right Action Button -->
+<div class="flex-shrink-0 w-full lg:w-auto flex justify-end">
+<a class="w-full lg:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-surface/80 hover:bg-surface-container font-label-lg text-label-lg text-on-surface border border-white/80 shadow-[0_4px_16px_rgba(28,25,23,0.06)] transition-all duration-200 hover:translate-x-1" href="#">
+<span>More</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- 4. RECENT EVENTS SECTION -->
+<section class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-20">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+<div>
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/70 backdrop-blur-md border border-white/80 shadow-sm w-fit mb-3">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface font-semibold">PAST RECAPS</span>
+</div>
+<h2 class="font-headline-lg text-[36px] font-bold text-on-surface tracking-tight">Recent events</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+        Every gathering translates into verified classroom terms. Explore memories from our recent civic weekends across Kigali.
+      </p>
+</div>
+<!-- 3 Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="rounded-[28px] p-4 bg-surface-container-lowest shadow-[0_8px_24px_rgba(28,25,23,0.04)] border border-outline-variant/30 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(28,25,23,0.08)] group">
+<div>
+<!-- Photo Container -->
+<div class="relative w-full aspect-[16/9] rounded-[20px] overflow-hidden mb-5">
+<img alt="Valentine Twilight Dinner in Kigali" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqAbfus5b8lOb5QTuam4vJxcc2ImEff0pVHkWBlD28-tOdiUMNTk0NqhzAdfRJ6YLQdnfosQjSBwuvcvyw2d_NdW3sE-pj_Z5kYB1u_wP7ozk1E3fRXCL41IhDGtXFh1F0I68VzUvSeVzQIcAzfVYK_MY-n87_5WgNMlCUMCg_2gq9OkuS-OD9Qq1QSMAGu4hQ8rfFy90o6KKB-7P2tOoOcNyY34fAoE0Xce6R7qhFUGgUoMxiaPHP"/>
+<!-- Top Left Status -->
+<div class="absolute top-3 left-3 px-3 py-1 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm">
+<span class="font-label-sm text-label-sm font-semibold text-emerald-700 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                Open
+              </span>
+</div>
+<!-- Top Right Arrow -->
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm flex items-center justify-center text-on-surface transition-transform duration-200 group-hover:rotate-45">
+<span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+</div>
+</div>
+<!-- Metadata -->
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md mb-2">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+<span>Feb 14, 2026</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold group-hover:text-primary transition-colors">
+            Valentine Twilight Dinner
+          </h3>
+</div>
+<div class="flex items-center gap-2 pt-4 mt-4 border-t border-outline-variant/20 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
+<span>Kacyiru Garden, Kigali</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="rounded-[28px] p-4 bg-surface-container-lowest shadow-[0_8px_24px_rgba(28,25,23,0.04)] border border-outline-variant/30 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(28,25,23,0.08)] group">
+<div>
+<!-- Photo Container -->
+<div class="relative w-full aspect-[16/9] rounded-[20px] overflow-hidden mb-5">
+<img alt="New Year Pop-up &amp; Artisan Market" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwguINdNDzAl8_1rTVOInE_rAuXu6ZFuzER7-PPe5hxuxq50K3GF3k8-kxAzvrKN9DBpC8U4rYrwHWsqd3B6diY7n40jNKEsi7K3iRy64Gq1bRFqMbjMniITBLdNEIfcbQr_BuVMcBocovNOSRKFslabyY8U8d1lln6VfL7U4IrUvyx67eDocUApeJBmDuhTatYW9yja-BKiHvNvcPyl96iB1Wjydd43CRdtdkAieA7x448Y_NlYHO"/>
+<!-- Top Left Status -->
+<div class="absolute top-3 left-3 px-3 py-1 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm">
+<span class="font-label-sm text-label-sm font-semibold text-secondary flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Closed
+              </span>
+</div>
+<!-- Top Right Arrow -->
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm flex items-center justify-center text-on-surface transition-transform duration-200 group-hover:rotate-45">
+<span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+</div>
+</div>
+<!-- Metadata -->
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md mb-2">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+<span>Jan 24, 2026</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold group-hover:text-primary transition-colors">
+            New Year Pop-up &amp; Artisan Market
+          </h3>
+</div>
+<div class="flex items-center gap-2 pt-4 mt-4 border-t border-outline-variant/20 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
+<span>Kimihurura Arts Center</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="rounded-[28px] p-4 bg-surface-container-lowest shadow-[0_8px_24px_rgba(28,25,23,0.04)] border border-outline-variant/30 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(28,25,23,0.08)] group">
+<div>
+<!-- Photo Container -->
+<div class="relative w-full aspect-[16/9] rounded-[20px] overflow-hidden mb-5">
+<img alt="Solstice Community Feast &amp; Acoustic Night" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFi4544ULQ16QxDpxKGOk6ZxNCOl6KVglRkgoHvdy_5kMEtiUVrFj1zFNVqpl3mly9KZ0FordNWtRBaQZYWKDWRi8XQCSForjqEc531upHt08qt4PwAeK0V40G9rGBLzX98o7D5hj98APdj0_mQSrEGnXpQgMcNQj6hjQlXDJKMCc-0relpwHqv6e8zd2pfcbltOm4g2Ua3BDdUUIkGtt_ig9Slrz03JgFKkuCXR3PNDnZzIJWuFaa"/>
+<!-- Top Left Status -->
+<div class="absolute top-3 left-3 px-3 py-1 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm">
+<span class="font-label-sm text-label-sm font-semibold text-secondary flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Closed
+              </span>
+</div>
+<!-- Top Right Arrow -->
+<div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-surface/85 backdrop-blur-md border border-white/70 shadow-sm flex items-center justify-center text-on-surface transition-transform duration-200 group-hover:rotate-45">
+<span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+</div>
+</div>
+<!-- Metadata -->
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md mb-2">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+<span>Dec 20, 2025</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold group-hover:text-primary transition-colors">
+            Solstice Community Feast &amp; Acoustic Night
+          </h3>
+</div>
+<div class="flex items-center gap-2 pt-4 mt-4 border-t border-outline-variant/20 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
+<span>Nyarutarama Lakeside</span>
+</div>
+</div>
+</div>
+<!-- Centered Glass Pill Button -->
+<div class="mt-12 flex justify-center">
+<a class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-surface/75 backdrop-blur-md border border-white/80 text-on-surface font-label-lg text-label-lg shadow-[0_4px_16px_rgba(28,25,23,0.06)] transition-all duration-200 hover:bg-surface hover:translate-x-1" href="#">
+<span>See all events</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- 5. PARTNERSHIPS SECTION -->
+<section class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-20">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+<!-- Left Column: Content -->
+<div class="lg:col-span-6 flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/70 backdrop-blur-md border border-white/80 shadow-sm w-fit">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface font-semibold">PARTNER WITH US</span>
+</div>
+<h2 class="font-headline-lg text-[38px] sm:text-[42px] leading-[46px] font-bold text-on-surface tracking-tight">
+          Become a partner or sponsor us
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Community support empowers more classrooms each term. Partnering with Bridge Collective connects your organization to an active, conscious Kigali demographic while directly funding school fees, uniforms, and learning essentials.
+        </p>
+<!-- 3 Liquid Glass Benefit Rows -->
+<div class="flex flex-col gap-3.5 mt-2">
+<!-- Row 1 -->
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-surface/75 backdrop-blur-md border border-white/80 shadow-[0_4px_16px_rgba(28,25,23,0.04)]">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</div>
+<span class="font-title text-[17px] text-on-surface font-semibold">Brand visibility at events and digital socials</span>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-surface/75 backdrop-blur-md border border-white/80 shadow-[0_4px_16px_rgba(28,25,23,0.04)]">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<span class="font-title text-[17px] text-on-surface font-semibold">A direct, transparent link between sponsorship and a child's education</span>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-surface/75 backdrop-blur-md border border-white/80 shadow-[0_4px_16px_rgba(28,25,23,0.04)]">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</div>
+<span class="font-title text-[17px] text-on-surface font-semibold">Custom sponsorship tiers from a single event to a full annual season</span>
+</div>
+</div>
+<!-- Solid Amber CTA Pill -->
+<div class="mt-4">
+<a class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg transition-all duration-300 hover:brightness-105 active:scale-95 shadow-[0_6px_20px_rgba(245,159,10,0.3)]" href="#contact">
+<span>Get in touch about partnering</span>
+<span class="material-symbols-outlined text-[18px]">handshake</span>
+</a>
+</div>
+</div>
+<!-- Right Column: Impact Imagery -->
+<div class="lg:col-span-6">
+<div class="relative w-full aspect-[4/3] rounded-[32px] overflow-hidden shadow-[0_20px_48px_rgba(28,25,23,0.12)] border border-white/80">
+<img alt="Rwandan students supported through Bridge Collective education sponsorship" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtYSD2_Z0vkgj54ahxw8_YO6Z5f_BB2LhJ-gEK0EzcF81lZR4t4mTZqPsw_GC5F7UulFc4qWdJ5ENanJZqJPUok-heYx9WO6vP2oVns950tgVrmEpok4ze79q9gpYgxBldEuXVAk2fv09gqRqu-O5b3isJil_3yrH7r_b8uk3LmB4uxT4QHDuOuOwJjcTVVKmBWIhiLk5UmOfDcycUPQA014PfgliYlGs-umetTeYTuhOjyfY6G_oo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-surface/85 backdrop-blur-md border border-white/70">
+<p class="font-title text-title font-bold text-on-surface">100% Transparency Guarantee</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Partners receive verified reports directly showing school matriculation records and student milestones.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. CONTACT US SECTION -->
+<section class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-20 pb-28 text-center" id="contact">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/70 backdrop-blur-md border border-white/80 shadow-sm w-fit mx-auto mb-3">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface font-semibold">REACH OUT</span>
+</div>
+<h2 class="font-headline-lg text-[38px] font-bold text-on-surface tracking-tight">Contact us</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto mt-3">
+      Questions about an event, a partnership, or anything else? Reach us directly.
+    </p>
+<!-- 3 Equal Glass Cards in a Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-5xl mx-auto">
+<!-- Card 1: Email -->
+<a class="p-8 rounded-[28px] bg-surface/75 backdrop-blur-md border border-white/80 shadow-[0_8px_28px_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.85)] flex flex-col items-center justify-center text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(28,25,23,0.1)] group" href="mailto:brucehenry226@gmail.com">
+<div class="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container mb-4 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">mail</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold tracking-widest text-on-surface-variant uppercase mb-1">EMAIL</span>
+<span class="font-title text-title text-on-surface font-semibold group-hover:text-primary transition-colors break-all">brucehenry226@gmail.com</span>
+</a>
+<!-- Card 2: WhatsApp -->
+<a class="p-8 rounded-[28px] bg-surface/75 backdrop-blur-md border border-white/80 shadow-[0_8px_28px_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.85)] flex flex-col items-center justify-center text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(28,25,23,0.1)] group" href="https://wa.me/250795570044" rel="noopener noreferrer" target="_blank">
+<div class="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container mb-4 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">chat</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold tracking-widest text-on-surface-variant uppercase mb-1">WHATSAPP</span>
+<span class="font-title text-title text-on-surface font-semibold group-hover:text-primary transition-colors">+250 795 570 044</span>
+</a>
+<!-- Card 3: Call Us -->
+<a class="p-8 rounded-[28px] bg-surface/75 backdrop-blur-md border border-white/80 shadow-[0_8px_28px_rgba(28,25,23,0.06),inset_0_1px_0_0_rgba(255,255,255,0.85)] flex flex-col items-center justify-center text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(28,25,23,0.1)] group" href="tel:+250795570044">
+<div class="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container mb-4 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">call</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold tracking-widest text-on-surface-variant uppercase mb-1">CALL US</span>
+<span class="font-title text-title text-on-surface font-semibold group-hover:text-primary transition-colors">+250 795 570 044</span>
+</a>
+</div>
+</section>
+</div></main><footer class="w-full bg-surface-container-low border-t border-outline-variant/30 mt-auto"><div class="max-w-7xl mx-auto px-6 lg:px-12 py-space-xl"><div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start pb-space-xl border-b border-outline-variant/20"><div class="md:col-span-5 flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm"><img alt="Bridge Collective Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VAnk9xsxj-vyYJ-1G4wu_TAXAOapJxdZj6CU8ZoCFyGUEAUX-dbPZqdKHFDBfHQoFzdAGkBfX0MHl9c0A_VknqG_Po-2yuX3qtMvL0imn1ariCUhTV0snHJGyB5IJ6MVJdd2s_CxF4jPPghbNnWyhvvt_GsXFOiV_0xpKReJw-PjlRxRG6kAaYL37gTA1vPQfzYtaNXyS5xzSrQxf3w7hXiPIhPpTK3WsXilzMyoj6RyVOTQ9uozW4tZg"/><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Bridge Collective</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Fostering Kigali community gatherings through shared tables, live arts, and direct educational empowerment.</p><div class="inline-flex items-center gap-2 mt-2 px-space-md py-1.5 rounded-full bg-surface/80 border border-white/60 shadow-[0_2px_8px_rgba(28,25,23,0.04)] w-fit"><span class="w-2 h-2 rounded-full bg-primary-container"></span><span class="font-label-md text-label-md text-on-surface font-semibold">One order. One child. One semester.</span></div></div><div class="md:col-span-4 flex flex-col gap-space-xs"><span class="font-label-md text-label-md text-on-surface uppercase tracking-wider font-semibold mb-2">Navigation</span><div class="flex flex-col gap-space-xs"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="about" href="#">About</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="events" href="#">Events</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="menu" href="#">Menu</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="partnerships" href="#">Partnerships</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#">Contact us</a></div></div><div class="md:col-span-3 flex flex-col gap-space-xs"><span class="font-label-md text-label-md text-on-surface uppercase tracking-wider font-semibold mb-2">Civic Gathering</span><p class="font-body-sm text-body-sm text-on-surface-variant">Kigali, Rwanda<br/>KG 9 Ave, Nyarutarama<br/>Saturdays &amp; Sundays from 11:00 AM</p></div></div><div class="pt-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm"><p class="font-body-sm text-body-sm text-on-surface-variant">© Bridge Collective 2026. All rights reserved.</p><p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">One order. One child. One semester.</p></div></div></footer></body></html>

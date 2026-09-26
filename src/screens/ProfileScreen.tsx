@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,54 +6,36 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useUserData } from '../context/UserDataContext';
-import { getUserInfo } from '../services/firebaseService';
+import { formatFirebaseError } from '../services/firebaseService';
 import { GlassCard, GlassButton, GlassIconButton, GlassTabBar, LiquidBackground } from '../components/glass';
 import { colors, radii } from '../theme/glass';
 
 export default function ProfileScreen({ navigation }: any) {
   const { user, signOut } = useAuth();
   const { favoriteCount, bookingCount } = useUserData();
-  const [userInfo, setUserInfo] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [signingOut, setSigningOut] = useState(false);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    if (user?.idToken) {
-      loadUserInfo();
-    } else {
-      setIsLoading(false);
-    }
-  }, [user?.idToken]);
-
-  const loadUserInfo = async () => {
-    setIsLoading(true);
+  const handleSignOut = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    setError('');
     try {
-      const data = await getUserInfo(user!.idToken);
-      if (data.users && data.users.length > 0) {
-        setUserInfo(data.users[0]);
-      }
+      await signOut();
     } catch (err) {
-      console.error('Failed to load user info', err);
+      setError(formatFirebaseError(err));
     } finally {
-      setIsLoading(false);
+      setSigningOut(false);
     }
-  };
-
-  const handleSignOut = () => {
-    signOut();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Intro' }],
-    });
   };
 
   const getInitials = () => {
-    const name = userInfo?.displayName || user?.displayName || user?.email || 'U';
+    const name = user?.displayName || user?.email || 'U';
     const parts = name.split(' ');
     if (parts.length >= 2) {
       return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
@@ -62,16 +44,16 @@ export default function ProfileScreen({ navigation }: any) {
   };
 
   const getDisplayName = () => {
-    return userInfo?.displayName || user?.displayName || 'MovieZone User';
+    return user?.displayName || 'MovieZone User';
   };
 
   const getEmail = () => {
-    return userInfo?.email || user?.email || 'No email';
+    return user?.email || 'No email';
   };
 
   const getMemberSince = () => {
-    if (userInfo?.createdAt) {
-      return new Date(parseInt(userInfo.createdAt)).toLocaleDateString('en-US', {
+    if (user?.creationTime) {
+      return new Date(user.creationTime).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
       });
@@ -85,21 +67,6 @@ export default function ProfileScreen({ navigation }: any) {
     { icon: 'settings-outline', label: 'Settings', color: colors.accent, screen: 'Settings' },
     { icon: 'help-circle-outline', label: 'Help & Support', color: colors.accent },
   ];
-
-  if (isLoading) {
-    return (
-      <View style={styles.root}>
-        <LiquidBackground>
-        <SafeAreaView style={styles.container}>
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={colors.accent} />
-            <Text style={styles.loadingText}>Loading profile...</Text>
-          </View>
-        </SafeAreaView>
-        </LiquidBackground>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.root}>
@@ -117,9 +84,9 @@ export default function ProfileScreen({ navigation }: any) {
           {/* Profile Header */}
           <GlassCard style={styles.profileHeader} radius={radii.xl} intensity={72}>
             <View style={styles.avatar}>
-              {userInfo?.photoUrl ? (
+              {user?.photoUrl ? (
                 <Image
-                  source={{ uri: userInfo.photoUrl }}
+                  source={{ uri: user.photoUrl }}
                   style={styles.avatarImage}
                 />
               ) : (
@@ -184,8 +151,10 @@ export default function ProfileScreen({ navigation }: any) {
           </View>
 
           {/* Sign Out */}
+          {error ? <Text accessibilityRole="alert" style={{ color: colors.danger, marginHorizontal: 20 }}>{error}</Text> : null}
           <GlassButton
             variant="danger"
+            loading={signingOut}
             style={styles.signOutButton}
             onPress={handleSignOut}
           >
@@ -229,16 +198,6 @@ const styles = StyleSheet.create({
   },
   logoRed: {
     color: colors.accent,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: colors.textMuted,
-    fontSize: 14,
-    marginTop: 12,
   },
   profileHeader: {
     alignItems: 'center',

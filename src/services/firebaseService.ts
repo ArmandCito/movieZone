@@ -1,105 +1,79 @@
+import { FirebaseError } from 'firebase/app';
 import {
-  FIREBASE_SIGN_UP_URL,
-  FIREBASE_SIGN_IN_URL,
-  FIREBASE_USER_INFO_URL,
-  FIREBASE_API_KEY,
-} from '../config';
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
+import { firebaseAuth } from './firebase';
 
 export const signUpWithEmail = async (
   email: string,
   password: string,
   displayName?: string
 ) => {
-  const response = await fetch(FIREBASE_SIGN_UP_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email,
-      password,
-      returnSecureToken: true,
-      ...(displayName ? { displayName } : {}),
-    }),
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.error?.message || 'Sign up failed');
-  }
-  return data;
-};
-
-export const signInWithEmail = async (
-  email: string,
-  password: string
-) => {
-  const response = await fetch(FIREBASE_SIGN_IN_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email,
-      password,
-      returnSecureToken: true,
-    }),
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.error?.message || 'Sign in failed');
-  }
-  return data;
-};
-
-export const getUserInfo = async (idToken: string) => {
-  const response = await fetch(FIREBASE_USER_INFO_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ idToken }),
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.error?.message || 'Failed to get user info');
-  }
-  return data;
-};
-
-// Sign in with a Google ID token (exchanged via Google Identity Services)
-export const signInWithGoogleToken = async (googleIdToken: string) => {
-  const response = await fetch(
-    `https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${FIREBASE_API_KEY}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        postId: `id_token=${googleIdToken}&providerId=google.com`,
-        requestUri: 'http://localhost:8081',
-        returnIdpCredential: true,
-        returnSecureToken: true,
-      }),
-    }
+  const credential = await createUserWithEmailAndPassword(
+    firebaseAuth,
+    email.trim(),
+    password
   );
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.error?.message || 'Google sign in failed');
+  if (displayName) {
+    await updateProfile(credential.user, { displayName });
+    // Refresh observers after the profile fields have been populated.
+    await credential.user.getIdToken(true);
   }
-  return data;
+
+  return credential.user;
 };
 
-export const formatFirebaseError = (error: string): string => {
-  const errorMap: Record<string, string> = {
-    'EMAIL_EXISTS': 'An account with this email already exists.',
-    'EMAIL_NOT_FOUND': 'No account found with this email.',
-    'INVALID_PASSWORD': 'Incorrect password. Please try again.',
-    'INVALID_EMAIL': 'Please enter a valid email address.',
-    'USER_DISABLED': 'This account has been disabled.',
-    'WEAK_PASSWORD': 'Password should be at least 6 characters.',
-    'MISSING_PASSWORD': 'Please enter your password.',
-    'MISSING_EMAIL': 'Please enter your email.',
-    'TOO_MANY_ATTEMPTS_TRY_LATER': 'Too many attempts. Please try again later.',
-    'OPERATION_NOT_ALLOWED': 'This operation is not allowed.',
-    'POPUP_CLOSED': 'Google sign-in window was closed.',
-    'POPUP_BLOCKED': 'Google sign-in was blocked. Please allow popups for this site.',
-  };
-  return errorMap[error] || error.replace(/_/g, ' ').toLowerCase();
+export const signInWithEmail = async (email: string, password: string) => {
+  const credential = await signInWithEmailAndPassword(
+    firebaseAuth,
+    email.trim(),
+    password
+  );
+  return credential.user;
+};
+
+const errorMessages: Record<string, string> = {
+  'auth/account-exists-with-different-credential':
+    'This email already uses another sign-in method. Sign in with that provider first.',
+  'auth/cancelled': 'Sign-in was cancelled.',
+  'auth/cancelled-popup-request': 'Sign-in was cancelled.',
+  'auth/email-already-in-use': 'An account with this email already exists.',
+  'auth/invalid-credential': 'Unable to verify your sign-in. Check your details and try again.',
+  'auth/user-not-found': 'The email or password is incorrect.',
+  'auth/wrong-password': 'The email or password is incorrect.',
+  'auth/unauthorized-domain': 'Sign-in is unavailable on this website. Please contact support.',
+  'auth/native-build-required': 'This app build does not include social sign-in. Please use an updated development or release build.',
+  'auth/provider-token-missing': 'The provider did not complete sign-in. Please try again.',
+  SIGN_IN_CANCELLED: 'Sign-in was cancelled.',
+  IN_PROGRESS: 'Sign-in is already in progress.',
+  PLAY_SERVICES_NOT_AVAILABLE: 'Google Play Services is required for Google sign-in.',
+  'auth/invalid-email': 'Please enter a valid email address.',
+  'auth/missing-configuration': 'This sign-in method has not been configured yet.',
+  'auth/network-request-failed': 'Network error. Check your connection and try again.',
+  'auth/operation-not-allowed': 'This sign-in method is not enabled in Firebase.',
+  'auth/popup-blocked': 'The sign-in popup was blocked. Please allow popups and try again.',
+  'auth/popup-closed-by-user': 'Sign-in was cancelled.',
+  'auth/too-many-requests': 'Too many attempts. Please try again later.',
+  'auth/user-disabled': 'This account has been disabled.',
+  'auth/weak-password': 'Password should be at least 6 characters.',
+};
+
+export const formatFirebaseError = (error: unknown): string => {
+  if (error instanceof FirebaseError) {
+    return errorMessages[error.code] || 'Sign-in failed. Please try again.';
+  }
+
+  if (typeof error === 'object' && error && 'code' in error) {
+    const code = String(error.code);
+    return errorMessages[code] || 'Sign-in failed. Please try again.';
+  }
+
+  if (error instanceof Error) {
+    return errorMessages[error.message] || error.message;
+  }
+
+  return 'Something went wrong. Please try again.';
 };

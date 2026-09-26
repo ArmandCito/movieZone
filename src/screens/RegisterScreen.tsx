@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Alert,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { signUpWithEmail, formatFirebaseError } from '../services/firebaseService';
 import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import SocialAuthButtons from '../components/SocialAuthButtons';
 import { colors, radii } from '../theme/glass';
 
 export default function RegisterScreen({ navigation }: any) {
@@ -26,8 +26,10 @@ export default function RegisterScreen({ navigation }: any) {
   const [agreed, setAgreed] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [socialBusy, setSocialBusy] = useState(false);
 
   const handleSignUp = async () => {
+    if (isLoading || socialBusy) return;
     setError('');
 
     if (!name || !surname || !email || !phone || !password) {
@@ -44,19 +46,8 @@ export default function RegisterScreen({ navigation }: any) {
     try {
       const displayName = `${name} ${surname}`.trim();
       await signUpWithEmail(email, password, displayName);
-
-      Alert.alert(
-        'Account Created',
-        'Your account has been created successfully. You can now sign in.',
-        [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('Login'),
-          },
-        ]
-      );
-    } catch (err: any) {
-      setError(formatFirebaseError(err.message));
+    } catch (err: unknown) {
+      setError(formatFirebaseError(err));
     } finally {
       setIsLoading(false);
     }
@@ -163,6 +154,7 @@ export default function RegisterScreen({ navigation }: any) {
                 label="Sign Up"
                 variant="primary"
                 loading={isLoading}
+                disabled={socialBusy}
                 style={styles.signInButton}
                 onPress={handleSignUp}
               />
@@ -173,18 +165,18 @@ export default function RegisterScreen({ navigation }: any) {
                 <View style={styles.divider} />
               </View>
 
-              <View style={styles.socialRow}>
-                <GlassCard style={styles.socialButton} radius={radii.md} intensity={58} padded={false}>
-                  <TouchableOpacity style={styles.socialButtonTouch}>
-                    <Ionicons name="logo-facebook" size={22} color="#1877F2" />
-                  </TouchableOpacity>
-                </GlassCard>
-                <GlassCard style={styles.socialButton} radius={radii.md} intensity={58} padded={false}>
-                  <TouchableOpacity style={styles.socialButtonTouch}>
-                    <Ionicons name="logo-google" size={22} color="#DB4437" />
-                  </TouchableOpacity>
-                </GlassCard>
-              </View>
+              <SocialAuthButtons
+                onError={setError}
+                disabled={isLoading}
+                onBusyChange={setSocialBusy}
+                beforeSignIn={() => {
+                  if (!agreed) {
+                    setError('You must accept the terms and conditions');
+                    return false;
+                  }
+                  return true;
+                }}
+              />
 
               <TouchableOpacity
                 onPress={() => navigation.navigate('Login')}
@@ -318,21 +310,6 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginHorizontal: 12,
     fontSize: 12,
-  },
-  socialRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 16,
-  },
-  socialButton: {
-    width: 48,
-    height: 48,
-    marginHorizontal: 8,
-  },
-  socialButtonTouch: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   registerRow: {
     marginTop: 24,

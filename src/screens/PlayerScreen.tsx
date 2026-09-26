@@ -90,7 +90,7 @@ export default function PlayerScreen({ navigation, route }: any) {
   // Persist progress before leaving the screen.
   useEffect(() => {
     return () => {
-      if (startTimeRef.current !== null && user?.idToken) {
+      if (startTimeRef.current !== null && user?.localId) {
         const item = {
           movieId: Number(movieId),
           title: route?.params?.title || title || 'Movie',
@@ -102,7 +102,7 @@ export default function PlayerScreen({ navigation, route }: any) {
         if (item.progressSeconds > 5) saveWatchProgress(item);
       }
     };
-  }, [movieId, title, user?.idToken]);
+  }, [movieId, title, user?.localId]);
 
   const loadTrailers = async () => {
     setIsLoading(true);
@@ -126,7 +126,7 @@ export default function PlayerScreen({ navigation, route }: any) {
   const activeVideo = activeIndex >= 0 ? videos[activeIndex] : null;
 
   const handlePlay = () => {
-    if (!user?.idToken) {
+    if (!user?.localId) {
       Alert.alert('Sign in required', 'Please sign in to start watching.', [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Sign In', onPress: () => navigation.navigate('Login') },
@@ -247,7 +247,7 @@ export default function PlayerScreen({ navigation, route }: any) {
                       </Text>
                     </View>
                   </GlassButton>
-                  {!user?.idToken && (
+                  {!user?.localId && (
                     <Text style={styles.plugSignedInText}>Sign in to track your progress</Text>
                   )}
                 </>

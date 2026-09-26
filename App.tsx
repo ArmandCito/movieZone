@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,28 +22,38 @@ import MyBookingsScreen from './src/screens/MyBookingsScreen';
 import NotificationsScreen from './src/screens/NotificationsScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 
-import { AuthProvider } from './src/context/AuthContext';
+import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { UserDataProvider } from './src/context/UserDataContext';
+import { colors } from './src/theme/glass';
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+function AppNavigator() {
+  const { user, isInitializing } = useAuth();
+
+  if (isInitializing) {
+    return (
+      <View style={styles.loading}>
+        <StatusBar style="light" />
+        <ActivityIndicator size="large" color={colors.accent} />
+      </View>
+    );
+  }
+
   return (
-    <AuthProvider>
-      <UserDataProvider>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <StatusBar style="light" />
-            <Stack.Navigator
-              initialRouteName="Intro"
-              screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: '#08070c' },
-              }}
-            >
-              <Stack.Screen name="Intro" component={IntroScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Register" component={RegisterScreen} />
+    <UserDataProvider key={user?.localId || 'guest'}>
+    <NavigationContainer>
+      <StatusBar style="light" />
+      <Stack.Navigator
+        key={user ? 'authenticated' : 'guest'}
+        initialRouteName={user ? 'Home' : 'Intro'}
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: '#08070c' },
+        }}
+      >
+        {user ? (
+          <>
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="MovieDetail" component={MovieDetailScreen} />
               <Stack.Screen name="Search" component={SearchScreen} />
@@ -61,10 +72,35 @@ export default function App() {
               <Stack.Screen name="Favorites" component={FavoritesScreen} />
               <Stack.Screen name="MyBookings" component={MyBookingsScreen} />
               <Stack.Screen name="Settings" component={SettingsScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          </>
+        ) : (
+          <>
+              <Stack.Screen name="Intro" component={IntroScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+    </UserDataProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+        <SafeAreaProvider>
+          <AppNavigator />
         </SafeAreaProvider>
-      </UserDataProvider>
     </AuthProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.bgBottom,
+  },
+});

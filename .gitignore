@@ -7,6 +7,10 @@ node_modules/
 
 # Build
 web-build/
+.auth-web-export/
+.auth-native-export/
+google-services.json
+GoogleService-Info.plist
 
 # Native folders
 android/
@@ -26,6 +30,8 @@ Thumbs.db
 
 # Environment
 .env
+.firebase-cli-config/
+firebase-debug.log*
 
 # Local iOS simulator tooling
 forIoS/

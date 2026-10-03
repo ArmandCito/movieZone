@@ -8,16 +8,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { signInWithEmail, signInWithGoogleToken, formatFirebaseError } from '../services/firebaseService';
-import { useAuth } from '../context/AuthContext';
+import { signInWithEmail, formatFirebaseError } from '../services/firebaseService';
 import { GlassCard, GlassButton, LiquidBackground } from '../components/glass';
+import SocialAuthButtons from '../components/SocialAuthButtons';
 import { colors, radii } from '../theme/glass';
-
-const GOOGLE_CLIENT_ID = '103725081854-uaif6d4nk0de4i9li8r85qqfs2o3f0vh.apps.googleusercontent.com';
 
 export default function LoginScreen({ navigation }: any) {
   const [identifier, setIdentifier] = useState('');
@@ -25,10 +22,10 @@ export default function LoginScreen({ navigation }: any) {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const { setUser } = useAuth();
+  const [socialBusy, setSocialBusy] = useState(false);
 
   const handleSignIn = async () => {
+    if (isLoading || socialBusy) return;
     setError('');
 
     if (!identifier || !password) {
@@ -38,89 +35,12 @@ export default function LoginScreen({ navigation }: any) {
 
     setIsLoading(true);
     try {
-      const authResponse = await signInWithEmail(identifier, password);
-      handleAuthSuccess(authResponse);
-    } catch (err: any) {
-      setError(formatFirebaseError(err.message));
+      await signInWithEmail(identifier, password);
+    } catch (err: unknown) {
+      setError(formatFirebaseError(err));
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleAuthSuccess = (authResponse: any) => {
-    setUser({
-      localId: authResponse.localId,
-      email: authResponse.email,
-      displayName: authResponse.displayName,
-      idToken: authResponse.idToken,
-      refreshToken: authResponse.refreshToken,
-    });
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Home' }],
-    });
-  };
-
-  const handleGoogleSignIn = async () => {
-    setError('');
-    setGoogleLoading(true);
-    try {
-      // Load Google Identity Services script
-      await loadGoogleScript();
-      const google = (window as any).google;
-      if (!google?.accounts?.id) {
-        throw new Error('GOOGLE_LOAD_FAILED');
-      }
-
-      await new Promise<void>((resolve, reject) => {
-        google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: async (response: any) => {
-            try {
-              const credential = response?.credential;
-              if (!credential) throw new Error('No credential received');
-              const authData = await signInWithGoogleToken(credential);
-              handleAuthSuccess(authData);
-              resolve();
-            } catch (err: any) {
-              setError(formatFirebaseError(err.message));
-              reject(err);
-            }
-          },
-          auto_select: false,
-        });
-
-        google.accounts.id.prompt((notification: any) => {
-          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-            setError('Google sign-in cancelled or blocked. Please try again.');
-            reject(new Error('POPUP_BLOCKED'));
-          }
-        });
-      });
-    } catch (err: any) {
-      setError(formatFirebaseError(err.message));
-    } finally {
-      setGoogleLoading(false);
-    }
-  };
-
-  const loadGoogleScript = (): Promise<void> => {
-    return new Promise((resolve) => {
-      if (typeof window === 'undefined') {
-        resolve();
-        return;
-      }
-      if ((window as any).google?.accounts?.id) {
-        resolve();
-        return;
-      }
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.onload = () => resolve();
-      script.onerror = () => resolve();
-      document.body.appendChild(script);
-    });
   };
 
   return (
@@ -181,6 +101,7 @@ export default function LoginScreen({ navigation }: any) {
                 label="Sign In"
                 variant="primary"
                 loading={isLoading}
+                disabled={socialBusy}
                 style={styles.signInButton}
                 onPress={handleSignIn}
               />
@@ -191,31 +112,7 @@ export default function LoginScreen({ navigation }: any) {
                 <View style={styles.divider} />
               </View>
 
-              <View style={styles.socialRow}>
-                <GlassCard style={styles.socialButton} radius={radii.md} intensity={58} padded={false}>
-                  <TouchableOpacity style={styles.socialButtonTouch}>
-                    <Ionicons name="logo-facebook" size={22} color="#1877F2" />
-                  </TouchableOpacity>
-                </GlassCard>
-                <GlassCard
-                  style={[styles.socialButton, googleLoading && styles.buttonDisabled]}
-                  radius={radii.md}
-                  intensity={58}
-                  padded={false}
-                >
-                  <TouchableOpacity
-                    style={styles.socialButtonTouch}
-                    onPress={handleGoogleSignIn}
-                    disabled={googleLoading}
-                  >
-                    {googleLoading ? (
-                      <ActivityIndicator color="#DB4437" size="small" />
-                    ) : (
-                      <Ionicons name="logo-google" size={22} color="#DB4437" />
-                    )}
-                  </TouchableOpacity>
-                </GlassCard>
-              </View>
+              <SocialAuthButtons onError={setError} disabled={isLoading} onBusyChange={setSocialBusy} />
 
               <TouchableOpacity
                 onPress={() => navigation.navigate('Register')}
@@ -306,9 +203,6 @@ const styles = StyleSheet.create({
   signInButton: {
     marginTop: 16,
   },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -323,21 +217,6 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginHorizontal: 12,
     fontSize: 12,
-  },
-  socialRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 16,
-  },
-  socialButton: {
-    width: 48,
-    height: 48,
-    marginHorizontal: 8,
-  },
-  socialButtonTouch: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   registerRow: {
     marginTop: 24,

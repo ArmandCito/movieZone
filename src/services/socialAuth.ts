@@ -5,7 +5,7 @@ import {
   signInWithCredential,
   type UserCredential,
 } from 'firebase/auth';
-import { Platform } from 'react-native';
+import { NativeModules, Platform, TurboModuleRegistry } from 'react-native';
 import {
   FACEBOOK_APP_ID,
   FACEBOOK_CLIENT_TOKEN,
@@ -27,6 +27,11 @@ let googleLoaded = false;
 let facebookLoaded = false;
 
 const loadGoogle = async () => {
+  // The package calls getEnforcing() as soon as it is imported. Check first so
+  // Expo Go or an outdated development build shows an actionable auth error.
+  if (!TurboModuleRegistry.get('RNGoogleSignin')) {
+    throw authError('auth/native-build-required', 'Rebuild the app to enable Google sign-in.');
+  }
   try {
     const sdk = await import('@react-native-google-signin/google-signin');
     googleLoaded = true;
@@ -37,6 +42,9 @@ const loadGoogle = async () => {
 };
 
 const loadFacebook = async () => {
+  if (!NativeModules.FBLoginManager || !NativeModules.FBSettings) {
+    throw authError('auth/native-build-required', 'Rebuild the app to enable Facebook sign-in.');
+  }
   try {
     const sdk = await import('react-native-fbsdk-next');
     facebookLoaded = true;

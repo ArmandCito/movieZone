@@ -24,6 +24,12 @@
       "expo-status-bar",
       "expo-font",
       "expo-video"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b0acdc63-cfc3-4829-989b-754944f1bdf8"
+      }
+    },
+    "owner": "john_maestro"
   }
 }
